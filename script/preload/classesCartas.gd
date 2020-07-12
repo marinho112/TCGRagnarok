@@ -1,7 +1,9 @@
+extends Node
+
 
 class carta:
 	
-	var codigo
+	var id
 	var nome
 	var tipo
 	var custo
@@ -43,7 +45,7 @@ class personagem extends objetoDeBatalha:
 class monstro extends objetoDeBatalha:
 	
 	func _init():
-		pass
+		tipo = Constante.CARTA_MONSTRO
 		
 
 class item extends carta:
@@ -66,5 +68,14 @@ class equipamento extends item:
 
 class habilidade extends carta:
 	
+	func _init():
+		tipo = Constante.CARTA_HABILIDADE
+		
 	var subTipo
 	
+class efeito extends carta:
+	
+	func _init():
+		tipo = Constante.CARTA_EFEITO
+		
+	var propriedade

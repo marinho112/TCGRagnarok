@@ -1,4 +1,4 @@
-
+extends Node
 #Constantes de Tipo de Carta
 
 const CARTA_PERSONAGEM=0
@@ -23,6 +23,9 @@ const RACA_MORTOVIVO=9
 #CONSTANTE SUB-RACA
 
 const SUB_RACA_HUMANO = "00"
+const SUB_RACA_PORING = "10"
+const SUB_RACA_ZUMBI = "90"
+const SUB_RACA_ESQUELETO = "91"
 
 func obterSubRaca(texto):
 	return int(texto.right(1))

@@ -22,7 +22,11 @@ config/icon="res://icon.png"
 [autoload]
 
 Constante="*res://script/preload/constantes.gd"
+VariaveisGlobais="*res://script/preload/variaveisGlobais.gd"
 ClassesCartas="*res://script/preload/classesCartas.gd"
+ControlaDados="*res://script/preload/controlaDados.gd"
+Ferramentas="*res://script/preload/ferramentas.gd"
+ControladorCartas="*res://script/preload/controladorCartas.gd"
 
 [rendering]
 

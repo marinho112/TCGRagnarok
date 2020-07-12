@@ -1,0 +1,5 @@
+//id,carta,propriedade,nvPropriedade,PV,poder,def,raca,sub-raca
+//Propriedade: 0- neutro,1- Agua,2- Terra, 3- Fogo, 4- vento ,5- veneno,6- sagrado , 7-sombrio,8-fantasma,9-morto vivo
+//raca: 0-humanoide,1-Amorfo,2-Bruto,3-Planta,4-Insceto,5-Peixe,6-Demonio,7-Anjo,8-Dragao,9-morto vivo
+1,1,1,1,5,2,1,1,10
+2,2,2,3,7,5,0,3,30
