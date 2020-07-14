@@ -9,6 +9,7 @@ func carregaCartaPorID(id):
 	var conteudo
 	var idTexto = String(id)
 	var passa
+	var carta
 	
 	if not erro:
 	#	
@@ -23,8 +24,9 @@ func carregaCartaPorID(id):
 							letra = idTexto.length()
 					if passa:
 						arquivo.close()
-						return separaStringCarta(conteudo)
-					
+						carta = separaStringCarta(conteudo)
+						recebePalavrasChave(carta)
+						return carta
 	else:
 		print("ERRO!!")
 	arquivo.close()
@@ -96,3 +98,35 @@ func completaCartaMonstro(id,carta):
 		print("ERRO!!")
 	arquivo.close()
 	return false
+
+func recebePalavrasChave(carta):
+	
+	var arquivo = File.new()
+	#var erro = arquivo.open("res://dados/teste.data",File.WRITE)
+	var erro = arquivo.open("res://db/cartas/carta_has_palavraChave.data",File.READ)
+	var conteudo
+	var idTexto = String(carta.id)
+	var passa
+	var lista = []
+	
+	if not erro:
+	#	
+		while(!arquivo.eof_reached()):
+			conteudo = arquivo.get_line()
+			if(conteudo.length( ) >2):
+				if((conteudo[0]!="/")and(conteudo[1]!="/")):
+					for letra in idTexto.length():
+						passa=true
+						if(idTexto[letra] != conteudo[letra]):
+							passa=false
+							letra = idTexto.length()
+						if (passa and (letra == (idTexto.length()-1))):
+							var conteudo2 = conteudo.split(",")
+							lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),carta))
+		arquivo.close()
+		carta.listaPalavraChave = lista
+					
+	else:
+		print("ERRO!!")
+	arquivo.close()
+	return -1

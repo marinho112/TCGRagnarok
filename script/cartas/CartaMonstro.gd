@@ -1,6 +1,9 @@
 extends Node2D
 
+var ativado = true
+var zoom = false
 var carta
+var prePalavraChave = preload("res://cenas/elementos/PalavraChaveObjeto.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -11,6 +14,7 @@ func preparaCarta(carta = carta):
 	desenhaAtributos()
 	desenharPropriedade()
 	carregaImagem()
+	desenhaPalavrasChave()
 
 func desenhaAtributos():
 	$nome.set_text(Ferramentas.receberTexto("cartas",carta.nome))
@@ -117,3 +121,39 @@ func carregaImagem():
 
 	var imagem = load("res://sprites/cartas/monstros/"+propriedade+"/fundo/"+str(carta.imagem)+".png")
 	$fundo.set_texture(imagem)
+
+func desenhaPalavrasChave():
+	var position = Vector2(-130,34)
+	var primeiro = true
+	var fundos = 1
+	for palavra in carta.listaPalavraChave:
+		$caixaPalavras.set_visible(true)
+		var novaPalavra = prePalavraChave.instance()
+		novaPalavra.atualizaPalavraChave(palavra)
+		novaPalavra.ativar(self)
+		#ARRRUMAR!!
+		if primeiro:
+			primeiro=false
+		else:
+			
+			var lbl = prePalavraChave.instance()
+			add_child(lbl)
+			lbl.get_node("texto").set_text(", ")
+			lbl.set_position(position)
+			position.x += 8.35 * lbl.get_node("texto").get_total_character_count()
+		
+		
+		
+		var tamanho = 8.35 * novaPalavra.get_node("texto").get_total_character_count()
+		if((position.x + tamanho) > 138):
+			position.x=-130
+			position.y+= 24
+			fundos +=1
+		novaPalavra.set_position(position)
+		position.x += tamanho
+		$caixaPalavras.set_scale(($caixaPalavras.get_scale()*Vector2(1,fundos)))
+		$caixaPalavras.set_position($caixaPalavras.get_position()+Vector2(0,(12*(fundos-1))))
+		
+		
+	
+	

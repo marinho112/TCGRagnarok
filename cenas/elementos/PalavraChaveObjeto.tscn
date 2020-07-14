@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://script/cartas/PalavraChaveObjeto.gd" type="Script" id=1]
+[ext_resource path="res://fontes/Roboto-Regular.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 2 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 10, 60 )
+
+[node name="PalavraChaveObjeto" type="Area2D"]
+script = ExtResource( 1 )
+
+[node name="texto" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.545098, 0.545098, 0.545098, 1 )
+text = "PalavraChave"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 44.3828, 8.13139 )
+rotation = 1.5708
+shape = SubResource( 1 )

@@ -12,6 +12,10 @@ class carta:
 	var imagem
 	var descricao
 	
+	var listaPalavraChave = []
+	var listaMarcadores = []
+	var listaEfeitos = []
+	
 class objetoDeBatalha extends carta:
 	
 	var vida

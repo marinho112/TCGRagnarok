@@ -1,4 +1,9 @@
 extends Node
+
+#GRUPOS
+
+const GRUPO_MOUSE="grupo_mouse"
+
 #Constantes de Tipo de Carta
 
 const CARTA_PERSONAGEM=0

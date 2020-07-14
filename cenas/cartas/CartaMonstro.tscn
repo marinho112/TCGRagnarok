@@ -37,18 +37,18 @@ scale = Vector2( 0.05, 0.05 )
 texture = ExtResource( 4 )
 
 [node name="defesa" type="Sprite" parent="."]
-position = Vector2( 116, 92 )
-scale = Vector2( 0.04, 0.04 )
+position = Vector2( 116, -16 )
+scale = Vector2( 0.045, 0.045 )
 texture = SubResource( 1 )
 
 [node name="poder" type="Sprite" parent="."]
-position = Vector2( 115, 37 )
-scale = Vector2( 0.06, 0.07 )
+position = Vector2( 115, -74 )
+scale = Vector2( 0.07, 0.08 )
 texture = ExtResource( 3 )
 
 [node name="coracao" type="Sprite" parent="."]
-position = Vector2( 116, -126 )
-scale = Vector2( 0.135, 0.125 )
+position = Vector2( 116, -120 )
+scale = Vector2( 0.15, 0.15 )
 texture = ExtResource( 8 )
 
 [node name="circuloPropriedade" type="Sprite" parent="."]
@@ -89,12 +89,13 @@ __meta__ = {
 }
 
 [node name="lblpoder" type="Label" parent="."]
-margin_left = 103.0
-margin_top = 9.0
-margin_right = 128.0
-margin_bottom = 62.0
+margin_left = 104.0
+margin_top = -105.0
+margin_right = 129.0
+margin_bottom = -52.0
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.52549, 0.494118, 0.494118, 1 )
 text = "2"
 align = 1
 valign = 1
@@ -104,11 +105,12 @@ __meta__ = {
 
 [node name="lbldefesa" type="Label" parent="."]
 margin_left = 103.0
-margin_top = 62.5
+margin_top = -41.5
 margin_right = 130.0
-margin_bottom = 115.5
+margin_bottom = 11.5
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 1, 1, 1, 1 )
 text = "1"
 align = 1
 valign = 1
@@ -118,9 +120,9 @@ __meta__ = {
 
 [node name="nome" type="Label" parent="."]
 margin_left = -140.0
-margin_top = -175.0
+margin_top = -178.0
 margin_right = 35.0
-margin_bottom = -153.0
+margin_bottom = -154.0
 rect_pivot_offset = Vector2( 15.8387, 11 )
 custom_fonts/font = ExtResource( 6 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -162,11 +164,11 @@ __meta__ = {
 }
 
 [node name="vida" type="Label" parent="."]
-margin_left = 102.0
-margin_top = -135.5
-margin_right = 132.0
-margin_bottom = -113.5
-custom_fonts/font = ExtResource( 6 )
+margin_left = 101.0
+margin_top = -140.5
+margin_right = 131.0
+margin_bottom = -102.5
+custom_fonts/font = ExtResource( 5 )
 text = "5"
 align = 1
 __meta__ = {
@@ -174,21 +176,27 @@ __meta__ = {
 }
 
 [node name="circuloResistencia" type="Sprite" parent="."]
-position = Vector2( 128, 125 )
+position = Vector2( 128, 152 )
 scale = Vector2( 0.03, 0.03 )
 texture = ExtResource( 13 )
 
 [node name="setaResistencia" type="Sprite" parent="."]
-position = Vector2( 128, 143 )
+position = Vector2( 128, 170 )
 scale = Vector2( 0.05, 0.025 )
 texture = ExtResource( 12 )
 
 [node name="circuloFraqueza" type="Sprite" parent="."]
-position = Vector2( 108, 125 )
+position = Vector2( 108, 152 )
 scale = Vector2( 0.03, 0.03 )
 texture = ExtResource( 11 )
 
 [node name="setaFraqueza" type="Sprite" parent="."]
-position = Vector2( 108, 143 )
+position = Vector2( 108, 170 )
 scale = Vector2( 0.05, 0.025 )
 texture = ExtResource( 10 )
+
+[node name="caixaPalavras" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, 40 )
+scale = Vector2( 0.95, 0.9 )
+texture = ExtResource( 7 )
