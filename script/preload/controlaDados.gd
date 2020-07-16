@@ -130,3 +130,36 @@ func recebePalavrasChave(carta):
 		print("ERRO!!")
 	arquivo.close()
 	return -1
+
+func recebePalavrasPorEfeito(efeito):
+	
+	var arquivo = File.new()
+	#var erro = arquivo.open("res://dados/teste.data",File.WRITE)
+	var erro = arquivo.open("res://db/cartas/efeito_has_palavraChave.data",File.READ)
+	var conteudo
+	var idTexto = String(efeito.id)
+	var passa
+	var lista = []
+	
+	if not erro:
+	#	
+		while(!arquivo.eof_reached()):
+			
+			conteudo = arquivo.get_line()
+			if(conteudo.length( ) >2):
+				if((conteudo[0]!="/")and(conteudo[1]!="/")):
+					for letra in idTexto.length():
+						passa=true
+						if(idTexto[letra] != conteudo[letra]):
+							passa=false
+							letra = idTexto.length()
+						if (passa and (letra == (idTexto.length()-1))):
+							var conteudo2 = conteudo.split(",")
+							lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),efeito.pai))
+		arquivo.close()
+		efeito.listaPalavras = lista
+					
+	else:
+		print("ERRO!!")
+	arquivo.close()
+	return -1

@@ -11,6 +11,10 @@ func getPalavraChave(id,efeito,pai):
 			retorno = Ofensivo.new()
 		4:
 			retorno = Imovel.new()
+		5:
+			retorno = BemVindo.new()
+		6:
+			retorno = Coletar.new()
 	if ((efeito != null)and(efeito != 0)):
 		retorno.efeito= Efeitos.getEfeito(efeito,pai)
 	retorno.pai=pai
@@ -41,6 +45,16 @@ class Imovel extends palavraChave:
 	
 	func _init():
 		id=4
+		
+class BemVindo extends palavraChave:
+	
+	func _init():
+		id=5
+		
+class Coletar extends palavraChave:
+	
+	func _init():
+		id=6
 	
 	
 	

@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://sprites/cartas/monstros/bordas/bordaAzul-1d0585.png" type="Texture" id=1]
+[ext_resource path="res://cenas/elementos/PalavraChaveObjeto.tscn" type="PackedScene" id=2]
 [ext_resource path="res://sprites/cartas/Sword.png" type="Texture" id=3]
 [ext_resource path="res://sprites/cartas/Custo-moeda.png" type="Texture" id=4]
 [ext_resource path="res://cenas/cartas/fontes/valoresGrandes.tres" type="DynamicFont" id=5]
@@ -13,6 +14,7 @@
 [ext_resource path="res://sprites/cartas/setaResistencia.png" type="Texture" id=12]
 [ext_resource path="res://sprites/cartas/monstros/propriedade/circuloVermelho-ff0000.png" type="Texture" id=13]
 [ext_resource path="res://script/cartas/CartaMonstro.gd" type="Script" id=14]
+[ext_resource path="res://cenas/cartas/fontes/valoresMedios.tres" type="DynamicFont" id=15]
 
 [sub_resource type="StreamTexture" id=1]
 flags = 4
@@ -75,11 +77,12 @@ scale = Vector2( 0.03, 0.03 )
 texture = ExtResource( 9 )
 
 [node name="lblcusto" type="Label" parent="."]
-margin_left = 106.0
+margin_left = 106.25
 margin_top = -195.0
-margin_right = 130.0
+margin_right = 130.25
 margin_bottom = -142.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 15 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
@@ -165,10 +168,11 @@ __meta__ = {
 
 [node name="vida" type="Label" parent="."]
 margin_left = 101.0
-margin_top = -140.5
+margin_top = -138.5
 margin_right = 131.0
-margin_bottom = -102.5
+margin_bottom = -100.5
 custom_fonts/font = ExtResource( 5 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 text = "5"
 align = 1
 __meta__ = {
@@ -195,8 +199,5 @@ position = Vector2( 108, 170 )
 scale = Vector2( 0.05, 0.025 )
 texture = ExtResource( 10 )
 
-[node name="caixaPalavras" type="Sprite" parent="."]
-visible = false
-position = Vector2( 0, 40 )
-scale = Vector2( 0.95, 0.9 )
-texture = ExtResource( 7 )
+[node name="PalavraChaveObjeto" parent="." instance=ExtResource( 2 )]
+position = Vector2( -134, 19 )

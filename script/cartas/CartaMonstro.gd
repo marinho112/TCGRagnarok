@@ -3,7 +3,6 @@ extends Node2D
 var ativado = true
 var zoom = false
 var carta
-var prePalavraChave = preload("res://cenas/elementos/PalavraChaveObjeto.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -123,37 +122,40 @@ func carregaImagem():
 	$fundo.set_texture(imagem)
 
 func desenhaPalavrasChave():
-	var position = Vector2(-130,34)
+	
 	var primeiro = true
-	var fundos = 1
+	var texto = ""
+	var tamanho = 0
 	for palavra in carta.listaPalavraChave:
-		$caixaPalavras.set_visible(true)
-		var novaPalavra = prePalavraChave.instance()
-		novaPalavra.atualizaPalavraChave(palavra)
-		novaPalavra.ativar(self)
-		#ARRRUMAR!!
+		
 		if primeiro:
+			$PalavraChaveObjeto.set_visible(true)
+			$PalavraChaveObjeto/texto.bbcode_enabled = true
 			primeiro=false
 		else:
-			
-			var lbl = prePalavraChave.instance()
-			add_child(lbl)
-			lbl.get_node("texto").set_text(", ")
-			lbl.set_position(position)
-			position.x += 8.35 * lbl.get_node("texto").get_total_character_count()
+			texto += ", "
+			tamanho+=2
 		
+		$PalavraChaveObjeto.atualizaPalavraChave(palavra)
+		var url = '[url=function'+str(palavra.id)+']'
+		url += Ferramentas.receberTexto("palavrasChave",palavra.id)
+		tamanho+= Ferramentas.receberTexto("palavrasChave",palavra.id).length()
+		url+='[/url]'
+		texto += url
 		
-		
-		var tamanho = 8.35 * novaPalavra.get_node("texto").get_total_character_count()
-		if((position.x + tamanho) > 138):
-			position.x=-130
-			position.y+= 24
-			fundos +=1
-		novaPalavra.set_position(position)
-		position.x += tamanho
-		$caixaPalavras.set_scale(($caixaPalavras.get_scale()*Vector2(1,fundos)))
-		$caixaPalavras.set_position($caixaPalavras.get_position()+Vector2(0,(12*(fundos-1))))
-		
-		
+	$PalavraChaveObjeto/texto.bbcode_text= texto
 	
+	var rect = $PalavraChaveObjeto/container.get_rect()
+	var position = $PalavraChaveObjeto.get_position()
+		
+	tamanho *= 9
+	if tamanho < 220:
+		rect.size.x = tamanho
+		
+	var linhas = int(tamanho/220) +1
+	position.y += 25 * (4-linhas) 
+	rect.size.y = (25*linhas)
+		
+	$PalavraChaveObjeto/container.set_size(rect.size)
+	$PalavraChaveObjeto.set_position(position)
 	

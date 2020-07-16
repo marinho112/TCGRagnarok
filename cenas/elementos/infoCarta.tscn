@@ -1,12 +1,17 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://sprites/cinza.png" type="Texture" id=1]
 [ext_resource path="res://script/cartas/infoCarta.gd" type="Script" id=2]
+[ext_resource path="res://cenas/cartas/fontes/valoresPequenos.tres" type="DynamicFont" id=3]
 
-[node name="infoCarta" type="Node2D"]
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 134.424, 58.9845 )
+
+[node name="infoCarta" type="Area2D"]
 script = ExtResource( 2 )
 
 [node name="fundo" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.784314 )
 scale = Vector2( 0.555, 0.25 )
 texture = ExtResource( 1 )
 
@@ -15,8 +20,13 @@ margin_left = -130.0
 margin_top = -50.0
 margin_right = 130.0
 margin_bottom = 50.0
+custom_fonts/normal_font = ExtResource( 3 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 1, 1, 1, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+[connection signal="meta_clicked" from="texto" to="." method="_on_texto_meta_clicked"]

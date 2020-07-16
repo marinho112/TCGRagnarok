@@ -9,7 +9,9 @@
 script = ExtResource( 1 )
 
 [node name="Mouse" type="Area2D" parent="."]
+visible = false
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mouse"]
+visible = false
 shape = SubResource( 1 )
