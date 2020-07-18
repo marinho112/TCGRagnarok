@@ -1,13 +1,23 @@
-extends Node2D
+extends Area2D
 
 var ativado = true
-var zoom = false
+var zoom
 var carta
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	add_to_group(Constante.GRUPO_CARTA)
+	setZoom(false)
 
+func setZoom(zoom):
+	self.zoom=zoom
+	if(zoom):
+		scale = Vector2(1,1)
+		$PalavraChaveObjeto.scale=Vector2(1,1)
+	else:
+		scale = Vector2(0.7,0.7)
+		$PalavraChaveObjeto.scale=Vector2(1.2,1.2)
+		
 func preparaCarta(carta = carta):
 	self.carta=carta
 	desenhaAtributos()

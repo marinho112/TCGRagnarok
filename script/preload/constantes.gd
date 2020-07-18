@@ -3,6 +3,7 @@ extends Node
 #GRUPOS
 
 const GRUPO_MOUSE="grupo_mouse"
+const GRUPO_CARTA="grupo_carta"
 
 #Constantes de Tipo de Carta
 
