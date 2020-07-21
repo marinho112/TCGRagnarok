@@ -6,6 +6,8 @@ const GRUPO_MOUSE="grupo_mouse"
 const GRUPO_CARTA="grupo_carta"
 const GRUPO_CARTA_REDUZIDA ="grupo_carta_reduzida"
 const GRUPO_AREA_CARTA="area_carta"
+const GRUPO_AREA_MAO="grupo_area_mao"
+const GRUPO_AREA_CAMPO="grupo_area_campo"
 const GRUPO_CARTA_EM_CAMPO = "carta_em_campo"
 const GRUPO_CARTA_NA_MAO= "carta_na_mao"
 
