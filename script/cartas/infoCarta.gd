@@ -1,5 +1,6 @@
 extends Area2D
 
+var ativado = true
 var efeito
 
 func _ready():
@@ -25,13 +26,13 @@ func setTexto(texto):
 			
 			for palavra in efeito.listaPalavras:
 				var url = '[url=function'+str(palavra.id)+']'
-				url += Ferramentas.receberTexto("palavrasChave",palavra.id)
+				url += palavra.recebeNome()
 				url+='[/url]'
 				
 				texto = texto.replace("#"+str(palavra.id),url)
 				
 				url = '[url=function'+str(palavra.id)+']'
-				url += Ferramentas.receberTexto("palavrasChave",palavra.id,2)
+				url += palavra.recebeNomeAlternativo()
 				url+='[/url]'
 				texto = texto.replace("@"+str(palavra.id),url)
 				
@@ -50,7 +51,7 @@ func _on_texto_meta_clicked(meta):
 		if(("function"+str(item.id))==meta):
 			
 			efeito=item.efeito
-			var texto = Ferramentas.receberTexto("palavrasChave",item.id,1)
+			var texto = item.recebeDescricao()
 			if(item.efeito != null):
-				texto +=" " + Ferramentas.receberTexto("efeitos",item.efeito.id)
+				texto +=" " + item.efeito.recebeDescricao()
 			setTexto(texto)

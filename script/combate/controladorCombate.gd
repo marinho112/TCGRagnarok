@@ -1,4 +1,4 @@
-
+extends Node2D
 
 func calculaDanoCombate(obj1,obj2,bonus=0):
 	var dano = (obj1.dano+bonus) - obj2.defesa

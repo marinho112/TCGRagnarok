@@ -22,6 +22,9 @@ class efeito:
 	
 	func ativar():
 		pass
+	
+	func recebeDescricao():
+		return Ferramentas.receberTexto("efeitos",id)
 
 class Mais1Mais0End extends efeito:
 	

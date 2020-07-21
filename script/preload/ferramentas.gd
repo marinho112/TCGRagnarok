@@ -28,3 +28,9 @@ func removeInicioInvalido(string):
 	while((string!="")and((string[0]==" ") or (string[0]=="	") or (string[0]=="\n"))):
 		string = string.right(1)
 	return string
+
+func positivo (num):
+	
+	if(num<0):
+		num *= -1
+	return num

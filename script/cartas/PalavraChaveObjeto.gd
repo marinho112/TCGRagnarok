@@ -24,9 +24,9 @@ func disparaPopUp(palavraChave):
 	
 	info.efeito=palavraChave.efeito
 		
-	var texto = Ferramentas.receberTexto("palavrasChave",palavraChave.id,1)
+	var texto = palavraChave.recebeDescricao()
 	if(palavraChave.efeito != null):
-		texto +=" " + Ferramentas.receberTexto("efeitos",palavraChave.efeito.id)
+		texto +=" " + palavraChave.efeito.recebeDescricao()
 	info.setTexto(texto)
 
 func atualizaPalavraChave(palavra):

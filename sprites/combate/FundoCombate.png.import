@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/0.png-b6a2f8f026ee1452f1c67e20480a2910.stex"
+path="res://.import/FundoCombate.png-c0a2d09aad01cf354556df03bde22d7e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/cartas/monstros/agua/fundo/0.png"
-dest_files=[ "res://.import/0.png-b6a2f8f026ee1452f1c67e20480a2910.stex" ]
+source_file="res://sprites/combate/FundoCombate.png"
+dest_files=[ "res://.import/FundoCombate.png-c0a2d09aad01cf354556df03bde22d7e.stex" ]
 
 [params]
 

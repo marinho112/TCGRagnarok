@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bordaRoxo-6e0659.png-401e2fc67168b1b74f0e82ddcd1eb464.stex"
+path="res://.import/AreaCartas.png-bc0fc95a446ccb7f231ab93bee73c5a3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/cartas/monstros/bordas/bordaRoxo-6e0659.png"
-dest_files=[ "res://.import/bordaRoxo-6e0659.png-401e2fc67168b1b74f0e82ddcd1eb464.stex" ]
+source_file="res://sprites/combate/AreaCartas.png"
+dest_files=[ "res://.import/AreaCartas.png-bc0fc95a446ccb7f231ab93bee73c5a3.stex" ]
 
 [params]
 

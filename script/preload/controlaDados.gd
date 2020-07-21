@@ -122,7 +122,7 @@ func recebePalavrasChave(carta):
 							letra = idTexto.length()
 						if (passa and (letra == (idTexto.length()-1))):
 							var conteudo2 = conteudo.split(",")
-							lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),carta))
+							lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),carta,int(conteudo2[3])))
 		arquivo.close()
 		carta.listaPalavraChave = lista
 					
@@ -155,7 +155,7 @@ func recebePalavrasPorEfeito(efeito):
 							letra = idTexto.length()
 						if (passa and (letra == (idTexto.length()-1))):
 							var conteudo2 = conteudo.split(",")
-							lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),efeito.pai))
+							lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),efeito.pai,int(conteudo2[3])))
 		arquivo.close()
 		efeito.listaPalavras = lista
 					

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bordaAzul-1d0585.png-b7619f1641193b1274d7e3f3aad7aa45.stex"
+path="res://.import/Amarelo-Reduzido.png-335dd163d87c32d3da9f1fc549f0613f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/cartas/monstros/bordas/bordaAzul-1d0585.png"
-dest_files=[ "res://.import/bordaAzul-1d0585.png-b7619f1641193b1274d7e3f3aad7aa45.stex" ]
+source_file="res://sprites/cartas/monstros/bordas/Amarelo-Reduzido.png"
+dest_files=[ "res://.import/Amarelo-Reduzido.png-335dd163d87c32d3da9f1fc549f0613f.stex" ]
 
 [params]
 

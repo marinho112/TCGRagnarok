@@ -3,19 +3,30 @@ extends Area2D
 var ativado = true
 var zoom
 var carta
+var visual 
+var fundo ="fundo"
+var miniatura = false
 
 # Called when the node enters the scene tree for the first time.
+
+	
 func _ready():
 	add_to_group(Constante.GRUPO_CARTA)
 	setZoom(false)
+	
+
 
 func setZoom(zoom):
 	self.zoom=zoom
 	if(zoom):
-		scale = Vector2(1,1)
+		scale = Vector2(1.5,1.5)
 		$PalavraChaveObjeto.scale=Vector2(1,1)
 	else:
-		scale = Vector2(0.7,0.7)
+		if(visual!=null):
+			visual.visual=null
+			visual.ativado=true
+			self.queue_free()
+		scale = Vector2(0.8,0.8)
 		$PalavraChaveObjeto.scale=Vector2(1.2,1.2)
 		
 func preparaCarta(carta = carta):
@@ -27,15 +38,19 @@ func preparaCarta(carta = carta):
 
 func desenhaAtributos():
 	$nome.set_text(Ferramentas.receberTexto("cartas",carta.nome))
-	$raca.set_text(Ferramentas.receberTexto("racas",carta.raca))
-	$subRaca.set_text(Ferramentas.receberTexto("subRacas",carta.raca,Constante.obterSubRaca(carta.subRaca)))
-	
 	$lblcusto.set_text(str(carta.custo))
 	$lblpoder.set_text(str(carta.poder))
 	$lbldefesa.set_text(str(carta.defesa))
 	$vida.set_text(str(carta.vida))
+	
+	desenhaAtributosComplementares()
+	
+func desenhaAtributosComplementares():
+	$raca.set_text(Ferramentas.receberTexto("racas",carta.raca))
+	$subRaca.set_text(Ferramentas.receberTexto("subRacas",carta.raca,Constante.obterSubRaca(carta.subRaca)))
 
-func desenharPropriedade():
+
+func desenharPropriedade(complemento = ""):
 	
 	var cor
 	var fraco
@@ -83,8 +98,8 @@ func desenharPropriedade():
 			cor="Verde"
 			fraco="Marrom"
 			forte="Azul"
-
-	$borda.set_texture(load("res://sprites/cartas/monstros/bordas/"+cor+".png"))
+	
+	$borda.set_texture(load("res://sprites/cartas/monstros/bordas/"+cor+complemento+".png"))
 	var textura = "res://sprites/cartas/monstros/propriedade/"+cor+".png"
 	$circuloPropriedade.set_texture(load(textura))
 	$circuloPropriedade2.set_texture(load(textura))
@@ -94,6 +109,9 @@ func desenharPropriedade():
 	$circuloPropriedade3.set_visible(carta.nivelPropriedade>2)
 	$circuloPropriedade4.set_visible(carta.nivelPropriedade>3)
 	
+	defineFraqueseResistencia(fraco,forte)
+	
+func defineFraqueseResistencia(fraco,forte):
 	$circuloFraqueza.set_visible(fraco!=null)
 	if (fraco!=null):
 		$circuloFraqueza.set_texture(load("res://sprites/cartas/monstros/propriedade/"+fraco+".png"))
@@ -129,13 +147,14 @@ func carregaImagem():
 			propriedade = "vento"
 
 	var imagem = load("res://sprites/cartas/monstros/"+propriedade+"/fundo/"+str(carta.imagem)+".png")
-	$fundo.set_texture(imagem)
+	get_node(fundo).set_texture(imagem)
 
 func desenhaPalavrasChave():
 	
 	var primeiro = true
 	var texto = ""
 	var tamanho = 0
+	var novaScala=Vector2(1,1)
 	for palavra in carta.listaPalavraChave:
 		
 		if primeiro:
@@ -148,24 +167,34 @@ func desenhaPalavrasChave():
 		
 		$PalavraChaveObjeto.atualizaPalavraChave(palavra)
 		var url = '[url=function'+str(palavra.id)+']'
-		url += Ferramentas.receberTexto("palavrasChave",palavra.id)
-		tamanho+= Ferramentas.receberTexto("palavrasChave",palavra.id).length()
+		var nome = palavra.recebeNome()
+		url += nome
+		tamanho+= nome.length()
 		url+='[/url]'
 		texto += url
 		
 	$PalavraChaveObjeto/texto.bbcode_text= texto
 	
-	var rect = $PalavraChaveObjeto/container.get_rect()
+	
 	var position = $PalavraChaveObjeto.get_position()
 		
-	tamanho *= 9
+	tamanho *= 9.3
 	if tamanho < 220:
-		rect.size.x = tamanho
+		novaScala.x = tamanho/220.0
+		
+		
+		
 		
 	var linhas = int(tamanho/220) +1
 	position.y += 25 * (4-linhas) 
-	rect.size.y = (25*linhas)
+	novaScala.y*= (0.25 * linhas) 
 		
-	$PalavraChaveObjeto/container.set_size(rect.size)
 	$PalavraChaveObjeto.set_position(position)
+	$PalavraChaveObjeto/Sprite.set_scale($PalavraChaveObjeto/Sprite.get_scale()*novaScala)
+	$PalavraChaveObjeto/Sprite.set_position($PalavraChaveObjeto/Sprite.get_position()*novaScala)
 	
+func converter(val = null):
+	var novo = ControladorCartas.criarCartaMonstro(carta,get_parent(),get_global_position(),miniatura)
+	if(val!=null):
+		val=novo
+	queue_free()

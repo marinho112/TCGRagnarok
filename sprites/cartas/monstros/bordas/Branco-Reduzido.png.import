@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bordaCinza-848484.png-3b64e042dec694702e41b4697665ea63.stex"
+path="res://.import/Branco-Reduzido.png-157d56fb677dfd4ba255207540b2c59e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/cartas/monstros/bordas/bordaCinza-848484.png"
-dest_files=[ "res://.import/bordaCinza-848484.png-3b64e042dec694702e41b4697665ea63.stex" ]
+source_file="res://sprites/cartas/monstros/bordas/Branco-Reduzido.png"
+dest_files=[ "res://.import/Branco-Reduzido.png-157d56fb677dfd4ba255207540b2c59e.stex" ]
 
 [params]
 

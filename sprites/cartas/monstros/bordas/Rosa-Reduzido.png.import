@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bordaRosa-fb00c9.png-2caaa97c20102f4f518265c092e41496.stex"
+path="res://.import/Rosa-Reduzido.png-71485e21dbc84892a45db75d0c581d4f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/cartas/monstros/bordas/bordaRosa-fb00c9.png"
-dest_files=[ "res://.import/bordaRosa-fb00c9.png-2caaa97c20102f4f518265c092e41496.stex" ]
+source_file="res://sprites/cartas/monstros/bordas/Rosa-Reduzido.png"
+dest_files=[ "res://.import/Rosa-Reduzido.png-71485e21dbc84892a45db75d0c581d4f.stex" ]
 
 [params]
 

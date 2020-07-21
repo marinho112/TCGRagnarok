@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bordaMarrom-73642a.png-b552304a8db284c95bbd1ce8ff559d55.stex"
+path="res://.import/Verde-Reduzido.png-fbb1c063447c136edbef258d30e98634.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/cartas/monstros/bordas/bordaMarrom-73642a.png"
-dest_files=[ "res://.import/bordaMarrom-73642a.png-b552304a8db284c95bbd1ce8ff559d55.stex" ]
+source_file="res://sprites/cartas/monstros/bordas/Verde-Reduzido.png"
+dest_files=[ "res://.import/Verde-Reduzido.png-fbb1c063447c136edbef258d30e98634.stex" ]
 
 [params]
 

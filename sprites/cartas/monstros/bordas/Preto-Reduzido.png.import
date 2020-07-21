@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/poring.png-b1806046f8d2249b6a2209d44aede950.stex"
+path="res://.import/Preto-Reduzido.png-9471aeb163ffeea2a68c667f60079e67.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/cartas/monstros/agua/fundo/poring.png"
-dest_files=[ "res://.import/poring.png-b1806046f8d2249b6a2209d44aede950.stex" ]
+source_file="res://sprites/cartas/monstros/bordas/Preto-Reduzido.png"
+dest_files=[ "res://.import/Preto-Reduzido.png-9471aeb163ffeea2a68c667f60079e67.stex" ]
 
 [params]
 
