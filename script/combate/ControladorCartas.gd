@@ -4,6 +4,7 @@ extends Node2D
 
 var listaTimes =[]
 var listaJogadores =[]
+var jogador 
 
 var ativado = true
 var cartaSelecionada
@@ -19,7 +20,7 @@ func _ready():
 	set_process(true)
 
 func _process(delta):
-	if ativado:
+	if (ativado and jogador.ativado):
 		if((cursorMouse!=null) and (cartaSelecionada==null)):
 			if(Input.is_action_pressed("clicar")):
 				var passa= false

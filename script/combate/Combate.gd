@@ -3,15 +3,54 @@ extends Node2D
 #listas
 
 var listaTimes =[]
-var listaJogadores =[]
+var listaJogadores =[Classes.jogador.new(),Classes.jogador.new()]
 
 
 var cursorMouse 
 
+var turno = 0
+var jogador =0
+
 
 func _ready():
 	cursorMouse= get_parent().get_node("Mouse")
+	$btnAzul/texto.set_text(Ferramentas.receberTexto("Combate",1))
+	var font = $btnAzul/texto.get("custom_fonts/font")
+	font.set("size",(int(Ferramentas.receberTexto("Combate",1,1))))
+	$ControladorCartas.jogador=listaJogadores[0]
+	$mao.jogador=listaJogadores[0]
+	$maoOponente.jogador=listaJogadores[1]
 	
+	
+	set_process(true)
+
+func _process(delta):
+	
+	
+	match(turno):
+		
+		0:
+			if(true):
+				turno = 1
+		1:
+			
+			if(true):
+				turno = 2
+		2:
+			if(true):
+				turno = 3
+		3:
+			if(true):
+				turno = 4
+		4:
+			if(true):
+				turno = 5
+		5:
+			if(true):
+				turno = 6
+		6:
+			if(true):
+				turno = 7
 
 func retornaListaAreas(jogador,tipo):
 	var alvo

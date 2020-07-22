@@ -1,13 +1,6 @@
-extends Node2D
+extends "res://script/combate/maoGenerico.gd"
 
 
-var mao= []
-var maoVisual = []
-var posicaoMao = []
-var pai 
-var variacaoX=80
-var variacaoY=10
-var variacaoRotate = 0.02
 var ativado = true
 
 var cursorMouse
@@ -25,7 +18,7 @@ func _ready():
 	
 func _process(delta):
 	
-	if ativado:	
+	if (ativado):	
 		
 		if((cursorMouse!=null) and (cartaSelecionada==null)):
 			
@@ -34,8 +27,7 @@ func _process(delta):
 				if(area != null):
 					selecionaCarta(area)
 					cursorMousePosition = cursorMouse.get_global_position()
-	
-	
+					
 		if(Input.is_action_just_released("clicar")):
 			var item = receberCartaNaFrente()
 			if(item != null):
@@ -52,11 +44,7 @@ func _process(delta):
 				if cont>0:		
 					jogar(cartaSelecionada)
 				else:
-					for elemento in maoVisual.size():
-						var dif = maoVisual[elemento].get_global_position()-posicaoMao[elemento]
-						if((Ferramentas.positivo(dif.x)+Ferramentas.positivo(dif.y))> 50):
-							maoVisual[elemento].setZoom(false)
-						maoVisual[elemento].set_global_position(posicaoMao[elemento])
+					retornarCarta()
 						
 					
 				selecionaCarta(null)
@@ -64,20 +52,22 @@ func _process(delta):
 			if(cartaSelecionada!=null):
 				var posicaoCarta = cartaSelecionada.get_global_position()
 				var novaPosicao = cursorMouse.get_global_position()
-				if(cartaSelecionada.zoom):
+				if(cartaSelecionada.zoom and moveu(cartaSelecionada)):
 					cartaSelecionada.setZoom(false)
 				cartaSelecionada.set_global_position(posicaoCarta-cursorMousePosition+novaPosicao)
 				cursorMousePosition=novaPosicao
 			return
 	
 func jogar(carta):
-	
-	if(carta.carta.tipo == Constante.CARTA_MONSTRO):
-		var controlador = pai.get_node("ControladorCartas")
-		var cartaNova = controlador.criarMonstro(carta.carta)
-		mao.remove(mao.find(carta.carta))
-		atualizaMao()
-	
+	if(jogador.ativado):
+		if(carta.carta.tipo == Constante.CARTA_MONSTRO):
+			var controlador = pai.get_node("ControladorCartas")
+			var cartaNova = controlador.criarMonstro(carta.carta)
+			mao.remove(mao.find(carta.carta))
+			atualizaMao()
+	else:
+		retornarCarta()
+		
 func selecionaCarta(carta):
 	
 	if carta == null:
@@ -105,10 +95,11 @@ func atualizaMao():
 	
 	for carta in mao:
 		cartaNova = ControladorCartas.criarCarta(carta,self,posicaoInicial)
+		cartaNova.posicaoRaiz=posicaoInicial
 		cartaNova.add_to_group(Constante.GRUPO_CARTA_NA_MAO)
 		posicaoMao.append(cartaNova.get_global_position())
 		maoVisual.append(cartaNova)
-		cartaNova.set_rotation(valorR)
+		cartaNova.set_rotation(deg2rad(valorR))
 		if(posicaoInicial.y<=meio):
 			valorY= -variacaoY
 			
@@ -130,3 +121,20 @@ func receberCartaNaFrente():
 			
 	return retorno
 		
+func retornarCarta():
+	for elemento in maoVisual.size():
+		var dif = maoVisual[elemento].get_global_position()-posicaoMao[elemento]
+		if((Ferramentas.positivo(dif.x)+Ferramentas.positivo(dif.y))> 10):
+			maoVisual[elemento].setZoom(false)
+		maoVisual[elemento].set_global_position(posicaoMao[elemento])
+
+func moveu(carta):
+	var moveu = false
+	var novaPosicao = carta.get_global_position()
+	
+	if(Ferramentas.positivo(carta.posicaoRaiz.x - novaPosicao.x)>10):
+		moveu = true
+	if(Ferramentas.positivo(carta.posicaoRaiz.y - novaPosicao.y)>10):
+		moveu = true
+	
+	return moveu

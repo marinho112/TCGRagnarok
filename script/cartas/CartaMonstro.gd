@@ -6,6 +6,7 @@ var carta
 var visual 
 var fundo ="fundo"
 var miniatura = false
+var posicaoRaiz = Vector2(0,0)
 
 # Called when the node enters the scene tree for the first time.
 

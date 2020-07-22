@@ -10,6 +10,8 @@ const GRUPO_AREA_MAO="grupo_area_mao"
 const GRUPO_AREA_CAMPO="grupo_area_campo"
 const GRUPO_CARTA_EM_CAMPO = "carta_em_campo"
 const GRUPO_CARTA_NA_MAO= "carta_na_mao"
+const GRUPO_AREA_MAO_OPONENTE = "carta_na_mao_oponente"
+const GRUPO_CARTA_NA_MAO_OPONENTE= "carta_na_mao_oponente"
 
 #Constantes de Tipo de Carta
 

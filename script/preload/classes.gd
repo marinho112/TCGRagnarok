@@ -10,3 +10,7 @@ class jogador:
 	var listaCemiterio=[]
 	
 	
+	var zenys
+	
+	var ativado = false
+	

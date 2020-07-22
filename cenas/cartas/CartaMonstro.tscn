@@ -81,9 +81,9 @@ texture = ExtResource( 9 )
 
 [node name="lblcusto" type="Label" parent="."]
 margin_left = 106.25
-margin_top = -195.0
+margin_top = -182.0
 margin_right = 130.25
-margin_bottom = -142.0
+margin_bottom = -153.0
 custom_fonts/font = ExtResource( 15 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
