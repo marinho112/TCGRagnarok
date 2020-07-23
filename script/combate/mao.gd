@@ -31,10 +31,8 @@ func _process(delta):
 		if(Input.is_action_just_released("clicar")):
 			var item = receberCartaNaFrente()
 			if(item != null):
-				if(item.zoom):
-					item.setZoom(false)
-				else:
-					zoomCarta(item)
+				zoomCarta(item,!item.zoom)
+					
 				
 			if(cartaSelecionada!=null):
 				var cont =0
@@ -53,7 +51,7 @@ func _process(delta):
 				var posicaoCarta = cartaSelecionada.get_global_position()
 				var novaPosicao = cursorMouse.get_global_position()
 				if(cartaSelecionada.zoom and moveu(cartaSelecionada)):
-					cartaSelecionada.setZoom(false)
+					zoomCarta(cartaSelecionada,false)
 				cartaSelecionada.set_global_position(posicaoCarta-cursorMousePosition+novaPosicao)
 				cursorMousePosition=novaPosicao
 			return
@@ -107,10 +105,6 @@ func atualizaMao():
 			
 		posicaoInicial-= Vector2(variacaoX,valorY)
 
-func zoomCarta(carta):
-	for elemento in maoVisual:
-		elemento.setZoom(false)
-	carta.setZoom(true)
 
 func receberCartaNaFrente():
 	
@@ -125,7 +119,8 @@ func retornarCarta():
 	for elemento in maoVisual.size():
 		var dif = maoVisual[elemento].get_global_position()-posicaoMao[elemento]
 		if((Ferramentas.positivo(dif.x)+Ferramentas.positivo(dif.y))> 10):
-			maoVisual[elemento].setZoom(false)
+			zoomCarta(maoVisual[elemento],false)
+			
 		maoVisual[elemento].set_global_position(posicaoMao[elemento])
 
 func moveu(carta):

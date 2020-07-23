@@ -3,6 +3,7 @@ extends Area2D
 var ativado = true
 var zoom
 var carta
+var escondido = false
 var visual 
 var fundo ="fundo"
 var miniatura = false

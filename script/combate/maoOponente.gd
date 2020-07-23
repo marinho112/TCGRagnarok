@@ -18,8 +18,8 @@ func atualizaMao():
 	var posicaoInicial = get_global_position()
 	var meio = posicaoInicial.y
 	var valorY= -variacaoY
-	var valorR= -1*variacaoRotate * int(tamanho/2)
-	posicaoInicial+= Vector2(int(variacaoX/2)*tamanho,-1*variacaoY*int(tamanho/2))
+	var valorR= variacaoRotate * int(tamanho/2)
+	posicaoInicial-= Vector2(int(variacaoX/2)*tamanho,variacaoY*int(tamanho/2))
 	var cartaNova
 	
 	for carta in mao:
@@ -32,6 +32,6 @@ func atualizaMao():
 		if(posicaoInicial.y>=meio):
 			valorY= variacaoY
 			
-		valorR+=variacaoRotate
+		valorR+=-variacaoRotate
 			
-		posicaoInicial-= Vector2(variacaoX,valorY)
+		posicaoInicial-= Vector2(-variacaoX,valorY)
