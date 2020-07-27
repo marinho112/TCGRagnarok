@@ -6,6 +6,9 @@ func criarCartaDoZero(idCarta,pai,posicao,val=false):
 	
 func criarCarta(carta,pai,posicao,val=false):
 	var retorno
+	
+	if (!carta.revelada):
+		return criaCartaEscondida(carta,pai,posicao)
 	match carta.tipo:
 		
 		Constante.CARTA_PERSONAGEM:
@@ -20,6 +23,14 @@ func criarCarta(carta,pai,posicao,val=false):
 		Constante.CARTA_EFEITO:
 			pass
 	return retorno
+	
+func criaCartaEscondida(carta,pai,posicao):
+	var objetoCarta = load("res://cenas/cartas/CartaEscondida.tscn").instance()
+	
+	objetoCarta.carta = carta
+	pai.add_child(objetoCarta)
+	objetoCarta.set_global_position(posicao)
+	return objetoCarta
 	
 func criarCartaMonstro(carta,pai,posicao,val):
 	

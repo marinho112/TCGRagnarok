@@ -59,9 +59,11 @@ func _process(delta):
 func jogar(carta):
 	if(jogador.ativado):
 		if(carta.carta.tipo == Constante.CARTA_MONSTRO):
+			carta.carta.revelada=true
 			var controlador = pai.get_node("ControladorCartas")
 			var cartaNova = controlador.criarMonstro(carta.carta)
 			mao.remove(mao.find(carta.carta))
+			
 			atualizaMao()
 	else:
 		retornarCarta()
@@ -112,6 +114,7 @@ func receberCartaNaFrente():
 	for area in cursorMouse.get_overlapping_areas():
 		if((area.is_in_group(Constante.GRUPO_CARTA))and area.ativado and area.is_in_group(Constante.GRUPO_CARTA_NA_MAO)):
 			retorno = area
+			
 			
 	return retorno
 		

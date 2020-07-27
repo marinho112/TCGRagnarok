@@ -200,3 +200,6 @@ func converter(val = null):
 	if(val!=null):
 		val=novo
 	queue_free()
+
+
+	

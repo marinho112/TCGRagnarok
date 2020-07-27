@@ -12,6 +12,7 @@ class carta:
 	var imagem
 	var descricao
 	var posicaoImagem
+	var revelada = true
 	
 	var listaPalavraChave = []
 	var listaMarcadores = []
