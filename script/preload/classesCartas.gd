@@ -11,6 +11,7 @@ class carta:
 	var raridade
 	var imagem
 	var descricao
+	var posicaoImagem
 	
 	var listaPalavraChave = []
 	var listaMarcadores = []

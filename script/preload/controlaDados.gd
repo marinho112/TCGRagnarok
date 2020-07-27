@@ -59,7 +59,9 @@ func separaStringCarta(string):
 	carta.edicao= int(dividido[4])
 	carta.raridade= int(dividido[5])
 	carta.imagem = dividido[7]
-	carta.descricao = int(dividido[8])
+	var vector = Vector2(dividido[8],dividido[9])
+	carta.posicaoImagem = vector
+	carta.descricao = int(dividido[10])
 	
 	return carta
 

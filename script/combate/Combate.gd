@@ -14,9 +14,8 @@ var jogador =0
 
 func _ready():
 	cursorMouse= get_parent().get_node("Mouse")
-	$btnAzul/texto.set_text(Ferramentas.receberTexto("Combate",1))
-	var font = $btnAzul/texto.get("custom_fonts/font")
-	font.set("size",(int(Ferramentas.receberTexto("Combate",1,1))))
+	$btnAzul.set_text(1)
+	listaJogadores[0].ativado=true
 	$ControladorCartas.jogador=listaJogadores[0]
 	$mao.jogador=listaJogadores[0]
 	$maoOponente.jogador=listaJogadores[1]

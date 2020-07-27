@@ -17,6 +17,7 @@ func defineFraqueseResistencia(fraco,forte):
 func carregaImagem():
 	fundo="ScrollContainer/fundo"
 	.carregaImagem()
+	$ScrollContainer/fundo.set_position(carta.posicaoImagem + Vector2(174,95))
 
 func desenharPropriedade(complemento=""):
 	.desenharPropriedade("-Reduzido")
@@ -32,3 +33,7 @@ func setZoom(zoom):
 			visual.queue_free()
 		visual=carta
 		carta.visual=self
+
+func set_scale(scale):
+	.set_scale(scale)
+	$ScrollContainer/fundo.set_scale(Vector2(1,1)/scale)
