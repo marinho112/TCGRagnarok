@@ -1,5 +1,10 @@
 extends Node
 
+func criaCartaAleatoria(pai,posicao,val=false):
+	var carta = ControlaDados.carregaCartaAleatoria()
+	return criarCarta(carta,pai,posicao,val)
+	
+
 func criarCartaDoZero(idCarta,pai,posicao,val=false):
 	var carta = ControlaDados.carregaCartaPorID(idCarta)
 	return criarCarta(carta,pai,posicao,val)

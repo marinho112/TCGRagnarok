@@ -1,42 +1,22 @@
-extends Area2D
+extends "res://script/cartas/Carta.gd"
 
-var ativado = true
-var zoom
-var carta
-var escondido = false
-var visual 
 var fundo ="fundo"
 var miniatura = false
-var posicaoRaiz = Vector2(0,0)
-
-# Called when the node enters the scene tree for the first time.
 
 	
 func _ready():
-	add_to_group(Constante.GRUPO_CARTA)
-	setZoom(false)
+	add_to_group(Constante.GRUPO_CARTA_MONSTRO)	
+	
 	
 
 
-func setZoom(zoom):
-	self.zoom=zoom
-	if(zoom):
-		scale = Vector2(1.5,1.5)
-		$PalavraChaveObjeto.scale=Vector2(1,1)
-	else:
-		if(visual!=null):
-			visual.visual=null
-			visual.ativado=true
-			self.queue_free()
-		scale = Vector2(0.8,0.8)
-		$PalavraChaveObjeto.scale=Vector2(1.2,1.2)
-		
 func preparaCarta(carta = carta):
 	self.carta=carta
 	desenhaAtributos()
 	desenharPropriedade()
 	carregaImagem()
 	desenhaPalavrasChave()
+	desenharHabilidades()
 
 func desenhaAtributos():
 	$nome.set_text(Ferramentas.receberTexto("cartas",carta.nome))
@@ -49,7 +29,7 @@ func desenhaAtributos():
 	
 func desenhaAtributosComplementares():
 	$raca.set_text(Ferramentas.receberTexto("racas",carta.raca))
-	$subRaca.set_text(Ferramentas.receberTexto("subRacas",carta.raca,Constante.obterSubRaca(carta.subRaca)))
+	$subRaca.set_text(Ferramentas.receberTexto("subRacas",int(carta.subRaca[0]),Constante.obterSubRaca(carta.subRaca)))
 
 
 func desenharPropriedade(complemento = ""):
@@ -157,30 +137,35 @@ func desenhaPalavrasChave():
 	var texto = ""
 	var tamanho = 0
 	var novaScala=Vector2(1,1)
+	var palavrasRepetidas = []
 	for palavra in carta.listaPalavraChave:
-		
-		if primeiro:
-			$PalavraChaveObjeto.set_visible(true)
-			$PalavraChaveObjeto/texto.bbcode_enabled = true
-			primeiro=false
-		else:
-			texto += ", "
-			tamanho+=2
-		
+		var vai = true
+		for item in palavrasRepetidas:
+			if (item == palavra.id):
+				vai=false
+		if vai:	
+			if primeiro:
+				$PalavraChaveObjeto.set_visible(true)
+				$PalavraChaveObjeto/texto.bbcode_enabled = true
+				primeiro=false
+			else:
+				texto += ", "
+				tamanho+=2
+			
+			palavrasRepetidas.append(palavra.id)
+			var url = '[url=function'+str(palavra.id)+']'
+			var nome = palavra.recebeNome()
+			url += nome
+			tamanho+= nome.length()
+			url+='[/url]'
+			texto += url
 		$PalavraChaveObjeto.atualizaPalavraChave(palavra)
-		var url = '[url=function'+str(palavra.id)+']'
-		var nome = palavra.recebeNome()
-		url += nome
-		tamanho+= nome.length()
-		url+='[/url]'
-		texto += url
-		
 	$PalavraChaveObjeto/texto.bbcode_text= texto
 	
 	
 	var position = $PalavraChaveObjeto.get_position()
 		
-	tamanho *= 9.3
+	tamanho *= 10
 	if tamanho < 220:
 		novaScala.x = tamanho/220.0
 		
@@ -201,5 +186,24 @@ func converter(val = null):
 		val=novo
 	queue_free()
 
-
-	
+func desenharHabilidades():
+	$Habilidade2/borda.set_texture(load("res://sprites/cartas/monstros/bordas/bordaHabilidade2.png"))
+	$Habilidade.set_visible(false)
+	$Habilidade2.set_visible(false)
+	var tamanho = carta.listaHabilidades.size()
+	for habilidade in carta.listaHabilidades:
+		if (tamanho == 1):
+			$Habilidade.set_visible(true)
+			var cartaHabilidade
+			for item in carta.listaCartasRelacionadas:
+				if (item.id == int(habilidade[1])):
+					cartaHabilidade = item
+			$Habilidade/ScrollContainer/nomeHabilidade.set_text(Ferramentas.receberTexto("cartas",cartaHabilidade.nome))
+			var valor = habilidade[2]
+			$Habilidade/custoHabilidade.set_text(valor)
+		else: 
+			$Habilidade2.set_visible(true)
+			$Habilidade2/ScrollContainer/nomeHabilidade.set_text(Ferramentas.receberTexto("cartas",int(habilidade[1])))
+			var valor = habilidade[2]
+			$Habilidade2/custoHabilidade.set_text(valor)
+			tamanho = 1

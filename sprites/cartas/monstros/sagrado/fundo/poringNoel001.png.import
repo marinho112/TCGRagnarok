@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/mandragora001.bmp-c39d9670deac17ca47efca759b3273cd.stex"
+path="res://.import/poringNoel001.png-f1a21092eabb9c844679d2439ff99224.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/cartas/monstros/terra/fundo/mandragora001.bmp"
-dest_files=[ "res://.import/mandragora001.bmp-c39d9670deac17ca47efca759b3273cd.stex" ]
+source_file="res://sprites/cartas/monstros/sagrado/fundo/poringNoel001.png"
+dest_files=[ "res://.import/poringNoel001.png-f1a21092eabb9c844679d2439ff99224.stex" ]
 
 [params]
 

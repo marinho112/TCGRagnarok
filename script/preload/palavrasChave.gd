@@ -17,8 +17,23 @@ func getPalavraChave(id,efeito,pai,val1):
 			retorno = Coletar.new()
 		7:
 			retorno = Meditar.new()
+		8:
+			retorno = Passivo.new()
+		9:
+			retorno = Golpear.new()
+		10:
+			retorno = Afinidade.new()
+		11:
+			retorno = Protecao.new()
+		12:
+			retorno = Esquivo.new()
+		13:
+			retorno = Recarregar.new()
+		14:
+			retorno = InicioDeTurno.new()
+			
 	if ((efeito != null)and(efeito != 0)):
-		retorno.efeito= Efeitos.getEfeito(efeito,pai)
+		retorno.efeito= Efeitos.getEfeito(efeito,pai,retorno)
 	retorno.pai=pai
 	retorno.val1 = val1
 	return retorno
@@ -84,4 +99,61 @@ class Meditar extends palavraChave:
 		texto = texto.replace("&1",str(val1))
 		return texto
 	
+class Passivo extends palavraChave:
 	
+	func _init():
+		id=8
+
+class Golpear extends palavraChave:
+	
+	func _init():
+		id=9
+	
+class Afinidade extends palavraChave:
+
+	
+	func _init():
+		id=10
+		
+	func recebeNome():
+		var strVal1 = str(val1)
+		var texto = .recebeNome()
+		texto = texto.replace("&1",Ferramentas.receberTexto("subRacas",int(strVal1[0]),int(strVal1.right(1))))
+		return texto
+		
+	func recebeDescricao():
+		var strVal1 = str(val1)
+		var texto = .recebeDescricao()
+		texto = texto.replace("&1",Ferramentas.receberTexto("subRacas",int(strVal1[0]),int(strVal1.right(1))))
+		#print(Ferramentas.receberTexto("subRacas",int(val1[0]),int(val1.right(1))))
+		return texto
+
+class Protecao extends palavraChave:
+	
+	func _init():
+		id=11
+		
+class Esquivo extends palavraChave:
+	
+	func _init():
+		id=12
+		
+class Recarregar extends palavraChave:
+	var turnos = 0
+	func _init():
+		id=13
+		
+	func recebeNome():
+		var texto = .recebeNome()
+		texto +=" "+str(val1) 
+		return texto
+		
+	func recebeDescricao():
+		var texto = .recebeDescricao()
+		texto = texto.replace("&1","("+str(turnos)+"/"+str(val1)+")")
+		return texto
+
+class InicioDeTurno extends palavraChave:
+	
+	func _init():
+		id=14

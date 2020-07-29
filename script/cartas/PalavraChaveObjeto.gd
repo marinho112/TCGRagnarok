@@ -25,8 +25,15 @@ func disparaPopUp(palavraChave):
 	info.efeito=palavraChave.efeito
 		
 	var texto = palavraChave.recebeDescricao()
-	if(palavraChave.efeito != null):
-		texto +=" " + palavraChave.efeito.recebeDescricao()
+	var primeiro = true
+	for palavra in palavrasChave:
+		if(palavra.id == palavraChave.id):
+			if(palavra.efeito != null):
+				if primeiro:
+					texto +=" " + palavra.efeito.recebeDescricao()
+					primeiro = false
+				else:
+					texto+="\n" + palavra.efeito.recebeDescricao()
 	info.setTexto(texto)
 
 func atualizaPalavraChave(palavra):

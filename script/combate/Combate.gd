@@ -4,8 +4,8 @@ extends Node2D
 
 var listaTimes =[]
 var listaJogadores =[Classes.jogador.new(),Classes.jogador.new()]
-
-
+var listaPausa=[true,true,true,true,true]
+var ativado = true
 var cursorMouse 
 
 var turno = 0
@@ -19,7 +19,6 @@ func _ready():
 	$ControladorCartas.jogador=listaJogadores[0]
 	$mao.jogador=listaJogadores[0]
 	$maoOponente.jogador=listaJogadores[1]
-	
 	
 	set_process(true)
 
@@ -73,3 +72,18 @@ func retornaListaAreas(jogador,tipo):
 			lista.append(item)
 	
 	return lista
+
+func pausar(intensidade):
+	if(intensidade == 0):
+		$ControladorCartas.ativado = $ControladorCartas.ativado or listaPausa[0]
+		$mao.ativado = $mao.ativado or listaPausa[1]
+		for item in listaPausa:
+			item = false
+			
+	if(intensidade > 0):
+		$ControladorCartas.ativado = false
+		listaPausa[0] = true
+	if(intensidade > 1):
+		$mao.ativado = false
+		listaPausa[1]=true	
+		

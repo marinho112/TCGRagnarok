@@ -7,10 +7,13 @@ var cursorMouse
 var cartaSelecionada
 var cursorMousePosition
 
+var duploClik = false
+var cartaDoZoom 
+
 func _ready():
 	add_to_group(Constante.GRUPO_AREA_MAO)
 	pai= get_parent()
-	mao = [ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1)]
+	mao = [ControlaDados.carregaCartaAleatoria(),ControlaDados.carregaCartaAleatoria(),ControlaDados.carregaCartaAleatoria(),ControlaDados.carregaCartaAleatoria(),ControlaDados.carregaCartaAleatoria()]
 	atualizaMao()
 	cursorMouse = pai.get_parent().get_node("Mouse")
 	set_process(true)
@@ -31,8 +34,16 @@ func _process(delta):
 		if(Input.is_action_just_released("clicar")):
 			var item = receberCartaNaFrente()
 			if(item != null):
-				zoomCarta(item,!item.zoom)
-					
+				if(duploClik):
+					item.exibirCartas()
+					zoomCarta(item,false)
+				else:
+					duploClik = true
+					$Timer.start()
+					if(item.zoom):
+						cartaDoZoom = item
+					else:
+						zoomCarta(item,true)
 				
 			if(cartaSelecionada!=null):
 				var cont =0
@@ -58,11 +69,12 @@ func _process(delta):
 	
 func jogar(carta):
 	if(jogador.ativado):
-		if(carta.carta.tipo == Constante.CARTA_MONSTRO):
-			carta.carta.revelada=true
+		var cartaLogica = carta.carta
+		if(cartaLogica.tipo == Constante.CARTA_MONSTRO):
+			cartaLogica.revelada=true
 			var controlador = pai.get_node("ControladorCartas")
-			var cartaNova = controlador.criarMonstro(carta.carta)
-			mao.remove(mao.find(carta.carta))
+			var cartaNova = controlador.criarMonstro(cartaLogica)
+			mao.remove(mao.find(cartaLogica))
 			
 			atualizaMao()
 	else:
@@ -72,10 +84,9 @@ func selecionaCarta(carta):
 	
 	if carta == null:
 		pai.get_node("ControladorCartas").ativado = true
-		cartaSelecionada.set_z_index(0)
 	else:
 		pai.get_node("ControladorCartas").ativado = false
-		carta.set_z_index(10)
+		carta.set_z_index(100)
 	
 	cartaSelecionada = carta
 	
@@ -87,27 +98,37 @@ func atualizaMao():
 	
 	var tamanho = mao.size()
 	var posicaoInicial = get_global_position()
+	var par = false
 	var meio = posicaoInicial.y
 	var valorY= variacaoY
 	var valorR= variacaoRotate * int(tamanho/2)
 	posicaoInicial+= Vector2(int(variacaoX/2)*tamanho,variacaoY*int(tamanho/2))
 	var cartaNova
+	var carta
 	
-	for carta in mao:
+	if(tamanho%2==0):
+		par =  true
+	
+	for num in mao.size():
+		carta = mao[num]
 		cartaNova = ControladorCartas.criarCarta(carta,self,posicaoInicial)
 		cartaNova.posicaoRaiz=posicaoInicial
 		cartaNova.add_to_group(Constante.GRUPO_CARTA_NA_MAO)
 		posicaoMao.append(cartaNova.get_global_position())
 		maoVisual.append(cartaNova)
 		cartaNova.set_rotation(deg2rad(valorR))
-		if(posicaoInicial.y<=meio):
-			valorY= -variacaoY
-			
+		
 		valorR-=variacaoRotate
-			
-		posicaoInicial-= Vector2(variacaoX,valorY)
+		if!(par and (num==(mao.size()-mao.size()/2-1))):
+			if((num==(mao.size()-(mao.size()+1)/2))):
+				valorY= -variacaoY
+			posicaoInicial-= Vector2(variacaoX,valorY)
+		else:
+			posicaoInicial-= Vector2(variacaoX,0)
+			valorR-=variacaoRotate
+			valorY= -variacaoY
 
-
+	
 func receberCartaNaFrente():
 	
 	var retorno 
@@ -136,3 +157,11 @@ func moveu(carta):
 		moveu = true
 	
 	return moveu
+
+
+func _on_Timer_timeout():
+	duploClik = false
+	if(cartaDoZoom!=null):
+		zoomCarta(cartaDoZoom,false)
+		
+	

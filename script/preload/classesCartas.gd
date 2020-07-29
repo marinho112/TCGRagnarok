@@ -17,6 +17,7 @@ class carta:
 	var listaPalavraChave = []
 	var listaMarcadores = []
 	var listaEfeitos = []
+	var listaCartasRelacionadas = []
 	
 class objetoDeBatalha extends carta:
 	
@@ -57,6 +58,8 @@ class personagem extends objetoDeBatalha:
 		subRaca = Constante.obterSubRaca(Constante.SUB_RACA_HUMANO)
 		
 class monstro extends objetoDeBatalha:
+	
+	var listaHabilidades = []
 	
 	func _init():
 		tipo = Constante.CARTA_MONSTRO

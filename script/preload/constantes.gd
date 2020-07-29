@@ -4,6 +4,7 @@ extends Node
 
 const GRUPO_MOUSE="grupo_mouse"
 const GRUPO_CARTA="grupo_carta"
+const GRUPO_CARTA_MONSTRO="grupo_carta_monstro"
 const GRUPO_CARTA_REDUZIDA ="grupo_carta_reduzida"
 const GRUPO_AREA_CARTA="area_carta"
 const GRUPO_AREA_MAO="grupo_area_mao"

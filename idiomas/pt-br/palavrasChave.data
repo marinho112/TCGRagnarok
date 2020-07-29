@@ -1,16 +1,26 @@
 //Nome,Descrição
 0.¶
-1.Ataque a Distância§Se estiver atacando não sofre dano ao combater.§§¶
+1.Ataque a Distância§Não sofre dano de combate quando estiver atacando.§§¶
 2.Iniciativa§Causa dano primeiro ao combater.§§¶
 3.Ofensivo§Ao atacar:§§¶
 4.Imóvel§O jogador não pode mudar esse monstro de posição.§§¶
-5.Bem Vindo§Ao entrar em jogo:§§¶
+5.Entrar em Jogo§Ao entrar em jogo:§§¶
 6.Coletar§Compre a primeira carta de Item na pilha de descarte.§Colete§¶
 7.Meditar§Depois de &1 turnos:§§Depois de &1 turno¶
-8.§§§¶
-9.§§§¶
-10.§§§¶
-11.§§§¶
-12.§§§¶
-13.§§§¶
-14.§§§¶
+8.Passiva§§§¶
+9.Golpear§Quando golpear um oponente:§Golpeado§¶
+10.Afinidade por &1 §Essa criatura pode utilizar o numero de &1 no lugar de sua afinidade de propriedade.§§Afinidade¶
+11.Proteção§Adiquire resistência contra a propriedade indicada.§Proteção§¶
+12.Esquivo§Não sofre dano de combate quando estiver bloqueando.§§¶
+13.Recarregar§A cada &1 turnos:§§¶
+14.Início do turno§No início de seu turno:§§¶
+15.§§§¶
+16.§§§¶
+17.§§§¶
+18.§§§¶
+19.§§§¶
+20.§§§¶
+21.§§§¶
+22.§§§¶
+23.§§§¶
+24.§§§¶

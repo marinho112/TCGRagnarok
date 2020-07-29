@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://sprites/cartas/monstros/bordas/Azul.png" type="Texture" id=1]
 [ext_resource path="res://cenas/elementos/PalavraChaveObjeto.tscn" type="PackedScene" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://sprites/cartas/monstros/propriedade/circuloVermelho-ff0000.png" type="Texture" id=13]
 [ext_resource path="res://script/cartas/CartaMonstro.gd" type="Script" id=14]
 [ext_resource path="res://cenas/cartas/fontes/valoresMedios.tres" type="DynamicFont" id=15]
+[ext_resource path="res://cenas/elementos/HabilidadeMonstro.tscn" type="PackedScene" id=16]
 
 [sub_resource type="StreamTexture" id=1]
 flags = 4
@@ -139,7 +140,7 @@ __meta__ = {
 
 [node name="raca" type="Label" parent="."]
 margin_left = -64.0
-margin_top = -155.0
+margin_top = -150.0
 margin_right = 96.0
 margin_bottom = -133.0
 rect_scale = Vector2( 0.8, 0.8 )
@@ -203,7 +204,15 @@ scale = Vector2( 0.05, 0.025 )
 texture = ExtResource( 10 )
 
 [node name="PalavraChaveObjeto" parent="." instance=ExtResource( 2 )]
-position = Vector2( -134, 19 )
+position = Vector2( -134, 35 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
+
+[node name="Habilidade" parent="." instance=ExtResource( 16 )]
+position = Vector2( -28, 30 )
+scale = Vector2( 1.08, 1 )
+
+[node name="Habilidade2" parent="." instance=ExtResource( 16 )]
+position = Vector2( -28, 65 )
+scale = Vector2( 1.08, 1 )

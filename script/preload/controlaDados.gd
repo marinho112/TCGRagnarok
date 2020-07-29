@@ -1,6 +1,48 @@
 extends Node
 
+func _ready():
+	randomize()
 
+func carregaCartaAleatoria():
+	
+	var arquivo = File.new()
+	#var erro = arquivo.open("res://dados/teste.data",File.WRITE)
+	var erro = arquivo.open("res://db/cartas/carta.data",File.READ)
+	var rand = randi()%100
+	var conteudo
+	var idTexto
+	var passa
+	var carta
+	var cont = 0
+	if not erro:
+		while(true):
+			if(cont>rand):
+				rand = cont-rand
+				cont = 0
+			idTexto = String(rand-cont)
+			arquivo.seek(0)
+			while(!arquivo.eof_reached()):
+				conteudo = arquivo.get_line()
+				if(conteudo.length( ) >2):
+					var textLen = idTexto.length()
+					if((conteudo[0]!="/")and(conteudo[1]!="/")):
+						cont+=1
+						if((conteudo[textLen]==",")):
+							passa=true
+							for letra in textLen:
+								if(idTexto[letra] != conteudo[letra]):
+									passa=false
+									letra = idTexto.length()
+							if passa:
+								arquivo.close()
+								carta = separaStringCarta(conteudo)
+								recebePalavrasChave(carta)
+								return carta
+	
+	arquivo.close()
+	return -1
+	
+	
 func carregaCartaPorID(id):
 	
 	var arquivo = File.new()
@@ -16,9 +58,10 @@ func carregaCartaPorID(id):
 		while(!arquivo.eof_reached()):
 			conteudo = arquivo.get_line()
 			if(conteudo.length( ) >2):
-				if((conteudo[0]!="/")and(conteudo[1]!="/")):
+				var textLen = idTexto.length()
+				if((conteudo[0]!="/")and(conteudo[1]!="/")and(conteudo[textLen]==",")):
 					passa=true
-					for letra in idTexto.length():
+					for letra in textLen:
 						if(idTexto[letra] != conteudo[letra]):
 							passa=false
 							letra = idTexto.length()
@@ -79,9 +122,10 @@ func completaCartaMonstro(id,carta):
 		while(!arquivo.eof_reached()):
 			conteudo = arquivo.get_line()
 			if(conteudo.length( ) >2):
-				if((conteudo[0]!="/")and(conteudo[1]!="/")):
+				var textLen = idTexto.length()
+				if((conteudo[0]!="/")and(conteudo[1]!="/")and(conteudo[textLen]==",")):
 					passa=true
-					for letra in idTexto.length():
+					for letra in textLen:
 						if(idTexto[letra] != conteudo[letra]):
 							passa=false
 							letra = idTexto.length()
@@ -95,6 +139,7 @@ func completaCartaMonstro(id,carta):
 						carta.defesa= int(dividido[6]) 
 						carta.raca=int(dividido[7])
 						carta.subRaca= (dividido[8])
+						recebeHabilidades(id,carta)
 						return true
 	else:
 		print("ERRO!!")
@@ -116,8 +161,9 @@ func recebePalavrasChave(carta):
 		while(!arquivo.eof_reached()):
 			conteudo = arquivo.get_line()
 			if(conteudo.length( ) >2):
-				if((conteudo[0]!="/")and(conteudo[1]!="/")):
-					for letra in idTexto.length():
+				var textLen = idTexto.length()
+				if((conteudo[0]!="/")and(conteudo[1]!="/")and(conteudo[textLen]==",")):
+					for letra in textLen:
 						passa=true
 						if(idTexto[letra] != conteudo[letra]):
 							passa=false
@@ -128,6 +174,43 @@ func recebePalavrasChave(carta):
 		arquivo.close()
 		carta.listaPalavraChave = lista
 					
+	else:
+		print("ERRO!!")
+	arquivo.close()
+	return -1
+
+func recebeHabilidades(id,carta):
+	
+	var arquivo = File.new()
+	#var erro = arquivo.open("res://dados/teste.data",File.WRITE)
+	var erro = arquivo.open("res://db/cartas/monstro_has_Habilidade.data",File.READ)
+	var conteudo
+	var idTexto = str(id)
+	var passa
+	var lista = []
+	
+	if not erro:
+	#	
+		while(!arquivo.eof_reached()):
+			conteudo = arquivo.get_line()
+			if(conteudo.length( ) >2):
+				var textLen = idTexto.length()
+				if((conteudo[0]!="/")and(conteudo[1]!="/")and(conteudo[textLen]==",")):
+					for letra in textLen:
+						passa=true
+						if(idTexto[letra] != conteudo[letra]):
+							passa=false
+							letra = idTexto.length()
+						if (passa and (letra == (idTexto.length()-1))):
+							var conteudo2 = conteudo.split(",")
+							lista.append(conteudo2)
+		arquivo.close()
+		carta.listaHabilidades = lista
+		var listaCartasAdicionar = []
+		for item in lista:
+			var novo = carregaCartaPorID(int(item[1]))
+			listaCartasAdicionar.append(novo)
+		carta.listaCartasRelacionadas += listaCartasAdicionar
 	else:
 		print("ERRO!!")
 	arquivo.close()

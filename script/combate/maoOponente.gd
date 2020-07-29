@@ -5,7 +5,7 @@ extends "res://script/combate/maoGenerico.gd"
 func _ready():
 	add_to_group(Constante.GRUPO_AREA_MAO_OPONENTE)
 	pai= get_parent()
-	mao = [ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1)]
+	mao = [ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1)]
 	for item in mao :
 		item.revelada = false
 	atualizaMao()
@@ -18,22 +18,34 @@ func atualizaMao():
 	
 	var tamanho = mao.size()
 	var posicaoInicial = get_global_position()
+	var par=false
 	var meio = posicaoInicial.y
 	var valorY= -variacaoY
 	var valorR= variacaoRotate * int(tamanho/2)
 	posicaoInicial-= Vector2(int(variacaoX/2)*tamanho,variacaoY*int(tamanho/2))
 	var cartaNova
 	
-	for carta in mao:
+	var carta
+	
+	if(tamanho%2==0):
+		par =  true
+	
+	for num in mao.size():
+		carta = mao[num]
 		cartaNova = ControladorCartas.criarCarta(carta,self,posicaoInicial)
 		cartaNova.posicaoRaiz=posicaoInicial
 		cartaNova.add_to_group(Constante.GRUPO_CARTA_NA_MAO_OPONENTE)
 		posicaoMao.append(cartaNova.get_global_position())
 		maoVisual.append(cartaNova)
 		cartaNova.set_rotation(deg2rad(valorR+180))
-		if(posicaoInicial.y>=meio):
-			valorY= variacaoY
-			
 		valorR+=-variacaoRotate
-			
-		posicaoInicial-= Vector2(-variacaoX,valorY)
+		
+
+		if!(par and (num==(mao.size()-mao.size()/2-1))):
+			if((num==(mao.size()-(mao.size()+1)/2))):
+				valorY= variacaoY
+			posicaoInicial-= Vector2(-variacaoX,valorY)
+		else:
+			posicaoInicial-= Vector2(-variacaoX,0)
+			valorR-=variacaoRotate
+			valorY= variacaoY

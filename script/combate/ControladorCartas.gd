@@ -74,7 +74,7 @@ func _process(delta):
 			return
 
 func criarMonstro(carta):
-	var cartaNova = ControladorCartas.criarCartaMonstro(carta,self,Vector2(0,0),true)
+	var cartaNova = ControladorCartas.criarCartaMonstro(carta,pai,Vector2(0,0),true)
 	cartaNova.add_to_group(Constante.GRUPO_CARTA_EM_CAMPO)
 	var areas = pai.retornaListaAreas(1,2)
 	
