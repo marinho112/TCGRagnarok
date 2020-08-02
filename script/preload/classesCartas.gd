@@ -35,6 +35,8 @@ class objetoDeBatalha extends carta:
 	var poderBonus
 	var defesaBonus
 	
+	var listaHabilidades = []
+	
 	func reduzirVidaBonus(val):
 		vidaBonus-= val
 		if ((vida + vidaBonus)<=danoRecebido):
@@ -49,17 +51,16 @@ class objetoDeBatalha extends carta:
 class personagem extends objetoDeBatalha:
 		
 	var classe
-		
+
 	func _init():
 		tipo = Constante.CARTA_PERSONAGEM
-		propriedade = Constante.PROPRIEDADE_NEUTRO
-		nivelPropriedade = 1
-		raca = Constante.RACA_HUMANOIDE
-		subRaca = Constante.obterSubRaca(Constante.SUB_RACA_HUMANO)
+		#propriedade = Constante.PROPRIEDADE_NEUTRO
+		#nivelPropriedade = 1
+		#raca = Constante.RACA_HUMANOIDE
+		#subRaca = Constante.SUB_RACA_HUMANO
 		
 class monstro extends objetoDeBatalha:
 	
-	var listaHabilidades = []
 	
 	func _init():
 		tipo = Constante.CARTA_MONSTRO

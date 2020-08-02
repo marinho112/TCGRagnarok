@@ -19,7 +19,8 @@ func _ready():
 	$ControladorCartas.jogador=listaJogadores[0]
 	$mao.jogador=listaJogadores[0]
 	$maoOponente.jogador=listaJogadores[1]
-	$Personagem.atualizarPersonagem(ControlaDados.carregaPersonagemPorID(0))
+	$Personagem.atualizarPersonagem(ControlaDados.carregaPersonagemPorID(randi()%7))
+	$Oponente.atualizarPersonagem(ControlaDados.carregaPersonagemPorID(randi()%7))
 	
 	set_process(true)
 
@@ -78,6 +79,7 @@ func pausar(intensidade):
 	if(intensidade == 0):
 		$ControladorCartas.ativado = $ControladorCartas.ativado or listaPausa[0]
 		$mao.ativado = $mao.ativado or listaPausa[1]
+		$Personagem.ativado = $Personagem.ativado or listaPausa[1]
 		for item in listaPausa:
 			item = false
 			
@@ -86,5 +88,6 @@ func pausar(intensidade):
 		listaPausa[0] = true
 	if(intensidade > 1):
 		$mao.ativado = false
+		$Personagem.ativado = false
 		listaPausa[1]=true	
 		

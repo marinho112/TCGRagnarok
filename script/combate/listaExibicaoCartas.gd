@@ -25,13 +25,14 @@ func _process(delta):
 				subirPosicao()
 			elif(position.x < -150):
 				descerPosicao()
-			else:
+			elif((position.y<190)and(position.y>-190)):
 				if(duploClick):
 					duploClick = false
 					get_node("/root/main/Combate").pausar(0)
 					limparCartas()
 				else:
 					duploClick = true
+					$Timer.start()
 					
 func definirListaCartas(lista):
 	set_visible(true)

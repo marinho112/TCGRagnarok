@@ -83,8 +83,8 @@ func separaStringCarta(string):
 	
 	match int(dividido[2]):
 		
-		Constante.CARTA_PERSONAGEM:
-			carta = ClassesCartas.personagem.new()
+		#Constante.CARTA_PERSONAGEM:
+		#	carta = ClassesCartas.personagem.new()
 		Constante.CARTA_MONSTRO:
 			carta = ClassesCartas.monstro.new()
 			completaCartaMonstro(dividido[6],carta)

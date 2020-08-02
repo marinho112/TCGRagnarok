@@ -10,6 +10,8 @@ var cursorMousePosition
 var duploClik = false
 var cartaDoZoom 
 
+var tamanhoMao
+
 func _ready():
 	add_to_group(Constante.GRUPO_AREA_MAO)
 	pai= get_parent()
@@ -37,17 +39,19 @@ func _process(delta):
 				if(duploClik):
 					item.exibirCartas()
 					zoomCarta(item,false)
+					duploClik = false
 				else:
 					duploClik = true
 					$Timer.start()
 					if(item.zoom):
 						cartaDoZoom = item
 					else:
-						zoomCarta(item,true)
+						if !cardZoom:
+							zoomCarta(item,true)
 				
 			if(cartaSelecionada!=null):
 				var cont =0
-				for area in cursorMouse.get_overlapping_areas():
+				for area in cartaSelecionada.get_overlapping_areas():
 					if area.is_in_group(Constante.GRUPO_AREA_CARTA):
 						cont+=1
 				if cont>0:		
@@ -55,7 +59,7 @@ func _process(delta):
 				else:
 					retornarCarta()
 						
-					
+				
 				selecionaCarta(null)
 		else:
 			if(cartaSelecionada!=null):
@@ -84,6 +88,9 @@ func selecionaCarta(carta):
 	
 	if carta == null:
 		pai.get_node("ControladorCartas").ativado = true
+		cartaSelecionada.set_z_index(0)
+		if cardZoom != null:
+			cardZoom.set_z_index(100)
 	else:
 		pai.get_node("ControladorCartas").ativado = false
 		carta.set_z_index(100)
@@ -96,7 +103,9 @@ func atualizaMao():
 		item.queue_free()
 	maoVisual=[]
 	
+	
 	var tamanho = mao.size()
+	tamanhoMao = tamanho
 	var posicaoInicial = get_global_position()
 	var par = false
 	var meio = posicaoInicial.y
@@ -105,6 +114,7 @@ func atualizaMao():
 	posicaoInicial+= Vector2(int(variacaoX/2)*tamanho,variacaoY*int(tamanho/2))
 	var cartaNova
 	var carta
+	posicaoMao = []
 	
 	if(tamanho%2==0):
 		par =  true
@@ -135,7 +145,8 @@ func receberCartaNaFrente():
 	for area in cursorMouse.get_overlapping_areas():
 		if((area.is_in_group(Constante.GRUPO_CARTA))and area.ativado and area.is_in_group(Constante.GRUPO_CARTA_NA_MAO)):
 			retorno = area
-			
+			if(retorno == cardZoom):
+				return retorno
 			
 	return retorno
 		
@@ -144,9 +155,9 @@ func retornarCarta():
 		var dif = maoVisual[elemento].get_global_position()-posicaoMao[elemento]
 		if((Ferramentas.positivo(dif.x)+Ferramentas.positivo(dif.y))> 10):
 			zoomCarta(maoVisual[elemento],false)
-			
+		
 		maoVisual[elemento].set_global_position(posicaoMao[elemento])
-
+	
 func moveu(carta):
 	var moveu = false
 	var novaPosicao = carta.get_global_position()
@@ -163,5 +174,6 @@ func _on_Timer_timeout():
 	duploClik = false
 	if(cartaDoZoom!=null):
 		zoomCarta(cartaDoZoom,false)
+		cartaDoZoom = null
 		
 	

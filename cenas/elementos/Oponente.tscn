@@ -22,18 +22,18 @@ shape = SubResource( 1 )
 
 [node name="Equipamento1" parent="." instance=ExtResource( 2 )]
 visible = false
-position = Vector2( 85, -62 )
+position = Vector2( -88, -35 )
 
 [node name="Equipamento2" parent="." instance=ExtResource( 2 )]
 visible = false
-position = Vector2( 90, 0 )
+position = Vector2( -88, 35 )
 
 [node name="Equipamento3" parent="." instance=ExtResource( 2 )]
 visible = false
-position = Vector2( 85, 62 )
+position = Vector2( -140, 0 )
 
 [node name="vida" type="Sprite" parent="."]
-position = Vector2( -90, -30 )
+position = Vector2( 90, -30 )
 scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 3 )
 
@@ -48,10 +48,10 @@ scale = Vector2( 0.06, 0.06 )
 texture = ExtResource( 5 )
 
 [node name="lblVida" type="Label" parent="."]
-margin_left = -121.0
-margin_top = -63.0
-margin_right = -58.0
-margin_bottom = -5.0
+margin_left = 63.0
+margin_top = -56.0
+margin_right = 117.0
+margin_bottom = -10.0
 custom_fonts/font = ExtResource( 6 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "10"

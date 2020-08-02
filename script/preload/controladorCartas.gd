@@ -17,7 +17,7 @@ func criarCarta(carta,pai,posicao,val=false):
 	match carta.tipo:
 		
 		Constante.CARTA_PERSONAGEM:
-			pass
+			retorno=criarCartaMonstro(carta,pai,posicao,val)
 		Constante.CARTA_MONSTRO:
 			retorno=criarCartaMonstro(carta,pai,posicao,val)
 			

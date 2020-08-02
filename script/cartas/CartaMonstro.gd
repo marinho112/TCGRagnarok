@@ -19,7 +19,10 @@ func preparaCarta(carta = carta):
 	desenharHabilidades()
 
 func desenhaAtributos():
-	$nome.set_text(Ferramentas.receberTexto("cartas",carta.nome))
+	var fonte = "cartas"
+	if(carta.tipo == Constante.CARTA_PERSONAGEM):
+		fonte = "personagens"
+	$nome.set_text(Ferramentas.receberTexto(fonte,carta.nome))
 	$lblcusto.set_text(str(carta.custo))
 	$lblpoder.set_text(str(carta.poder))
 	$lbldefesa.set_text(str(carta.defesa))
