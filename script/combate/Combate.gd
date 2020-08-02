@@ -19,6 +19,7 @@ func _ready():
 	$ControladorCartas.jogador=listaJogadores[0]
 	$mao.jogador=listaJogadores[0]
 	$maoOponente.jogador=listaJogadores[1]
+	$Personagem.atualizarPersonagem(ControlaDados.carregaPersonagemPorID(0))
 	
 	set_process(true)
 

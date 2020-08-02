@@ -3,6 +3,7 @@ extends Node
 
 class jogador:
 	
+	var personagem
 	var listaBaralho=[]
 	var listaMao=[]
 	var listaCampoMonstro=[]

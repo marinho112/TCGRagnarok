@@ -108,6 +108,70 @@ func separaStringCarta(string):
 	
 	return carta
 
+func carregaPersonagemPorID(id):
+	
+	var arquivo = File.new()
+	#var erro = arquivo.open("res://dados/teste.data",File.WRITE)
+	var erro = arquivo.open("res://db/cartas/cartaPersonagem.data",File.READ)
+	var conteudo
+	var idTexto = String(id)
+	var passa
+	var carta
+	
+	if not erro:
+	#	
+		while(!arquivo.eof_reached()):
+			conteudo = arquivo.get_line()
+			if(conteudo.length( ) >2):
+				var textLen = idTexto.length()
+				if((conteudo[0]!="/")and(conteudo[1]!="/")and(conteudo[textLen]==",")):
+					passa=true
+					for letra in textLen:
+						if(idTexto[letra] != conteudo[letra]):
+							passa=false
+							letra = idTexto.length()
+					if passa:
+						arquivo.close()
+						carta = separaStringPersonagem(conteudo)
+						#recebePalavrasChave(carta)
+						return carta
+	else:
+		print("ERRO!!")
+	arquivo.close()
+	return -1
+	
+	
+func separaStringPersonagem(string):
+		
+	var dividido = string.split(",")
+	var personagem
+	
+	personagem = ClassesCartas.personagem.new()
+	
+	
+	
+	personagem.id = int(dividido[0])
+	personagem.nome= int(dividido[1])
+	personagem.vida= int(dividido[2])
+	personagem.poder= int(dividido[3])
+	personagem.defesa= int(dividido[4])
+	personagem.imagem = dividido[5]
+	var vector = Vector2(dividido[6],dividido[7])
+	personagem.posicaoImagem = vector
+	personagem.descricao = int(dividido[8])
+	
+	
+	personagem.custo= 0
+	personagem.edicao= 0
+	personagem.raridade= 0
+	personagem.propriedade = Constante.PROPRIEDADE_NEUTRO
+	personagem.nivelPropriedade = 1
+	personagem.raca= Constante.RACA_HUMANOIDE
+	personagem.subRaca = Constante.SUB_RACA_HUMANO
+	
+	
+	return personagem
+
 func completaCartaMonstro(id,carta):
 	
 	var arquivo = File.new()
