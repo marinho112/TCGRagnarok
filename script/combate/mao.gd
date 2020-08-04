@@ -15,8 +15,6 @@ var tamanhoMao
 func _ready():
 	add_to_group(Constante.GRUPO_AREA_MAO)
 	pai= get_parent()
-	mao = [ControlaDados.carregaCartaAleatoria(),ControlaDados.carregaCartaAleatoria(),ControlaDados.carregaCartaAleatoria(),ControlaDados.carregaCartaAleatoria(),ControlaDados.carregaCartaAleatoria()]
-	atualizaMao()
 	cursorMouse = pai.get_parent().get_node("Mouse")
 	set_process(true)
 	
@@ -35,6 +33,20 @@ func _process(delta):
 					
 		if(Input.is_action_just_released("clicar")):
 			var item = receberCartaNaFrente()
+			
+			if(cartaSelecionada!=null):
+				var cont =0
+				for area in cartaSelecionada.get_overlapping_areas():
+					if area.is_in_group(Constante.GRUPO_AREA_CARTA):
+						cont+=1
+				if cont>0:		
+					jogar(cartaSelecionada)
+				else:
+					retornarCarta()
+						
+				
+				selecionaCarta(null)
+			
 			if(item != null):
 				if(duploClik):
 					item.exibirCartas()
@@ -49,18 +61,7 @@ func _process(delta):
 						if !cardZoom:
 							zoomCarta(item,true)
 				
-			if(cartaSelecionada!=null):
-				var cont =0
-				for area in cartaSelecionada.get_overlapping_areas():
-					if area.is_in_group(Constante.GRUPO_AREA_CARTA):
-						cont+=1
-				if cont>0:		
-					jogar(cartaSelecionada)
-				else:
-					retornarCarta()
-						
-				
-				selecionaCarta(null)
+			
 		else:
 			if(cartaSelecionada!=null):
 				var posicaoCarta = cartaSelecionada.get_global_position()
@@ -72,7 +73,8 @@ func _process(delta):
 			return
 	
 func jogar(carta):
-	if(jogador.ativado):
+	
+	if(jogador.ativado and (!carta.zoom)):
 		var cartaLogica = carta.carta
 		if(cartaLogica.tipo == Constante.CARTA_MONSTRO):
 			cartaLogica.revelada=true

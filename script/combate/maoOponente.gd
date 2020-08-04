@@ -5,9 +5,6 @@ extends "res://script/combate/maoGenerico.gd"
 func _ready():
 	add_to_group(Constante.GRUPO_AREA_MAO_OPONENTE)
 	pai= get_parent()
-	mao = [ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1),ControlaDados.carregaCartaPorID(1)]
-	for item in mao :
-		item.revelada = false
 	atualizaMao()
 
 func atualizaMao():

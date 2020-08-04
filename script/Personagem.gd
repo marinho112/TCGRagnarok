@@ -1,6 +1,6 @@
 extends Area2D
 
-var personagem
+var carta
 var ativado = true
 var duploClick = false
 
@@ -21,12 +21,12 @@ func _process(delta):
 			
 func atualizarPersonagem(personagemNovo=null):
 	if(personagemNovo!= null):
-		personagem=personagemNovo
-	if(personagem!=null):
-		atualizarAtaque(personagem.poder)
-		atualizarDefesa(personagem.defesa)
-		atualizarVida(personagem.vida)
-		var imagem = load("res://sprites/personagem/"+str(personagem.imagem)+".png")
+		carta=personagemNovo
+	if(carta!=null):
+		atualizarAtaque(carta.poder)
+		atualizarDefesa(carta.defesa)
+		atualizarVida(carta.vida)
+		var imagem = load("res://sprites/personagem/"+str(carta.imagem)+".png")
 		get_node("fundo").set_texture(imagem)
 		
 func atualizarVida(vida):
@@ -43,12 +43,12 @@ func _on_Timer_timeout():
 	duploClick = false
 
 func exibirCartas():
-	if personagem!= null:
+	if carta!= null:
 		var raiz = get_node("/root/main/Combate/")
 		raiz.pausar(2)
-		var listaItens = [personagem]
+		var listaItens = [carta]
 		var lista = raiz.get_node("listaExibicaoCartas")
-		listaItens += personagem.listaCartasRelacionadas
+		listaItens += carta.listaCartasRelacionadas
 		lista.definirListaCartas(listaItens)
 	else:
 		print("Sem personagem carregado")

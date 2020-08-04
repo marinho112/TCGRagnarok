@@ -18,7 +18,11 @@ func acaoClick():
 	pass
 	
 	
-func set_text(texto):
+func set_text(texto,ativar=null,visual = null):
+	if(ativar!=null):
+		ativado = ativar
+	if(visual!=null):
+		set_visible(visual)
 	$fundo/texto.set_text(Ferramentas.receberTexto("Combate",texto))
 	var font = $fundo/texto.get("custom_fonts/font")
 	font.set("size",(int(Ferramentas.receberTexto("Combate",texto,1))))

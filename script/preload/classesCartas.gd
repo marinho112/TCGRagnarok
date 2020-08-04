@@ -29,11 +29,11 @@ class objetoDeBatalha extends carta:
 	var raca
 	var subRaca
 	
-	var danoRecebido
+	var danoRecebido = 0
 	
-	var vidaBonus
-	var poderBonus
-	var defesaBonus
+	var vidaBonus = 0
+	var poderBonus = 0
+	var defesaBonus = 0
 	
 	var listaHabilidades = []
 	
@@ -47,6 +47,32 @@ class objetoDeBatalha extends carta:
 		return vida
 	func retornaDefesa():
 		return defesa
+		
+	func calculaDano(dano):
+		var retorno = dano - defesa
+		if(retorno<0):
+			retorno = 0
+		return retorno
+	
+	func recebeDano(dano):
+		danoRecebido += dano
+		if(danoRecebido > (vida+vidaBonus)):
+			dano -= danoRecebido - vida+vidaBonus
+			danoRecebido= vida+vidaBonus
+		return dano
+	
+	func recebeDanoComDef(dano):
+		return recebeDano(calculaDano(dano))
+		
+		
+	func combater(inimigo):
+		
+		var danoCausado = inimigo.recebeDanoComDef(poder)
+		var danoRecebido = recebeDanoComDef(inimigo.poder)
+		
+		
+		var retorno = [danoCausado,danoRecebido]
+		return retorno
 		
 class personagem extends objetoDeBatalha:
 		
