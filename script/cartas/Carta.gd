@@ -2,6 +2,7 @@ extends Node2D
 
 var ativado = true
 var zoom = false
+var selecionavel = false
 var carta
 var escondido = false
 var posicaoRaiz = Vector2(0,0)
@@ -20,6 +21,7 @@ func exibirCartas():
 	var lista = raiz.get_node("listaExibicaoCartas")
 	listaItens += carta.listaCartasRelacionadas
 	lista.definirListaCartas(listaItens)
+
 	
 func setZoom(zoom):
 	self.zoom=zoom

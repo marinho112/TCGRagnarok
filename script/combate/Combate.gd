@@ -18,6 +18,9 @@ var jogador
 var oponente
 var CARTAS_INICIAIS=5
 
+var confrontarAtaques1 = 0
+var confrontarAtaques2 = 0
+
 
 func _ready():
 	cursorMouse= get_parent().get_node("Mouse")
@@ -263,15 +266,19 @@ func realizarAtaque():
 		var tipJogador= jogador.time+1
 		var tipOponente = oponente.time+1
 		var areaAtk= retornaListaAreas(tipJogador,1)
+		var retorno = true
 		if(areaAtk[subFase].carta != null):
 			var areaDef= retornaListaAreas(tipOponente,2)
 			if(areaDef[subFase].carta != null):
-				golpear(areaAtk[subFase].carta,areaDef[subFase].carta)
+				retorno=confrontar(areaAtk[subFase].carta,areaDef[subFase].carta)
 			elif(oponente.time == 0):
-				golpear(areaAtk[subFase].carta,$Personagem)
+				retorno=confrontar(areaAtk[subFase].carta,$Personagem,false)
 			else:
-				golpear(areaAtk[subFase].carta,$Oponente)
-		subFase+=1
+				retorno=confrontar(areaAtk[subFase].carta,$Oponente,false)
+		if (retorno):
+			subFase+=1
+		
+		return false
 	else:
 		return true
 	return false
@@ -309,14 +316,14 @@ func comprarCarta(jogadorr):
 		print("Perdeu!")
 		
 func executarCompra(jogadorr):
-	jogadorr.listaMao.append(jogadorr.listaBaralho[0])
+	#jogadorr.listaMao.append(jogadorr.listaBaralho[0])
 	if(jogadorr.time==0):
 		jogadorr.listaBaralho[0].revelada = true
-		$mao.atualizaMao()
+		$mao.adicionaCartaMao(jogadorr.listaBaralho[0])
 	else:
-		$maoOponente.atualizaMao()
+		$maoOponente.adicionaCartaMao(jogadorr.listaBaralho[0])
 	jogadorr.listaBaralho.remove(0)
-		
+	
 func retornaListaAreas(jogador,tipo,cartas = false):
 	var alvo
 	match jogador:
@@ -348,9 +355,9 @@ func retornaListaAreas(jogador,tipo,cartas = false):
 func pausar(intensidade):
 	if(intensidade == 0):
 		$ControladorCartas.ativado = $ControladorCartas.ativado or listaPausa[0]
-		$mao.ativado = $mao.ativado or listaPausa[1]
-		$Personagem.ativado = $Personagem.ativado or listaPausa[1]
-		ativado = ativado or listaPausa[2]
+		ativado = ativado or listaPausa[1]
+		$mao.ativado = $mao.ativado or listaPausa[2]
+		$Personagem.ativado = $Personagem.ativado or listaPausa[2]
 		for item in listaPausa:
 			item = false
 			
@@ -358,11 +365,11 @@ func pausar(intensidade):
 		$ControladorCartas.ativado = false
 		listaPausa[0] = true
 	if(intensidade > 1):
-		$mao.ativado = false
-		$Personagem.ativado = false
+		ativado = false
 		listaPausa[1]=true
 	if(intensidade >2):
-		ativado = false
+		$mao.ativado = false
+		$Personagem.ativado = false
 		listaPausa[2]=true
 		
 
@@ -395,8 +402,54 @@ func defEscala(area,escala):
 			if carta != null:
 				$ControladorCartas.positionAreaCarta(item,carta)
 				
+
+func confrontar(golpeador,alvo,val = true):
+	if((confrontarAtaques1+confrontarAtaques2) == 0):
+		confrontarAtaques1 = 1
+		confrontarAtaques2 = 1
+		
+		if(golpeador.carta.temPalavraChave(15)):
+			confrontarAtaques1 +=1
+		if(alvo.carta.temPalavraChave(15)):
+			confrontarAtaques2 +=1
+			
+		if(golpeador.carta.temPalavraChave(1)):
+			confrontarAtaques2=0
+		if(alvo.carta.temPalavraChave(12) and val):
+			confrontarAtaques1=0
+		
+
+	var iniciativa = [golpeador.carta.temPalavraChave(2),alvo.carta.temPalavraChave(2)]
+	if((iniciativa[0]and(confrontarAtaques1>0)) or (iniciativa[1] and (confrontarAtaques2>0))):
+		if(iniciativa[0] and (confrontarAtaques1>0)):
+			golpear(golpeador,alvo)
+			confrontarAtaques1 -= 1
+		if(iniciativa[1] and (confrontarAtaques2 > 0)):
+			golpear(alvo,golpeador)
+			confrontarAtaques2 -=1
+		return finalizaConfronto()
+	if(confrontarAtaques1>0):
+		golpear(golpeador,alvo)
+		confrontarAtaques1 -= 1
+	if(confrontarAtaques2 > 0):
+		golpear(alvo,golpeador)
+		confrontarAtaques2 -=1
+	return finalizaConfronto()
+	
+func finalizaConfronto():
+	if((confrontarAtaques1+confrontarAtaques2) == 0):
+		confrontarAtaques1 = 0
+		confrontarAtaques2 = 0
+		return true
+	else:
+		return false
+		
 func golpear(golpeador,alvo):
-	var retorno = golpeador.carta.combater(alvo.carta)
-	print(retorno)
+	var animacao = load("res://cenas/animacoes/animacaoGolpear.tscn").instance()
+	animacao.definirPai(self)
+	animacao.set_global_position(golpeador.get_global_position())
+	animacao.play(golpeador,[alvo])
+	#var retorno = golpeador.carta.golpear(alvo.carta)
+	#print(retorno)
 	
 	

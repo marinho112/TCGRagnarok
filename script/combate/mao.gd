@@ -99,6 +99,44 @@ func selecionaCarta(carta):
 	
 	cartaSelecionada = carta
 	
+func adicionaCartaMao(carta):
+	
+	mao.append(carta)
+	var novaCarta = ControladorCartas.criarCarta(carta,self,Vector2(0,0))
+	novaCarta.add_to_group(Constante.GRUPO_CARTA_NA_MAO)
+	maoVisual.append(novaCarta)
+	posicaoMao = []
+	
+	var tamanho = mao.size()
+	tamanhoMao = tamanho
+	var posicaoInicial = get_global_position()
+	var par = false
+	var meio = posicaoInicial.y
+	var valorY= variacaoY
+	var valorR= variacaoRotate * int(tamanho/2)
+	if(tamanho%2==0):
+		par =  true
+	
+	posicaoInicial+= Vector2(int(variacaoX/2)*tamanho,variacaoY*int(tamanho/2))
+	
+	
+	for num in maoVisual.size():
+		carta = maoVisual[num]
+		carta.set_global_position(posicaoInicial)
+		carta.posicaoRaiz=posicaoInicial
+		posicaoMao.append(carta.get_global_position())
+		carta.set_rotation(deg2rad(valorR))
+		valorR-=variacaoRotate
+		if!(par and (num==(mao.size()-mao.size()/2-1))):
+			if((num==(mao.size()-(mao.size()+1)/2))):
+				valorY= -variacaoY
+			posicaoInicial-= Vector2(variacaoX,valorY)
+		else:
+			posicaoInicial-= Vector2(variacaoX,0)
+			valorR-=variacaoRotate
+			valorY= -variacaoY
+	
+	
 func atualizaMao():
 	
 	for item in maoVisual:

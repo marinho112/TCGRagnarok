@@ -3,7 +3,7 @@ extends "res://script/animacoes/animacao.gd"
 var rotacionado = 0
 var destino
 var inicio
-var vel = 1000
+var vel = 3000
 var posicaoInicio
 var posicaoFinal
 var pontoMedio
@@ -13,14 +13,12 @@ var fator = Vector2(0,0)
 
 func play(dono,listaAlvos = [],pausar = null):
 	.play(dono,listaAlvos,3)	
-	var vec = Vector2(0,-300)
 	if(dono.time == 0):
 		inicio = pai.get_node("deck")
 		destino = pai.get_node("mao")
 	else:
 		inicio = pai.get_node("deckOponente")
 		destino = pai.get_node("maoOponente")
-		vec = Vector2(0,300)
 	
 	
 	posicaoInicio = inicio.get_global_position()
@@ -35,7 +33,7 @@ func play(dono,listaAlvos = [],pausar = null):
 	else:
 		fator.x=1
 		
-	fator.y=0.7
+	fator.y=0.5
 	
 	
 func _process(delta):
@@ -49,13 +47,13 @@ func _process(delta):
 	if(pontoMedio.x < posicaoAtual.x):
 		subFator.y=-1
 		
-	if(positivoDiferenca.x > 10):
+	if(positivoDiferenca.x > (vel/100)):
 		
 		imagem.set_global_position(posicaoAtual+(subFator*fator*vel*delta))
 		imagem.set_rotation(rotacionado+ deg2rad(-subFator.y*positivoDiferenca.x/100))
 		
 	else:
-	
+		imagem.set_visible(false)
 		imagem.queue_free()
 		pai.executarCompra(dono)
 		encerrar()

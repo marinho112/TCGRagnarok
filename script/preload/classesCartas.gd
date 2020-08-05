@@ -12,12 +12,18 @@ class carta:
 	var imagem
 	var descricao
 	var posicaoImagem
-	var revelada = true
+	var revelada = false
 	
 	var listaPalavraChave = []
 	var listaMarcadores = []
 	var listaEfeitos = []
 	var listaCartasRelacionadas = []
+	
+	func temPalavraChave(val):
+		for palavra in listaPalavraChave:
+			if (palavra.id == val):
+				return true
+		return false
 	
 class objetoDeBatalha extends carta:
 	
@@ -65,13 +71,10 @@ class objetoDeBatalha extends carta:
 		return recebeDano(calculaDano(dano))
 		
 		
-	func combater(inimigo):
+	func golpear(inimigo):
 		
 		var danoCausado = inimigo.recebeDanoComDef(poder)
-		var danoRecebido = recebeDanoComDef(inimigo.poder)
-		
-		
-		var retorno = [danoCausado,danoRecebido]
+		var retorno = danoCausado
 		return retorno
 		
 class personagem extends objetoDeBatalha:

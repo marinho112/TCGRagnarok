@@ -66,6 +66,7 @@ func desenhaCartas():
 		carta.set_rotation(deg2rad(-1*valorR*posicaoRelativa))
 		carta.set_scale(tamanhoCartas*(1-(posicaoRelativa*(0.05))))
 		carta.ativado=false
+		carta.selecionavel=false
 	
 	for x in (tamanho-posicao):
 		posicaoRelativa = (x)
@@ -77,6 +78,7 @@ func desenhaCartas():
 		carta.set_z_index(index+(tamanho - posicaoRelativa))
 		carta.set_scale(tamanhoCartas*(1-(posicaoRelativa*(0.05))))
 		carta.ativado=false
+		carta.selecionavel=false
 	
 	
 	var carta = listaCartasObjeto[posicao]
@@ -85,6 +87,7 @@ func desenhaCartas():
 	carta.set_rotation(deg2rad(0))
 	carta.set_scale(tamanhoCartas)
 	carta.ativado=true
+	carta.selecionavel=true
 	
 	
 func subirPosicao():

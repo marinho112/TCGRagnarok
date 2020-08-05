@@ -12,11 +12,13 @@ func play(dono,listaAlvos = [],pause = null):
 	self.dono=dono
 	self.listaAlvos = listaAlvos
 	set_process(true)
+	var controla = pai.get_node("controladorAnimacao")
 	if(pause != null):
 		pai.pausar(pause)
-	var controla = pai.get_node("controladorAnimacao")
-	controla.listaAnimacoes.append(self)
-	controla.ativado = true
+		controla.listaAnimacoes.append(self)
+		controla.ativado = true
+
+	
 
 func definirPai(novoPai):
 	if(novoPai!= null):

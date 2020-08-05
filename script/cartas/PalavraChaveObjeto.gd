@@ -42,7 +42,7 @@ func atualizaPalavraChave(palavra):
 
 func _on_texto_meta_clicked(meta):
 	
-	if(get_parent().zoom):
+	if(get_parent().selecionavel):
 		for item in palavrasChave:
 			if(("function"+str(item.id))==meta):
 				disparaPopUp(item)
