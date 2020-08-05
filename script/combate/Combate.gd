@@ -299,20 +299,23 @@ func faseFinal():
 func comprarCarta(jogadorr):
 	if(jogadorr.listaBaralho.size()>0):
 		if(jogadorr.listaMao.size()<10):
-			jogadorr.listaMao.append(jogadorr.listaBaralho[0])
-			if(jogadorr.time==0):
-				jogadorr.listaBaralho[0].revelada = true
-				$mao.atualizaMao()
-			else:
-				$maoOponente.atualizaMao()
-				
-				
-			jogadorr.listaBaralho.remove(0)
+			var animacao=load("res://cenas/animacoes/animacaoComprar.tscn").instance()
+			animacao.definirPai(self)
+			animacao.play(jogadorr)
 		else:
 			#DESCARTAR CARTA COMPRADA
 			pass
 	else:
 		print("Perdeu!")
+		
+func executarCompra(jogadorr):
+	jogadorr.listaMao.append(jogadorr.listaBaralho[0])
+	if(jogadorr.time==0):
+		jogadorr.listaBaralho[0].revelada = true
+		$mao.atualizaMao()
+	else:
+		$maoOponente.atualizaMao()
+	jogadorr.listaBaralho.remove(0)
 		
 func retornaListaAreas(jogador,tipo,cartas = false):
 	var alvo
