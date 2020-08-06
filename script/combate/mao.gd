@@ -36,11 +36,17 @@ func _process(delta):
 			
 			if(cartaSelecionada!=null):
 				var cont =0
-				for area in cartaSelecionada.get_overlapping_areas():
-					if area.is_in_group(Constante.GRUPO_AREA_CARTA):
-						cont+=1
-				if cont>0:		
-					jogar(cartaSelecionada)
+				var controlador = pai.get_node("ControladorCartas")
+				var areaRelevante = controlador.receberAreaMaisRelevante(cartaSelecionada)
+				
+				if (areaRelevante != null):
+					var card = jogar(cartaSelecionada)
+					if(card != null):
+						controlador.positionAreaCarta(areaRelevante,card)
+						var lista = card.carta.listaPalavraChave
+						for elemento in lista:
+							if (elemento.id == 4):
+								card.imovel=true
 				else:
 					retornarCarta()
 						
@@ -83,8 +89,10 @@ func jogar(carta):
 			mao.remove(mao.find(cartaLogica))
 			
 			atualizaMao()
+			return cartaNova
 	else:
 		retornarCarta()
+		return null
 		
 func selecionaCarta(carta):
 	

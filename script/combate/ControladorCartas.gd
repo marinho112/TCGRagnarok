@@ -38,27 +38,11 @@ func _process(delta):
 		if(Input.is_action_just_released("clicar")):
 			duploClick = true
 			$Timer.start()
+			
 			if(cartaSelecionada!=null):
 				
-				var menorArea = null
-				var menorDiferenca
-				#controlar cartas no campo.
-				for area in cartaSelecionada.get_overlapping_areas():
-					if(area.is_in_group(Constante.GRUPO_AREA_CARTA)):
-						
-						if(menorArea==null):
-							menorArea=area
-							var posicao = area.get_global_position() - cartaSelecionada.get_global_position()
-							menorDiferenca = Ferramentas.positivo(posicao.x)+Ferramentas.positivo(posicao.y)
-						else:
-							var posicao = area.get_global_position() - cartaSelecionada.get_global_position()
-							if((Ferramentas.positivo(posicao.x)+Ferramentas.positivo(posicao.y))<menorDiferenca):
-	
-								menorDiferenca = Ferramentas.positivo(posicao.x)+Ferramentas.positivo(posicao.y)
-								menorArea=area
-								
-								
-						
+				var menorArea = receberAreaMaisRelevante(cartaSelecionada)
+			
 				if(menorArea==null):
 					positionAreaCarta(cartaSelecionada.posicaoJogo,cartaSelecionada)
 				else:
@@ -73,6 +57,27 @@ func _process(delta):
 				cursorMousePosition=novaPosicao
 			return
 
+func receberAreaMaisRelevante(cartaSelecionada):
+	var lista = cartaSelecionada.get_overlapping_areas()
+	var menorArea = null
+	var menorDiferenca
+	#controlar cartas no campo.
+	for area in lista:
+		if(area.is_in_group(Constante.GRUPO_AREA_CARTA)):
+			
+			if(menorArea==null):
+				menorArea=area
+				var posicao = area.get_global_position() - cartaSelecionada.get_global_position()
+				menorDiferenca = Ferramentas.positivo(posicao.x)+Ferramentas.positivo(posicao.y)
+			else:
+				var posicao = area.get_global_position() - cartaSelecionada.get_global_position()
+				if((Ferramentas.positivo(posicao.x)+Ferramentas.positivo(posicao.y))<menorDiferenca):
+
+					menorDiferenca = Ferramentas.positivo(posicao.x)+Ferramentas.positivo(posicao.y)
+					menorArea=area
+					
+	return menorArea
+
 func criarMonstro(carta):
 	var cartaNova = ControladorCartas.criarCartaMonstro(carta,pai,Vector2(0,0),true)
 	cartaNova.add_to_group(Constante.GRUPO_CARTA_EM_CAMPO)
@@ -80,13 +85,15 @@ func criarMonstro(carta):
 	
 	for area in areas:
 		if area.carta == null:
-			return positionAreaCarta(area,cartaNova)
+			positionAreaCarta(area,cartaNova)
+			return cartaNova
 		
 	areas = pai.retornaListaAreas(1,1)
 	
 	for area in areas:
 		if area.carta == null:
-			return positionAreaCarta(area,cartaNova)
+			positionAreaCarta(area,cartaNova)
+			return cartaNova
 	
 	return cartaNova
 
@@ -96,10 +103,21 @@ func positionAreaCarta(area,carta):
 	var auxCarta
 	
 	if(area!=null):
+		if(area.carta != null):
+			if(area.carta.imovel):
+				area = carta.posicaoJogo
+	
+	if(carta!=null):
+		if(carta.imovel):
+			area = carta.posicaoJogo
+	
+	if(area!=null):
 		auxCarta= area.carta
 		area.carta = carta
 	if(carta!=null):
 		auxArea = carta.posicaoJogo
+			
+		
 		carta.posicaoJogo = area
 		carta.set_global_position(area.get_global_position())
 		var escala = (area.get_parent().get_scale()) * area.get_parent().get_parent().get_scale()

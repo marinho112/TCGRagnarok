@@ -185,8 +185,8 @@ func completaCartaMonstro(id,carta):
 	#	
 		while(!arquivo.eof_reached()):
 			conteudo = arquivo.get_line()
+			var textLen = idTexto.length()
 			if(conteudo.length( ) >2):
-				var textLen = idTexto.length()
 				if((conteudo[0]!="/")and(conteudo[1]!="/")and(conteudo[textLen]==",")):
 					passa=true
 					for letra in textLen:
@@ -224,11 +224,11 @@ func recebePalavrasChave(carta):
 	#	
 		while(!arquivo.eof_reached()):
 			conteudo = arquivo.get_line()
+			var textLen = idTexto.length()
 			if(conteudo.length( ) >2):
-				var textLen = idTexto.length()
 				if((conteudo[0]!="/")and(conteudo[1]!="/")and(conteudo[textLen]==",")):
+					passa=true
 					for letra in textLen:
-						passa=true
 						if(idTexto[letra] != conteudo[letra]):
 							passa=false
 							letra = idTexto.length()
@@ -257,11 +257,11 @@ func recebeHabilidades(id,carta):
 	#	
 		while(!arquivo.eof_reached()):
 			conteudo = arquivo.get_line()
+			var textLen = idTexto.length()
 			if(conteudo.length( ) >2):
-				var textLen = idTexto.length()
 				if((conteudo[0]!="/")and(conteudo[1]!="/")and(conteudo[textLen]==",")):
+					passa=true
 					for letra in textLen:
-						passa=true
 						if(idTexto[letra] != conteudo[letra]):
 							passa=false
 							letra = idTexto.length()
@@ -273,6 +273,7 @@ func recebeHabilidades(id,carta):
 		var listaCartasAdicionar = []
 		for item in lista:
 			var novo = carregaCartaPorID(int(item[1]))
+			novo.revelada = true
 			listaCartasAdicionar.append(novo)
 		carta.listaCartasRelacionadas += listaCartasAdicionar
 	else:
@@ -295,10 +296,11 @@ func recebePalavrasPorEfeito(efeito):
 		while(!arquivo.eof_reached()):
 			
 			conteudo = arquivo.get_line()
+			var textLen = idTexto.length()
 			if(conteudo.length( ) >2):
-				if((conteudo[0]!="/")and(conteudo[1]!="/")):
+				if((conteudo[0]!="/")and(conteudo[1]!="/")and(conteudo[textLen]==",")):
+					passa=true
 					for letra in idTexto.length():
-						passa=true
 						if(idTexto[letra] != conteudo[letra]):
 							passa=false
 							letra = idTexto.length()

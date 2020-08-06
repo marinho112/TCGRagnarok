@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/poring001.png-6c3d9738a08751217071fda725dbc60c.stex"
+path="res://.import/bafomeJr001.png-db4d292b8c96817bbfdedf128d1b21d0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/cartas/monstros/agua/poring001.png"
-dest_files=[ "res://.import/poring001.png-6c3d9738a08751217071fda725dbc60c.stex" ]
+source_file="res://sprites/cartas/monstros/sombrio/fundo/bafomeJr001.png"
+dest_files=[ "res://.import/bafomeJr001.png-db4d292b8c96817bbfdedf128d1b21d0.stex" ]
 
 [params]
 

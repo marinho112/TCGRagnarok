@@ -39,9 +39,22 @@ const RACA_MORTOVIVO=9
 #CONSTANTE SUB-RACA
 
 const SUB_RACA_HUMANO = "00"
+const SUB_RACA_ORC = "01"
+const SUB_RACA_GOBLIN = "02"
+const SUB_RACA_KOBOLD = "03"
+const SUB_RACA_ARMADURA = "04"
+const SUB_RACA_ROBO = "05"
 const SUB_RACA_PORING = "10"
+const SUB_RACA_BODE = "20"
+const SUB_RACA_AVE = "21"
+const SUB_RACA_RAPOSA = "22"
+const SUB_RACA_PLANTA_CARNIVORA = "30"
+const SUB_RACA_COGUMELO = "31"
+const SUB_RACA_CELENTERADO = "32"
+const SUB_RACA_DIABINHO = "60"
 const SUB_RACA_ZUMBI = "90"
 const SUB_RACA_ESQUELETO = "91"
+const SUB_RACA_FANTASMA = "92"
 
 func obterSubRaca(texto):
 	return int(texto.right(1))

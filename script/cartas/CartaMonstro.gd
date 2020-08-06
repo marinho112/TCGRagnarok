@@ -2,6 +2,7 @@ extends "res://script/cartas/Carta.gd"
 
 var fundo ="fundo"
 var miniatura = false
+var imovel = false
 
 	
 func _ready():
@@ -79,7 +80,7 @@ func desenharPropriedade(complemento = ""):
 			cor="Roxo"
 			fraco=null
 			forte="Preto"
-		Constante.PROPIREDADE_VENTO:
+		Constante.PROPRIEDADE_VENTO:
 			cor="Verde"
 			fraco="Marrom"
 			forte="Azul"
@@ -128,7 +129,7 @@ func carregaImagem():
 			propriedade = "terra"
 		Constante.PROPRIEDADE_VENENO:
 			propriedade = "veneno"
-		Constante.PROPIREDADE_VENTO:
+		Constante.PROPRIEDADE_VENTO:
 			propriedade = "vento"
 
 	var imagem = load("res://sprites/cartas/monstros/"+propriedade+"/fundo/"+str(carta.imagem)+".png")
