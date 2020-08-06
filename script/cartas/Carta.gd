@@ -16,7 +16,7 @@ func _ready():
 
 func exibirCartas():
 	var raiz = get_node("/root/main/Combate/")
-	raiz.pausar(2)
+	raiz.pausar(3)
 	var listaItens = [carta]
 	var lista = raiz.get_node("listaExibicaoCartas")
 	listaItens += carta.listaCartasRelacionadas

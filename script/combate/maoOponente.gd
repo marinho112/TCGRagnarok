@@ -69,7 +69,7 @@ func adicionaCartaMao(carta):
 		carta = maoVisual[num]
 		carta.set_global_position(posicaoInicial)
 		carta.posicaoRaiz=posicaoInicial
-		carta.add_to_group(Constante.GRUPO_CARTA_NA_MAO)
+		carta.add_to_group(Constante.GRUPO_CARTA_NA_MAO_OPONENTE)
 		posicaoMao.append(carta.get_global_position())
 		carta.set_rotation(deg2rad(valorR+180))
 		

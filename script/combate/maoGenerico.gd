@@ -1,6 +1,6 @@
 extends Node2D
 
-
+var ativado = true
 var mao= []
 var maoVisual = []
 var posicaoMao = []
@@ -33,6 +33,9 @@ func zoomCarta(carta,booleano):
 			elemento.setZoom(false)
 		if(carta != null):
 			carta.setZoom(true)
+			cardZoom.set_z_index(100)
 	else:
-		carta.setZoom(false)
-		cardZoom = null
+		if(carta.zoom):
+			cardZoom.set_z_index(0)
+			carta.setZoom(false)
+			cardZoom = null

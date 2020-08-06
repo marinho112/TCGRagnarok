@@ -5,10 +5,14 @@ var posicaoRaiz
 var zoom
 var visual
 var ativado = true
+var selecionavel = false
 
 func _ready():
 	add_to_group(Constante.GRUPO_CARTA)
 	setZoom(false)
+
+func exibirCartas():
+	pass
 
 func setZoom(zoom):
 	self.zoom=zoom

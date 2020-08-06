@@ -1,7 +1,7 @@
 extends "res://script/combate/maoGenerico.gd"
 
 
-var ativado = true
+
 
 var cursorMouse
 var cartaSelecionada
@@ -21,7 +21,7 @@ func _ready():
 	
 func _process(delta):
 	
-	if (ativado):	
+	if (ativado):
 		
 		if((cursorMouse!=null) and (cartaSelecionada==null)):
 			

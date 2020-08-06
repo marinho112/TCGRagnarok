@@ -39,9 +39,10 @@ func _ready():
 	$ControladorCartas.jogador=listaJogadores[0]
 	$mao.definirJogador(listaJogadores[0])
 	$maoOponente.definirJogador(listaJogadores[1])
-	$Personagem.atualizarPersonagem(ControlaDados.carregaPersonagemPorID(randi()%7))
-	$Oponente.atualizarPersonagem(ControlaDados.carregaPersonagemPorID(randi()%7))
-	
+	$Personagem.atualizarPersonagem(ControlaDados.carregaPersonagemPorID((randi()%18+8)))
+	$Oponente.atualizarPersonagem(ControlaDados.carregaPersonagemPorID((randi()%18)+8))
+	$Personagem.carta.revelada=true
+	$Oponente.carta.revelada=true
 	set_process(true)
 
 func _process(delta):
@@ -317,11 +318,12 @@ func comprarCarta(jogadorr):
 		
 func executarCompra(jogadorr):
 	#jogadorr.listaMao.append(jogadorr.listaBaralho[0])
+	var carta = jogadorr.listaBaralho[0]
 	if(jogadorr.time==0):
-		jogadorr.listaBaralho[0].revelada = true
-		$mao.adicionaCartaMao(jogadorr.listaBaralho[0])
+		carta.revelada = true
+		$mao.adicionaCartaMao(carta)
 	else:
-		$maoOponente.adicionaCartaMao(jogadorr.listaBaralho[0])
+		$maoOponente.adicionaCartaMao(carta)
 	jogadorr.listaBaralho.remove(0)
 	
 func retornaListaAreas(jogador,tipo,cartas = false):
@@ -357,6 +359,9 @@ func pausar(intensidade):
 		$ControladorCartas.ativado = $ControladorCartas.ativado or listaPausa[0]
 		ativado = ativado or listaPausa[1]
 		$mao.ativado = $mao.ativado or listaPausa[2]
+		$maoOponente.ativado = $maoOponente.ativado or listaPausa[2]
+		$Personagem.ativado = $Personagem.ativado or listaPausa[2]
+		$Oponente.ativado = $Oponente.ativado or listaPausa[2]
 		$Personagem.ativado = $Personagem.ativado or listaPausa[2]
 		for item in listaPausa:
 			item = false
@@ -369,6 +374,9 @@ func pausar(intensidade):
 		listaPausa[1]=true
 	if(intensidade >2):
 		$mao.ativado = false
+		$Personagem.ativado = false
+		$Oponente.ativado = false
+		$maoOponente.ativado = false
 		$Personagem.ativado = false
 		listaPausa[2]=true
 		
