@@ -232,9 +232,43 @@ func recebePalavrasChave(carta):
 						if(idTexto[letra] != conteudo[letra]):
 							passa=false
 							letra = idTexto.length()
-						if (passa and (letra == (idTexto.length()-1))):
-							var conteudo2 = conteudo.split(",")
-							lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),carta,int(conteudo2[3])))
+					if passa:
+						var conteudo2 = conteudo.split(",")
+						lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),carta,int(conteudo2[3])))
+		arquivo.close()
+		carta.listaPalavraChave = lista
+					
+	else:
+		print("ERRO!!")
+	arquivo.close()
+	return -1
+
+func recebeCartasRelacionadas(carta):
+	
+	var arquivo = File.new()
+	#var erro = arquivo.open("res://dados/teste.data",File.WRITE)
+	var erro = arquivo.open("res://db/cartas/carta_has_carta.data",File.READ)
+	var conteudo
+	var idTexto = String(carta.id)
+	var passa
+	var lista = []
+	
+	if not erro:
+	#	
+		while(!arquivo.eof_reached()):
+			conteudo = arquivo.get_line()
+			var textLen = idTexto.length()
+			if(conteudo.length( ) >2):
+				if((conteudo[0]!="/")and(conteudo[1]!="/")and(conteudo[textLen]==",")):
+					passa=true
+					for letra in textLen:
+						if(idTexto[letra] != conteudo[letra]):
+							passa=false
+							letra = idTexto.length()
+					if passa:
+						var conteudo2 = conteudo.split(",")
+						var cartaRelacionada = carregaCartaPorID(conteudo2[1])
+						lista.append(cartaRelacionada)
 		arquivo.close()
 		carta.listaPalavraChave = lista
 					
