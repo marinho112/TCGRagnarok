@@ -32,7 +32,7 @@ position = Vector2( 90, 0 )
 visible = false
 position = Vector2( 85, 62 )
 
-[node name="vida" type="Sprite" parent="."]
+[node name="coracao" type="Sprite" parent="."]
 position = Vector2( -90, -30 )
 scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 3 )

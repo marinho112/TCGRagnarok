@@ -11,8 +11,9 @@ var imagem
 var raio
 var fator = Vector2(0,0)
 
-func play(dono,listaAlvos = [],pausar = null):
-	.play(dono,listaAlvos,3)	
+func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
+	.play(dono,listaAlvos,3,velo)
+	vel *= velo
 	if(dono.time == 0):
 		inicio = pai.get_node("deck")
 		destino = pai.get_node("mao")
@@ -46,8 +47,17 @@ func _process(delta):
 	var subFator = Vector2(1,1)
 	if(pontoMedio.x < posicaoAtual.x):
 		subFator.y=-1
-		
-	if(positivoDiferenca.x > (vel/100)):
+	
+	var passa = false
+	
+	if(dono.time == 0):
+		if(posicaoAtual.x > posicaoFinal.x):
+			passa = true
+	else:
+		if(posicaoAtual.x < posicaoFinal.x):
+			passa = true
+	
+	if(passa):
 		
 		imagem.set_global_position(posicaoAtual+(subFator*fator*vel*delta))
 		imagem.set_rotation(rotacionado+ deg2rad(-subFator.y*positivoDiferenca.x/100))

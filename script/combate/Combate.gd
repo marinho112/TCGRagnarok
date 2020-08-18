@@ -193,18 +193,7 @@ func faseDeCompra():
 	return true
 
 func fasePrincipal():
-	
-	var tipJogador= jogador.time+1
-	var tipOponente = oponente.time+1
-	var areaAtk= retornaListaAreas(tipJogador,1,true)
-	var areaDef= retornaListaAreas(tipOponente,2,true)
-	if((areaAtk.size()>0)):
-		$btnAzul.set_text(1,true)
-		$btnAzul.estado=1
-	else:
-		$btnAzul.set_text(0,false)
-		$btnAzul.estado=0
-		
+
 	if(subFase==0):
 		
 		$btnVermelho.set_text(2,true,true)
@@ -216,6 +205,7 @@ func fasePrincipal():
 		return false
 	else:
 		return true
+		
 func inicioFasePrincipal1():
 	if(resolveHabilidades(jogador.listaFasePrincipal1,oponente.listaFasePrincipal1)):
 		return true
@@ -223,6 +213,16 @@ func inicioFasePrincipal1():
 		return false
 
 func fasePrincipal1():
+	var tipJogador= jogador.time+1
+	var tipOponente = oponente.time+1
+	var areaAtk= retornaListaAreas(tipJogador,1,true)
+	var areaDef= retornaListaAreas(tipOponente,2,true)
+	if((areaAtk.size()>0)):
+		$btnAzul.set_text(1,true)
+		$btnAzul.estado=1
+	else:
+		$btnAzul.set_text(0,false)
+		$btnAzul.estado=0
 	return fasePrincipal()
 
 func inicioFaseCombate():
@@ -290,6 +290,9 @@ func inicioFasePrincipal2():
 		return false
 
 func fasePrincipal2():
+	
+	$btnAzul.set_text(0,false)
+	$btnAzul.estado=0
 	return fasePrincipal()
 
 func inicioFaseFinal():

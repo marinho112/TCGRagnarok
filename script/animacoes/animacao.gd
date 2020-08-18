@@ -3,13 +3,15 @@ extends Node2D
 var pai
 var dono
 var listaAlvos = []
+var velo = 1.0
 
 func _ready():
 	add_to_group(Constante.GRUPO_ANIMACAO)
 	
 
-func play(dono,listaAlvos = [],pause = null):
+func play(dono,listaAlvos = [],pause = null,velo = 1.0):
 	self.dono=dono
+	self.velo = velo
 	self.listaAlvos = listaAlvos
 	set_process(true)
 	var controla = pai.get_node("controladorAnimacao")

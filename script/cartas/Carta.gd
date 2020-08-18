@@ -13,6 +13,16 @@ func _ready():
 	add_to_group(Constante.GRUPO_CARTA)	
 	setZoom(false)
 
+func golpear(carta):
+	var retorno = self.carta.golpear(carta.carta)
+	carta.verificaVida()
+	return retorno
+	
+func desenhaAtributos():
+	pass
+	
+func verificaVida():
+	pass
 
 func exibirCartas():
 	var raiz = get_node("/root/main/Combate/")

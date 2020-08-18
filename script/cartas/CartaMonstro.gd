@@ -8,8 +8,11 @@ var imovel = false
 func _ready():
 	add_to_group(Constante.GRUPO_CARTA_MONSTRO)	
 	
+func verificaVida():
+	desenhaAtributos()
+	if((carta.vida+carta.vidaBonus)<=carta.danoRecebido):
+		print("morreu")
 	
-
 
 func preparaCarta(carta = carta):
 	self.carta=carta
@@ -25,11 +28,11 @@ func desenhaAtributos():
 		fonte = "personagens"
 	$nome.set_text(Ferramentas.receberTexto(fonte,carta.nome))
 	$lblcusto.set_text(str(carta.custo))
-	$lblpoder.set_text(str(carta.poder))
-	$lbldefesa.set_text(str(carta.defesa))
-	$vida.set_text(str(carta.vida))
+	$lblpoder.set_text(str(carta.poder+carta.poderBonus))
+	$lbldefesa.set_text(str(carta.defesa+carta.defesaBonus))
+	$vida.set_text(str((carta.vida+carta.vidaBonus)-carta.danoRecebido))
 	
-	desenhaAtributosComplementares()
+	
 	
 func desenhaAtributosComplementares():
 	$raca.set_text(Ferramentas.receberTexto("racas",carta.raca))

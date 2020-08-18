@@ -23,12 +23,16 @@ func atualizarPersonagem(personagemNovo=null):
 	if(personagemNovo!= null):
 		carta=personagemNovo
 	if(carta!=null):
-		atualizarAtaque(carta.poder)
-		atualizarDefesa(carta.defesa)
-		atualizarVida(carta.vida)
+		atualizaInfoPersonagem(carta)
+		
 		var imagem = load("res://sprites/personagem/"+str(carta.imagem)+".png")
 		get_node("fundo").set_texture(imagem)
-		
+	
+func atualizaInfoPersonagem(carta = self.carta):
+	atualizarAtaque(carta.poder+carta.poderBonus)
+	atualizarDefesa(carta.defesa+carta.defesaBonus)
+	atualizarVida((carta.vida+carta.vidaBonus)-carta.danoRecebido)
+	
 func atualizarVida(vida):
 	$lblVida.set_text(str(vida))
 	
@@ -38,6 +42,15 @@ func atualizarAtaque(ataque):
 func atualizarDefesa(defesa):
 	$lblDefesa.set_text(str(defesa))
 
+func golpear(carta):
+	
+	var retorno = self.carta.golpear(carta.carta)
+	carta.verificaVida()
+	return retorno
+	
+	
+func verificaVida():
+	atualizaInfoPersonagem()
 
 func _on_Timer_timeout():
 	duploClick = false
