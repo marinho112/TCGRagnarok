@@ -23,6 +23,9 @@ var confrontarAtaques2 = 0
 
 
 func _ready():
+	$zenys.defineZeny(1,1)
+	$zenysOponente.defineZeny(1,1)
+	$zenysOponente.setInvertido(true)
 	cursorMouse= get_parent().get_node("Mouse")
 	$btnAzul.set_text(0,false)
 	$btnVermelho.set_text(0,false,false)
@@ -55,11 +58,11 @@ func _process(delta):
 				
 		elif((fase==-1)and(turno==0)):
 			if(inicioPartida()):
-				fase = 0
+				fase = 1
 				subFase = 0
 				
-		elif((jogador==listaJogadores[0])and(fase>=0)):
-		
+		elif((true)and(fase>=0)):
+		#jogador==listaJogadores[0]
 			match(fase):
 				
 				0:
@@ -127,7 +130,8 @@ func _process(delta):
 	
 		else:
 			#chamar AI!
-			fimTurno()
+			if(faseInicial()):
+				fimTurno()
 		
 		
 func fimTurno():
@@ -178,6 +182,13 @@ func inicioPartida():
 
 func faseInicial():
 	if(resolveHabilidades(jogador.listaFaseInicial,oponente.listaFaseInicial)):
+	
+		if(jogador.maxZeny < 10):
+			jogador.maxZeny+=1
+		if(jogador.time == 0):
+			$zenys.defineZeny(jogador.maxZeny,jogador.maxZeny)
+		else:
+			$zenysOponente.defineZeny(jogador.maxZeny,jogador.maxZeny)
 		return true
 	else:
 		return false

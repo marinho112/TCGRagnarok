@@ -30,7 +30,8 @@ class jogador:
 	
 	var listaFaseFinal = []
 	
-	var zenys
+	var zeny = 1
+	var maxZeny = 1
 	
 	var ativado = false
 	

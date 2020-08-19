@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://script/combate/zenys.gd" type="Script" id=1]
+[ext_resource path="res://cenas/elementos/moeda.tscn" type="PackedScene" id=2]
+
+[node name="zenys" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="moeda" parent="." instance=ExtResource( 2 )]
+visible = false
+
+[node name="moeda2" parent="." instance=ExtResource( 2 )]
+visible = false
+position = Vector2( 5, 36 )
+
+[node name="moeda3" parent="." instance=ExtResource( 2 )]
+visible = false
+position = Vector2( 11, 72 )
+
+[node name="moeda4" parent="." instance=ExtResource( 2 )]
+visible = false
+position = Vector2( 19, 108 )
+
+[node name="moeda5" parent="." instance=ExtResource( 2 )]
+visible = false
+position = Vector2( 30, 142 )
+
+[node name="moeda6" parent="." instance=ExtResource( 2 )]
+visible = false
+position = Vector2( 48, 173 )
+
+[node name="moeda7" parent="." instance=ExtResource( 2 )]
+visible = false
+position = Vector2( 72, 200 )
+
+[node name="moeda8" parent="." instance=ExtResource( 2 )]
+visible = false
+position = Vector2( 98, 225 )
+
+[node name="moeda9" parent="." instance=ExtResource( 2 )]
+visible = false
+position = Vector2( 124, 250 )
+
+[node name="moeda10" parent="." instance=ExtResource( 2 )]
+visible = false
+position = Vector2( 155, 270 )
