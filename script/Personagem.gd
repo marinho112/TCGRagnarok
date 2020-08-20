@@ -3,6 +3,7 @@ extends Area2D
 var carta
 var ativado = true
 var duploClick = false
+var jogador
 
 func _ready():
 	set_process(true)

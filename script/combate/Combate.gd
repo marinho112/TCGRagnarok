@@ -25,7 +25,7 @@ var confrontarAtaques2 = 0
 func _ready():
 	$zenys.defineZeny(1,1)
 	$zenysOponente.defineZeny(1,1)
-	$zenysOponente.setInvertido(true)
+	#$zenysOponente.setInvertido(true)
 	cursorMouse= get_parent().get_node("Mouse")
 	$btnAzul.set_text(0,false)
 	$btnVermelho.set_text(0,false,false)
@@ -35,13 +35,20 @@ func _ready():
 			
 	listaJogadores[0].time = 0
 	listaJogadores[1].time = 1
-	
 	listaJogadores[0].ativado=true
+	listaJogadores[0].ai = self
+	listaJogadores[1].ai = load("res://script/ai/ai.gd").new()
+	listaJogadores[1].ai.combate = self
+	listaJogadores[0].definirAreas($mao,$Personagem,$zenys,$Container/Jogador1Ataque,$Container/Jogador1Defesa)
+	listaJogadores[1].definirAreas($maoOponente,$Oponente,$zenysOponente,$Container/Jogador2Ataque,$Container/Jogador2Defesa)
+
+	listaJogadores[1].ai.definirJogador(listaJogadores[1])
+	
 	jogador = listaJogadores[0]
 	oponente = listaJogadores[1]
 	$ControladorCartas.jogador=listaJogadores[0]
-	$mao.definirJogador(listaJogadores[0])
-	$maoOponente.definirJogador(listaJogadores[1])
+	#$mao.definirJogador(listaJogadores[0])
+	#$maoOponente.definirJogador(listaJogadores[1])
 	$Personagem.atualizarPersonagem(ControlaDados.carregaPersonagemPorID((randi()%18+8)))
 	$Oponente.atualizarPersonagem(ControlaDados.carregaPersonagemPorID((randi()%18)+8))
 	$Personagem.carta.revelada=true
@@ -49,15 +56,15 @@ func _ready():
 	set_process(true)
 
 func _process(delta):
-	
+	var ai = jogador.ai
 	if ativado:
 		if((fase==-2)and(turno==0)):
-			if(comecarJogo()):
+			if(comecarJogo(delta)):
 				fase = -1
 				subFase = 0
 				
 		elif((fase==-1)and(turno==0)):
-			if(inicioPartida()):
+			if(inicioPartida(delta)):
 				fase = 1
 				subFase = 0
 				
@@ -67,74 +74,74 @@ func _process(delta):
 				
 				0:
 					#Inicio do fase
-					if(faseInicial()):
+					if(ai.faseInicial(delta)):
 						fase = 1
 						subFase = 0
 				1:
 					#Comprar Carta
-					if(inicioFaseDeCompra()):
+					if(ai.inicioFaseDeCompra(delta)):
 						fase = 2
 						subFase = 0
 				2:
 					#Main fase 1
-					if(faseDeCompra()):
+					if(ai.faseDeCompra(delta)):
 						fase = 3
 						subFase = 0
 				3:
 					#Main fase 1
-					if(inicioFasePrincipal1()):
+					if(ai.inicioFasePrincipal1(delta)):
 						fase = 4
 						subFase = 0
 				4:
 					#Main fase 1
-					if(fasePrincipal1()):
+					if(ai.fasePrincipal1(delta)):
 						fase = 5
 						subFase = 0
 						
 				5:
 					#Ataque
-					if(inicioFaseCombate()):
+					if(ai.inicioFaseCombate(delta)):
 						fase = 6
 						subFase = 0
 				6:
 					#Ataque
-					if(faseCombate()):
+					if(ai.faseCombate(delta)):
 						fase = 7
 						subFase = 0
 				7:
-					if(realizarAtaque()):
+					if(ai.realizarAtaque(delta)):
 						fase = 8
 						subFase = 0
 				8:
 					#Main fase 2
-					if(inicioFasePrincipal2()):
+					if(ai.inicioFasePrincipal2(delta)):
 						fase = 9
 						subFase = 0
 				9:
 					#Main fase 2
-					if(fasePrincipal2()):
+					if(ai.fasePrincipal2(delta)):
 						fase = 10
 						subFase = 0
 				10:
 					#Encerrar fase
-					if(inicioFaseFinal()):
+					if(ai.inicioFaseFinal(delta)):
 						fase = 11
 						subFase = 0
 				11:
 					#Encerrar fase
-					if(faseFinal()):
+					if(ai.faseFinal(delta)):
 						fase = 12
 						subFase = 0
 				12:
-					fimTurno()
+					fimTurno(delta)
 	
 		else:
 			#chamar AI!
-			if(faseInicial()):
-				fimTurno()
+			if(faseInicial(delta)):
+				fimTurno(delta)
 		
 		
-func fimTurno():
+func fimTurno(delta):
 	print ("ACABOU O TURNO "+str(turno))
 	fase = 0
 	subFase = 0
@@ -157,7 +164,7 @@ func resolveHabilidades(listaJogador,listaOponente):
 	else:
 		return true
 	
-func comecarJogo():
+func comecarJogo(delta):
 	if(subFase==0):
 		pausar(2)
 	if(subFase< (CARTAS_INICIAIS*2)):
@@ -173,37 +180,35 @@ func comecarJogo():
 	return false
 	
 	
-func inicioPartida():
+func inicioPartida(delta):
 	if(resolveHabilidades(jogador.listaInicioPartida,oponente.listaInicioPartida)):
 		return true
 	else:
 		return false
 	
 
-func faseInicial():
+func faseInicial(delta):
 	if(resolveHabilidades(jogador.listaFaseInicial,oponente.listaFaseInicial)):
 	
 		if(jogador.maxZeny < 10):
 			jogador.maxZeny+=1
-		if(jogador.time == 0):
-			$zenys.defineZeny(jogador.maxZeny,jogador.maxZeny)
-		else:
-			$zenysOponente.defineZeny(jogador.maxZeny,jogador.maxZeny)
+			jogador.zeny=jogador.maxZeny
+		jogador.areaZenys.atualizarZeny()
 		return true
 	else:
 		return false
 	
-func inicioFaseDeCompra():
+func inicioFaseDeCompra(delta):
 	if(resolveHabilidades(jogador.listaFaseCompra,oponente.listaFaseCompra)):
 		return true
 	else:
 		return false
 
-func faseDeCompra():
+func faseDeCompra(delta):
 	comprarCarta(jogador)
 	return true
 
-func fasePrincipal():
+func fasePrincipal(delta):
 
 	if(subFase==0):
 		
@@ -217,13 +222,13 @@ func fasePrincipal():
 	else:
 		return true
 		
-func inicioFasePrincipal1():
+func inicioFasePrincipal1(delta):
 	if(resolveHabilidades(jogador.listaFasePrincipal1,oponente.listaFasePrincipal1)):
 		return true
 	else:
 		return false
 
-func fasePrincipal1():
+func fasePrincipal1(delta):
 	var tipJogador= jogador.time+1
 	var tipOponente = oponente.time+1
 	var areaAtk= retornaListaAreas(tipJogador,1,true)
@@ -234,15 +239,15 @@ func fasePrincipal1():
 	else:
 		$btnAzul.set_text(0,false)
 		$btnAzul.estado=0
-	return fasePrincipal()
+	return fasePrincipal(delta)
 
-func inicioFaseCombate():
+func inicioFaseCombate(delta):
 	if(resolveHabilidades(jogador.listaFaseCombate,oponente.listaFaseCombate)):
 		return true
 	else:
 		return false
 		
-func faseCombate():
+func faseCombate(delta):
 	
 	match subFase:
 		0:
@@ -273,7 +278,7 @@ func faseCombate():
 	return false
 
 
-func realizarAtaque():
+func realizarAtaque(delta):
 	if(subFase <6):
 		var tipJogador= jogador.time+1
 		var tipOponente = oponente.time+1
@@ -294,25 +299,25 @@ func realizarAtaque():
 	else:
 		return true
 	return false
-func inicioFasePrincipal2():
+func inicioFasePrincipal2(delta):
 	if(resolveHabilidades(jogador.listaFasePrincipal2,oponente.listaFasePrincipal2)):
 		return true
 	else:
 		return false
 
-func fasePrincipal2():
+func fasePrincipal2(delta):
 	
 	$btnAzul.set_text(0,false)
 	$btnAzul.estado=0
-	return fasePrincipal()
+	return fasePrincipal(delta)
 
-func inicioFaseFinal():
+func inicioFaseFinal(delta):
 	if(resolveHabilidades(jogador.listaFaseFinal,oponente.listaFaseFinal)):
 		return true
 	else:
 		return false
 	
-func faseFinal():
+func faseFinal(delta):
 	$btnAzul.estado=0
 	$btnAzul.set_text(0,false)
 	$btnVermelho.set_text(0,false,false)

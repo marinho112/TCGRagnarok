@@ -4,8 +4,7 @@ var zeny=0
 var zenyTotal = 10
 var listaObjetos = []
 var preMoeda = preload("res://cenas/elementos/moeda.tscn")
-var invertido = false
-
+var jogador
 
 func _ready():
 	desenhar()
@@ -15,6 +14,11 @@ func _ready():
 func defineZeny(total,atual=0):
 	zeny = atual
 	zenyTotal = total
+	desenhar()
+	
+func atualizarZeny():
+	zeny = jogador.zeny
+	zenyTotal = jogador.maxZeny
 	desenhar()
 	
 func desenhar():
@@ -30,11 +34,12 @@ func desenhar():
 		var moeda = preMoeda.instance()
 		add_child(moeda)
 		var position
-		if(invertido):
-			position= Vector2((((2*z)+(x*3))),-((z*32)-x+y))
-		else:
-			position = Vector2((((2*z)+(x*3))),(z*32)-x+y)
-		moeda.set_position(position)
+		if(jogador != null):
+			if(jogador.time==1):
+				position= Vector2((((2*z)+(x*3))),-((z*32)-x+y))
+			else:
+				position = Vector2((((2*z)+(x*3))),(z*32)-x+y)
+			moeda.set_position(position)
 		if (z >= zenyTotal):
 			moeda.get_node("imagem").set_visible(false)
 		if(zeny <= z):
@@ -46,6 +51,6 @@ func limparLista():
 		item.queue_free()
 	listaObjetos = []
 	
-func setInvertido(valor):
-	invertido=valor
+func setJogador(valor):
+	jogador=valor
 	desenhar()

@@ -5,6 +5,7 @@ class jogador:
 	
 	var personagem
 	var time
+	var ai
 	
 	var listaBaralho=[]
 	var listaMao=[]
@@ -30,8 +31,25 @@ class jogador:
 	
 	var listaFaseFinal = []
 	
+	
+	var areaMao
+	var areaMiniatura
+	var areaZenys
+	var areaAtaque
+	var areaDefesa
+	
 	var zeny = 1
 	var maxZeny = 1
 	
 	var ativado = false
 	
+	func definirAreas(mao,miniatura,zeny,ataque,defesa):
+		
+		areaMao =mao
+		mao.definirJogador(self)
+		areaMiniatura=miniatura
+		miniatura.jogador = self
+		areaZenys=zeny
+		zeny.setJogador(self)
+		areaAtaque=ataque
+		areaDefesa=defesa

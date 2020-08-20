@@ -79,14 +79,17 @@ func _process(delta):
 			return
 	
 func jogar(carta):
-	if(jogador.ativado and (!carta.zoom) and (carta.carta.custo <= pai.listaJogadores[0].zeny) ):
-		var cartaLogica = carta.carta
+	#print(str(jogador.zeny)+"/"+str(jogador.maxZeny))
+	var cartaLogica = carta.carta
+	if(jogador.ativado and (!carta.zoom) and (cartaLogica.custo <= jogador.zeny) ):
 		if(cartaLogica.tipo == Constante.CARTA_MONSTRO):
 			cartaLogica.revelada=true
 			var controlador = pai.get_node("ControladorCartas")
-			var cartaNova = controlador.criarMonstro(cartaLogica)
+			var cartaNova = controlador.criarMonstro(cartaLogica,jogador)
 			mao.remove(mao.find(cartaLogica))
 			atualizaMao()
+			jogador.zeny -= cartaLogica.custo
+			jogador.areaZenys.atualizarZeny()
 			return cartaNova
 	else:
 		retornarCarta()

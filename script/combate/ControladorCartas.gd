@@ -78,17 +78,17 @@ func receberAreaMaisRelevante(cartaSelecionada):
 					
 	return menorArea
 
-func criarMonstro(carta):
+func criarMonstro(carta,jogador):
 	var cartaNova = ControladorCartas.criarCartaMonstro(carta,pai,Vector2(0,0),true)
 	cartaNova.add_to_group(Constante.GRUPO_CARTA_EM_CAMPO)
-	var areas = pai.retornaListaAreas(1,2)
+	var areas = pai.retornaListaAreas((jogador.time+1),2)
 	
 	for area in areas:
 		if area.carta == null:
 			positionAreaCarta(area,cartaNova)
 			return cartaNova
 		
-	areas = pai.retornaListaAreas(1,1)
+	areas = pai.retornaListaAreas((jogador.time+1),1)
 	
 	for area in areas:
 		if area.carta == null:
