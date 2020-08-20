@@ -10,6 +10,7 @@ var ajusteX = 100
 var ajusteY = 10
 var index = 10
 var valorR = 2
+var delay=false
 
 var tamanhoCartas= Vector2(1.5,1.5)
 
@@ -17,8 +18,12 @@ func _ready():
 	mouse = get_parent().get_parent().get_node("Mouse")
 	set_process(true)
 	
+func aguardar():
+	delay=true
+	$Timer.start()
+
 func _process(delta):
-	if ativado:
+	if (ativado and(!delay)):
 		if Input.is_action_just_released("clicar"):
 			var position = mouse.get_global_position()
 			if(position.x > 150):
@@ -36,6 +41,7 @@ func _process(delta):
 					
 func definirListaCartas(lista):
 	set_visible(true)
+	aguardar()
 	ativado = true
 	listaCartas = lista
 	posicao = 0
@@ -44,6 +50,7 @@ func definirListaCartas(lista):
 		var cartaNova = ControladorCartas.criarCarta(carta,get_parent(),Vector2(0,0))
 		listaCartasObjeto.append(cartaNova)
 	desenhaCartas()
+	
 
 func limparCartas():
 	set_visible(false)
@@ -103,3 +110,4 @@ func descerPosicao():
 
 func _on_Timer_timeout():
 	duploClick = false
+	delay= false

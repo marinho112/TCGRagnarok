@@ -86,6 +86,7 @@ func jogar(carta):
 			cartaLogica.revelada=true
 			var controlador = pai.get_node("ControladorCartas")
 			var cartaNova = controlador.criarMonstro(cartaLogica,jogador)
+			print(cartaLogica.raca)
 			mao.remove(mao.find(cartaLogica))
 			atualizaMao()
 			jogador.zeny -= cartaLogica.custo

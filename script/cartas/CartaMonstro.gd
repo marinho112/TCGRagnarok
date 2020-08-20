@@ -31,7 +31,7 @@ func desenhaAtributos():
 	$lblpoder.set_text(str(carta.poder+carta.poderBonus))
 	$lbldefesa.set_text(str(carta.defesa+carta.defesaBonus))
 	$vida.set_text(str((carta.vida+carta.vidaBonus)-carta.danoRecebido))
-	
+	desenhaAtributosComplementares()
 	
 	
 func desenhaAtributosComplementares():
