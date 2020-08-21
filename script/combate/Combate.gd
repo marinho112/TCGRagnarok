@@ -41,7 +41,8 @@ func _ready():
 	listaJogadores[1].ai.combate = self
 	listaJogadores[0].definirAreas($mao,$Personagem,$zenys,$Container/Jogador1Ataque,$Container/Jogador1Defesa)
 	listaJogadores[1].definirAreas($maoOponente,$Oponente,$zenysOponente,$Container/Jogador2Ataque,$Container/Jogador2Defesa)
-
+	listaJogadores[0].personagem = ControlaDados.carregaPersonagemPorID((randi()%18+8))
+	listaJogadores[1].personagem = ControlaDados.carregaPersonagemPorID((randi()%18+8))
 	listaJogadores[1].ai.definirJogador(listaJogadores[1])
 	
 	jogador = listaJogadores[0]
@@ -49,8 +50,8 @@ func _ready():
 	$ControladorCartas.jogador=listaJogadores[0]
 	#$mao.definirJogador(listaJogadores[0])
 	#$maoOponente.definirJogador(listaJogadores[1])
-	$Personagem.atualizarPersonagem(ControlaDados.carregaPersonagemPorID((randi()%18+8)))
-	$Oponente.atualizarPersonagem(ControlaDados.carregaPersonagemPorID((randi()%18)+8))
+	$Personagem.atualizarPersonagem(listaJogadores[0].personagem)
+	$Oponente.atualizarPersonagem(listaJogadores[1].personagem)
 	$Personagem.carta.revelada=true
 	$Oponente.carta.revelada=true
 	set_process(true)
@@ -360,7 +361,9 @@ func retornaListaAreas(jogador,tipo,cartas = false):
 					alvo=$Container/Jogador2Ataque
 				2:
 					alvo=$Container/Jogador2Defesa
+	return retornaCartasArea(alvo,cartas)
 	
+func retornaCartasArea(alvo,cartas=true):
 	var lista = []
 	for item in alvo.get_children():
 		if item.is_in_group(Constante.GRUPO_AREA_CARTA):
@@ -372,6 +375,8 @@ func retornaListaAreas(jogador,tipo,cartas = false):
 				lista.append(item)
 	
 	return lista
+
+
 
 func pausar(intensidade):
 	if(intensidade == 0):

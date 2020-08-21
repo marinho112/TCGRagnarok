@@ -131,7 +131,11 @@ func positionAreaCarta(area,carta):
 			auxCarta.set_global_position(auxArea.get_global_position())
 			var escala = (auxArea.get_parent().get_scale()) * auxArea.get_parent().get_parent().get_scale()
 			auxCarta.set_scale(escala)
-	
+
+func animacaoTrocaDeCartas(area,carta):
+	print("Animacao Troca de Cartas")
+	positionAreaCarta(area,carta)
+
 func _on_Timer_timeout():
 	duploClick=false
 

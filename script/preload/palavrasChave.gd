@@ -44,6 +44,7 @@ class palavraChave:
 	var efeito
 	var pai
 	var val1
+	var incentivoAtaqueDefesa = 0
 
 	func recebeNome():
 		return Ferramentas.receberTexto("palavrasChave",id)
@@ -53,11 +54,15 @@ class palavraChave:
 	
 	func recebeDescricao():
 		return Ferramentas.receberTexto("palavrasChave",id,1)
+		
+	func receberIncentivo():
+		return incentivoAtaqueDefesa
 
 class AtaqueDistancia extends palavraChave:
 	
 	func _init():
 		id=1
+		incentivoAtaqueDefesa = 20
 
 class Iniciativa extends palavraChave:
 	
@@ -68,6 +73,7 @@ class Ofensivo extends palavraChave:
 	
 	func _init():
 		id=3
+		incentivoAtaqueDefesa = 7
 		
 class Imovel extends palavraChave:
 	
@@ -88,6 +94,7 @@ class Meditar extends palavraChave:
 	
 	func _init():
 		id=7
+		incentivoAtaqueDefesa = -10
 		
 	func recebeNome():
 		var texto = .recebeNome()
@@ -103,11 +110,13 @@ class Passivo extends palavraChave:
 	
 	func _init():
 		id=8
+		incentivoAtaqueDefesa = -6
 
 class Golpear extends palavraChave:
 	
 	func _init():
 		id=9
+		incentivoAtaqueDefesa = 5
 	
 class Afinidade extends palavraChave:
 
@@ -137,12 +146,13 @@ class Esquivo extends palavraChave:
 	
 	func _init():
 		id=12
+		incentivoAtaqueDefesa = -20
 		
 class Recarregar extends palavraChave:
 	var turnos = 0
 	func _init():
 		id=13
-		
+		incentivoAtaqueDefesa = -8
 	func recebeNome():
 		var texto = .recebeNome()
 		texto +=" "+str(val1) 
@@ -157,3 +167,4 @@ class InicioDeTurno extends palavraChave:
 	
 	func _init():
 		id=14
+		incentivoAtaqueDefesa = -10

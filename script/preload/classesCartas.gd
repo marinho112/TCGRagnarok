@@ -44,15 +44,19 @@ class objetoDeBatalha extends carta:
 	var listaHabilidades = []
 	
 	func reduzirVidaBonus(val):
+		if (val<0):
+			val = 0
 		vidaBonus-= val
 		if ((vida + vidaBonus)<=danoRecebido):
 			danoRecebido = (vida + vidaBonus) -1
 	func retornaPoder():
-		return poder
+		return poder + poderBonus
 	func retornaVida():
-		return vida
+		return retornaVidaTotal() - danoRecebido
+	func retornaVidaTotal():
+		return vida + vidaBonus
 	func retornaDefesa():
-		return defesa
+		return defesa + defesaBonus
 		
 	func calculaDano(dano):
 		var retorno = dano - defesa
