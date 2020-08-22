@@ -9,7 +9,10 @@ func acaoClick():
 			pass
 		1:
 			get_parent().subFase+=1
+			estado = 0
 		2:
-			pass
+			get_parent().bloqueado = true
+			estado = 0
+			
 	
 

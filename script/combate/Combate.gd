@@ -17,6 +17,7 @@ var turno = 0
 var jogador 
 var oponente
 var CARTAS_INICIAIS=5
+var bloqueado = false
 
 var confrontarAtaques1 = 0
 var confrontarAtaques2 = 0
@@ -249,36 +250,45 @@ func inicioFaseCombate(delta):
 		return false
 		
 func faseCombate(delta):
-	
 	match subFase:
 		0:
 			var tipJogador= jogador.time+1
 			var tipOponente = oponente.time+1
 			var areaAtk= retornaListaAreas(tipJogador,1,true)
 			var areaDef= retornaListaAreas(tipOponente,2,true)
-			if(oponente.listaCampoMonstro.size()==0):
-				subFase=3
-			controlarDestaque(tipJogador)
+			if(retornaCartasArea(oponente.areaDefesa).size()==0):
+				subFase=2
+			else:
+				controlarDestaque(tipJogador)
+				subFase=1
 		1: 
 			#aguardar Oponente
 			$btnAzul.estado=0
 			$btnAzul.set_text(0,false)
+			if(oponente.ai.definirBloqueadores(true,delta)):
+				subFase=2
+				
 		2: 
-			#aguardar Oponente
-			$btnAzul.estado=1
-			$btnAzul.set_text(1,false)
-		3:
 			#Confirmar Ataque
 			$btnAzul.estado=1
 			$btnAzul.set_text(5,true)
 			$btnVermelho.set_text(0,false,false)
-		4:
+		3:
 			$btnAzul.estado=0
 			$btnAzul.set_text(0,false)
 			return true
 	return false
 
-
+func definirBloqueadores(retorno,delta):
+	
+	$ControladorCartas.ativado=!retorno
+	$ControladorCartas.defesa=!retorno
+	$btnAzul.estado=2
+	$btnAzul.set_text(6,true)
+	$btnVermelho.set_text(0,false,false)
+	
+	return retorno
+	
 func realizarAtaque(delta):
 	if(subFase <6):
 		var tipJogador= jogador.time+1

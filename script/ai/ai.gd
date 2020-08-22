@@ -7,10 +7,17 @@ var areaAtaque
 var areaDefesa
 var jogador
 
+
+
+var contador=0
+
 var criarListaAtaqueDefesa=false 
 var listaDecidirAtaqueDefesa=[]
 var listaCartasCampo=[]
 var listaCartasCampoOponente=[]
+var listaCartasAtacantes = null
+var listaOrdemBloqueio =[]
+var listaCartasBloqueio = []
 var necessidadeDeDefesa = 0
 var antiNecessidadeDeDefesa = 0
 var tempoPassado = 0
@@ -41,7 +48,7 @@ func fasePrincipal(delta):
 	var retorno = false
 	tempoPassado+=delta
 	if (tempoPassado > 0.1):
-		return calcularCartaJogada(delta)
+		retorno = calcularCartaJogada(delta)
 		tempoPassado = 0
 	return retorno
 	
@@ -51,22 +58,32 @@ func fasePrincipal1(delta):
 		if criarListaAtaqueDefesa:
 			criarListaAtaqueDefesa()
 		else:
-			retorno = calcularPosicoesCartasAtaque(delta)
+			if(listaCartasAtacantes == null):
+				calcularPosicoesCartasAtaque()
+			else:
+				retorno = posicionarCartasAtaque(delta)
 	return retorno
 func inicioFaseCombate(delta):
+	combate.bloqueado=false
 	return combate.inicioFaseCombate(delta)
+	
 func faseCombate(delta):
 	var retorno = false
 	tempoPassado+=delta
 	if (tempoPassado > 0.1):
-		retorno = true
-		tempoPassado = 0
+		if(listaCartasAtacantes.size()>0):
+			if(combate.oponente.ai.definirBloqueadores(combate.bloqueado,delta)):
+				retorno = true
+				tempoPassado = 0
+		else:
+			retorno = true
 	return retorno
 
 func realizarAtaque(delta):
 	return combate.realizarAtaque(delta)
 func inicioFasePrincipal2(delta):
-	criarListaAtaqueDefesa=true
+	listaCartasAtacantes = null
+	#criarListaAtaqueDefesa=true
 	return combate.inicioFasePrincipal2(delta)
 func fasePrincipal2(delta):
 	return fasePrincipal(delta)
@@ -186,8 +203,8 @@ func defineListaCartasCampoOponente():
 	var oponenteAreaAtaque = combate.listaJogadores[0].areaAtaque
 	var oponenteAreaDefesa = combate.listaJogadores[0].areaDefesa
 	listaCartasCampoOponente = combate.retornaCartasArea(oponenteAreaAtaque)+combate.retornaCartasArea(oponenteAreaDefesa)
-	
 
+	
 func defineNecessidadeDeDefesa():
 	necessidadeDeDefesa = 0
 	defineListaCartasCampoOponente()
@@ -221,33 +238,58 @@ func listaXmaiores(x,lista):
 		listaNova.append(maior[1])
 	return listaNova
 	
-func calcularPosicoesCartasAtaque(delta):
-	var retorno = false
-	var numAtacantes = calcularNumeroAtacantes()
+func calcularPosicoesCartasAtaque():
 	
+	var numAtacantes = calcularNumeroAtacantes()
 	var listaAtacantes = listaXmaiores(listaCartasCampo.size(),listaDecidirAtaqueDefesa)
-	var posicoesValidas = calcularPosicoesValidas(areaAtaque)
-	var listaCartasAtacantes = []
+	listaCartasAtacantes = []
+	listaCartasBloqueio = []
 	for c in listaCartasCampo.size():
+		var carta = listaCartasCampo[listaAtacantes[c]] 
 		if(listaCartasAtacantes.size()<numAtacantes):
-			var carta = listaCartasCampo[listaAtacantes[c]] 
 			if(!carta.carta.temPalavraChave(4)):
 				listaCartasAtacantes.append(carta)
-	
-	for carta in listaCartasAtacantes:
-		var passa = true
+		else:
+			if(!carta.carta.temPalavraChave(4)):
+				listaCartasBloqueio.append(carta)
+
+
+func posicionarCartasAtaque(delta):
+	var retorno = false
+	var posicoesValidas = calcularPosicoesValidas(areaAtaque)
+	var posicoesValidasb = calcularPosicoesValidas(areaDefesa)
+	var numAtaque = listaCartasAtacantes.size()
+	if(contador < numAtaque):
+		var carta = listaCartasAtacantes[contador]
 		if(!carta.posicaoJogo.is_in_group(Constante.GRUPO_AREA_CARTA_ATAQUE)):
 			for posicao in posicoesValidas:
-				if passa:
-					if(posicao.carta==null):
+				if(posicao.carta==null):
+					combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
+					return false
+				elif(listaCartasAtacantes.count(posicao.carta)==0):
+					if(!posicao.carta.carta.temPalavraChave(4)):
 						combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
-						passa=false
-					elif(listaCartasAtacantes.count(posicao.carta)==0):
-						if(!posicao.carta.carta.temPalavraChave(4)):
-							combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
-							passa=false
-	retorno = true
+						return false
+		contador +=1
+	elif(contador < (numAtaque+listaCartasBloqueio.size())):
+		print("NUMERO: "+str(contador-numAtaque))
+		var carta = listaCartasBloqueio[contador-numAtaque]
+		var passa = true
+		if(!carta.posicaoJogo.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA)):
+			for posicao in posicoesValidasb:
+				if(posicao.carta==null):
+					combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
+					return false
+				elif(listaCartasBloqueio.count(posicao.carta)==0):
+					if(!posicao.carta.carta.temPalavraChave(4)):
+						combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
+						return false
+		contador +=1
+	else:
+		retorno = true
+		contador = 0
 	return retorno
+
 
 func calcularNumeroAtacantes():
 	var fator = necessidadeDeDefesa - antiNecessidadeDeDefesa
@@ -268,3 +310,37 @@ func calcularPosicoesValidas(area):
 	
 	return lista
 	
+
+
+func definirBloqueadores(retorno,delta):
+	
+	if(contador==0):
+		var listaCartasAtaqueOponente = combate.retornaCartasArea(combate.listaJogadores[0].areaAtaque,false)
+		listaCartasBloqueio = combate.retornaCartasArea(areaDefesa,false)
+		var tamanhoListaAD=listaDecidirAtaqueDefesa.size()
+		var listaValores = listaXmaiores(tamanhoListaAD,listaDecidirAtaqueDefesa)
+		listaOrdemBloqueio = defineOrdemAtaqueDefesa(listaCartasAtaqueOponente,listaCartasBloqueio)
+	
+	var item = listaOrdemBloqueio[contador]
+	if item!=null:
+		var cartaBloqueio = listaCartasBloqueio[item].carta
+		
+		var areaBloqueio = listaCartasBloqueio[contador]
+		
+		combate.get_node("ControladorCartas").animacaoTrocaDeCartas(areaBloqueio,cartaBloqueio)
+		print(combate.retornaCartasArea(areaDefesa,false))
+	
+	contador+=1
+	return (contador>=6)
+
+func defineOrdemAtaqueDefesa(listaA,listaB):
+	var retorno = [null,null,null,null,null,null]
+	var x = 0
+	for i in listaA.size():
+		var item = listaA[i]
+		if(item.carta!= null):
+			while(x<listaB.size()):
+				if(listaB[x].carta!=null):
+					retorno[i]=x
+				x+=1
+	return retorno

@@ -7,6 +7,7 @@ var listaJogadores =[]
 var jogador 
 
 var ativado = true
+var defesa = false
 var cartaSelecionada
 var cursorMouse 
 var cursorMousePosition
@@ -29,7 +30,7 @@ func _process(delta):
 						if(duploClick):
 							area.setZoom(!area.zoom)
 							duploClick=false
-						else:	
+						elif((!defesa)or(area.posicaoJogo.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA))):	
 							if(!area.zoom):
 								selecionaCarta(area)
 								cursorMousePosition = cursorMouse.get_global_position()
@@ -101,6 +102,9 @@ func positionAreaCarta(area,carta):
 	
 	var auxArea
 	var auxCarta
+	
+	if((defesa)and(!area.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA))):
+		area= carta.posicaoJogo
 	
 	if(area!=null):
 		if(area.carta != null):
