@@ -149,3 +149,22 @@ func selecionaCarta(carta):
 		carta.set_z_index(10)
 	
 	cartaSelecionada = carta
+
+
+func recebeAreaVazia(area):
+	for item in area.get_children():
+		if(item.is_in_group(Constante.GRUPO_AREA_CARTA)):
+			if(item.carta== null):
+				return item
+	return null
+	
+
+func recebeAreaCartaMovel(area):
+	for item in area.get_children():
+		if(item.is_in_group(Constante.GRUPO_AREA_CARTA)):
+			if(item.carta!= null):
+				if(item.carta.carta.temPalavraChave(4)):
+					pass
+				else:
+					return item
+	return null

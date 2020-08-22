@@ -193,7 +193,7 @@ func faseInicial(delta):
 	
 		if(jogador.maxZeny < 10):
 			jogador.maxZeny+=1
-			jogador.zeny=jogador.maxZeny
+		jogador.zeny=jogador.maxZeny
 		jogador.areaZenys.atualizarZeny()
 		return true
 	else:

@@ -41,16 +41,18 @@ func fasePrincipal(delta):
 	var retorno = false
 	tempoPassado+=delta
 	if (tempoPassado > 0.1):
-		if(calcularCartaJogada(delta)):
-			if criarListaAtaqueDefesa:
-				criarListaAtaqueDefesa()
-			else:
-				retorno = calcularPosicoesCartasAtaque(delta)
+		return calcularCartaJogada(delta)
 		tempoPassado = 0
 	return retorno
 	
 func fasePrincipal1(delta):
-	return fasePrincipal(delta)
+	var retorno = false
+	if(fasePrincipal(delta)):
+		if criarListaAtaqueDefesa:
+			criarListaAtaqueDefesa()
+		else:
+			retorno = calcularPosicoesCartasAtaque(delta)
+	return retorno
 func inicioFaseCombate(delta):
 	return combate.inicioFaseCombate(delta)
 func faseCombate(delta):
@@ -78,10 +80,23 @@ func calcularCartaJogada(delta):
 	var zeny = jogador.zeny
 	var listaCartasPossiveis= receberCartasPossiveis(zeny)
 	var retorno = true
-	
-	if(listaCartasPossiveis.size()>0):
-		var numero = randi()%listaCartasPossiveis.size()
-		retorno = !jogar(listaCartasPossiveis[numero])
+	while((listaCartasPossiveis.size()>0)and(retorno)):
+		var contAtaque = 0
+		var contDefesa = 0
+		contAtaque = combate.retornaCartasArea(areaAtaque).size()
+		contDefesa = combate.retornaCartasArea(areaDefesa).size()
+		
+		if((contAtaque+contDefesa)<12):
+			var numero = randi()%listaCartasPossiveis.size()
+			var cartaJogar = listaCartasPossiveis[numero]
+			if((cartaJogar.temPalavraChave(4))and(contAtaque==6)):
+				if(!abrirEspacoArea("ataque")):
+					listaCartasPossiveis.remove(listaCartasPossiveis.find(cartaJogar))
+				retorno = !jogar(cartaJogar)
+			else:
+				retorno = !jogar(cartaJogar)
+		else:
+			listaCartasPossiveis = []
 	return retorno
 	
 func receberCartasPossiveis(zeny):
@@ -94,9 +109,33 @@ func receberCartasPossiveis(zeny):
 	
 	return lista
 	
+func abrirEspacoArea(areaNome):
+	var area
+	var areaVazia
+	var espacoUm=null
+	var espacoDois=null
+	var cont =0
+	var controlador=combate.get_node("ControladorCartas")
+	
+	match(areaNome):
+		"ataque":
+			area=areaAtaque
+			areaVazia=areaDefesa
+		"defesa":
+			area=areaDefesa
+			areaVazia=areaAtaque
+	espacoUm=controlador.recebeAreaCartaMovel(area)
+	espacoDois=controlador.recebeAreaVazia(areaVazia)
+	if((espacoUm!=null)and(espacoDois!=null)):
+		controlador.positionAreaCarta(espacoDois,espacoUm.carta)
+		return true
+	else:
+		return false
+	
 func jogar(carta):
 	var retorno = false
 	var mao = areaMao.mao
+	var passa = true
 	if((carta.custo <= jogador.zeny)):
 		if(carta.tipo == Constante.CARTA_MONSTRO):
 			carta.revelada=true
@@ -105,9 +144,14 @@ func jogar(carta):
 			
 			if(cartaNova != null):
 				#controlador.positionAreaCarta(areaRelevante,cartaNova)
-				var lista = cartaNova.carta.listaPalavraChave
+				var lista = carta.listaPalavraChave
 				for elemento in lista:
 					if (elemento.id == 4):
+						for area in areaAtaque.get_children():
+							if (passa and area.is_in_group(Constante.GRUPO_AREA_CARTA)):
+								if(area.carta==null):
+									passa=false
+									controlador.positionAreaCarta(area,cartaNova)
 						cartaNova.imovel=true
 			
 			mao.remove(mao.find(carta))
@@ -202,18 +246,6 @@ func calcularPosicoesCartasAtaque(delta):
 						if(!posicao.carta.carta.temPalavraChave(4)):
 							combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
 							passa=false
-					
-#	for p in posicoesValidas.size():
-#		var posicao = posicoesValidas[p]
-#		var carta = null 
-#		if(p<listaAtacantes.size()):
-#			carta=listaCartasCampo[listaAtacantes[p]] 
-#		if(carta != null):
-#			combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
-	
-	#print(listaDecidirAtaqueDefesa)
-	#print(listaXmaiores(listaDecidirAtaqueDefesa.size(),listaDecidirAtaqueDefesa))
-		
 	retorno = true
 	return retorno
 
