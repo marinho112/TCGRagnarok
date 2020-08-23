@@ -14,19 +14,17 @@ func _ready():
 	setZoom(false)
 
 func golpear(carta):
-	var retorno = self.carta.golpear(carta.carta)
-	carta.verificaVida()
-	return retorno
+	pass
 	
 func desenhaAtributos():
 	pass
 	
 func verificaVida():
-	pass
+	print("NÂO IMPLEMENTADO NA CARTA GENERICA")
 
 func exibirCartas():
 	var raiz = get_node("/root/main/Combate/")
-	raiz.pausar(3)
+	raiz.pausar(4)
 	var listaItens = [carta]
 	var lista = raiz.get_node("listaExibicaoCartas")
 	listaItens += carta.listaCartasRelacionadas

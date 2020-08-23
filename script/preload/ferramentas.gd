@@ -34,3 +34,10 @@ func positivo (num):
 	if(num<0):
 		num *= -1
 	return num
+
+func calcularDistancia(obj1,obj2):
+	var obj1Position=obj1.get_global_position()
+	var obj2Position=obj2.get_global_position()
+	
+	var diferenca = obj1Position-obj2Position
+	return Vector2(positivo(diferenca.x),positivo(diferenca.y))

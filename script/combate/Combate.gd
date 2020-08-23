@@ -413,6 +413,9 @@ func pausar(intensidade):
 		$maoOponente.ativado = false
 		$Personagem.ativado = false
 		listaPausa[2]=true
+	if(intensidade >3):
+		ativado = true
+		listaPausa[1]=false
 		
 
 func controlarDestaque(atacante):
@@ -495,3 +498,5 @@ func golpear(golpeador,alvo):
 	#print(retorno)
 	
 	
+func verificarMorte(carta):
+	return carta.verificaVida()

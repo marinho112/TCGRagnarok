@@ -9,7 +9,6 @@ resource_name = "New Anim"
 script = ExtResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-animation = "New Anim"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 

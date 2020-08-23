@@ -137,8 +137,13 @@ func positionAreaCarta(area,carta):
 			auxCarta.set_scale(escala)
 
 func animacaoTrocaDeCartas(area,carta):
-	print("Animacao Troca de Cartas")
-	positionAreaCarta(area,carta)
+	
+	if((area==carta.posicaoJogo)or (area==null) or (carta == null)):
+		return positionAreaCarta(area,carta)
+	var animacao=load("res://cenas/animacoes/animacaoTrocaMonstros.tscn").instance()
+	animacao.definirPai(get_parent())
+	animacao.play(carta.posicaoJogo,area,2)
+	
 
 func _on_Timer_timeout():
 	duploClick=false

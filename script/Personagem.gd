@@ -46,12 +46,20 @@ func atualizarDefesa(defesa):
 func golpear(carta):
 	
 	var retorno = self.carta.golpear(carta.carta)
+	carta.desenhaAtributos()
 	carta.verificaVida()
 	return retorno
 	
-	
-func verificaVida():
+
+func desenhaAtributos():
 	atualizaInfoPersonagem()
+
+func verificaVida():
+	if(carta.retornaVida()<=0):
+		print("Jogador "+str(jogador.time)+" MORREU!!!")
+		return true
+	else:
+		return false
 
 func _on_Timer_timeout():
 	duploClick = false

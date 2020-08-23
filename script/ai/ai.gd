@@ -71,7 +71,7 @@ func faseCombate(delta):
 	var retorno = false
 	tempoPassado+=delta
 	if (tempoPassado > 0.1):
-		if(listaCartasAtacantes.size()>0):
+		if(combate.retornaCartasArea(areaAtaque).size()>0):
 			if(combate.oponente.ai.definirBloqueadores(combate.bloqueado,delta)):
 				retorno = true
 				tempoPassado = 0

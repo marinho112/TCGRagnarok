@@ -214,3 +214,9 @@ func desenharHabilidades():
 			var valor = habilidade[2]
 			$Habilidade2/custoHabilidade.set_text(valor)
 			tamanho = 1
+
+func golpear(carta):
+	var retorno = self.carta.golpear(carta.carta)
+	carta.desenhaAtributos()
+	carta.verificaVida()
+	return retorno
