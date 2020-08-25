@@ -1,5 +1,10 @@
 extends Node
 
+func criarXY(eliminado,lista):
+	var xy = eliminarXdeY.new()
+	xy.definirXY(eliminado,lista)
+	return xy
+	
 func getEfeito(id,pai,palavraPai):
 	var retorno 	
 	match id:
@@ -38,26 +43,40 @@ class efeito:
 	var palavraPai
 	var listaPalavras = []
 	
-	func ativar():
+	func ativar(carta=null):
 		pass
 	
 	func recebeDescricao():
 		return Ferramentas.receberTexto("efeitos",id)
+
+class eliminarXdeY extends efeito: 
+	var x
+	var y
+	
+	func definirXY(eliminado,lista):
+		self.x=eliminado
+		self.y=lista
+	
+	func ativar(carta=null):
+		y.remove(y.find(x))
 
 class Mais1Ataque extends efeito:
 	
 	func _init():
 		id=1
 	
-	func ativar():
-		pai.poder += 1
-		
+	func ativar(carta=null):
+		if(carta==null):
+			pai.poderBonusEfemero += 1
+		else:
+			carta.poderBonusEfemero+=1
+			
 class Coletar1 extends efeito:
 	
 	func _init():
 		id=2
 	
-	func ativar():
+	func ativar(carta=null):
 		pass
 
 class CriarBalaNaMao extends efeito:
@@ -65,23 +84,26 @@ class CriarBalaNaMao extends efeito:
 	func _init():
 		id=3
 	
-	func ativar():
+	func ativar(carta=null):
 		pass
 
 class Mais1DefPoring extends efeito:
 	
 	func _init():
 		id=4
-	
-	func ativar():
-		pass
+		
+	func ativar(carta=null):
+		if(carta!=null):
+			if(carta.carta.dono == pai.dono):
+				if(carta.carta.subRaca==Constante.SUB_RACA_PORING):
+					carta.carta.defesaBonus+=1
 
 class Mais1AtaquePoring extends efeito:
 	
 	func _init():
 		id=5
 	
-	func ativar():
+	func ativar(carta=null):
 		pass
 
 class DevolveArmaInimigo extends efeito:
@@ -89,7 +111,7 @@ class DevolveArmaInimigo extends efeito:
 	func _init():
 		id=6
 	
-	func ativar():
+	func ativar(carta=null):
 		pass
 		
 	func recebeDescricao():
@@ -103,7 +125,7 @@ class Mais1AtaqueAmorfo extends efeito:
 	func _init():
 		id=7
 	
-	func ativar():
+	func ativar(carta=null):
 		pass
 		
 class CriePoringDef extends efeito:
@@ -111,7 +133,7 @@ class CriePoringDef extends efeito:
 	func _init():
 		id=8
 	
-	func ativar():
+	func ativar(carta=null):
 		pass
 		
 class CureSeusPoringsEm3 extends efeito:
@@ -119,7 +141,7 @@ class CureSeusPoringsEm3 extends efeito:
 	func _init():
 		id=9
 	
-	func ativar():
+	func ativar(carta=null):
 		pass
 	
 		
@@ -128,5 +150,5 @@ class DarProtecao4Elementos extends efeito:
 	func _init():
 		id=10
 	
-	func ativar():
+	func ativar(carta=null):
 		pass

@@ -1,12 +1,12 @@
 extends Node
 
-func criaCartaAleatoria(pai,posicao,val=false):
-	var carta = ControlaDados.carregaCartaAleatoria()
+func criaCartaAleatoria(jogador,pai,posicao,val=false):
+	var carta = ControlaDados.carregaCartaAleatoria(jogador)
 	return criarCarta(carta,pai,posicao,val)
 	
 
-func criarCartaDoZero(idCarta,pai,posicao,val=false):
-	var carta = ControlaDados.carregaCartaPorID(idCarta)
+func criarCartaDoZero(idCarta,jogador,pai,posicao,val=false):
+	var carta = ControlaDados.carregaCartaPorID(idCarta,jogador)
 	return criarCarta(carta,pai,posicao,val)
 	
 func criarCarta(carta,pai,posicao,val=false):
@@ -46,8 +46,9 @@ func criarCartaMonstro(carta,pai,posicao,val):
 	else:
 		objetoCarta = load("res://cenas/cartas/CartaMonstro.tscn").instance()
 
-	objetoCarta.preparaCarta(carta)
+	
 	pai.add_child(objetoCarta)
+	objetoCarta.preparaCarta(carta)
 	objetoCarta.set_global_position(posicao)
 	return objetoCarta
 	

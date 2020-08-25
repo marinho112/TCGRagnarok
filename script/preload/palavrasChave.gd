@@ -58,6 +58,15 @@ class palavraChave:
 	func receberIncentivo():
 		return incentivoAtaqueDefesa
 
+	func aoJogar():
+		pass
+	
+	func aoComprar():
+		pass
+	
+	func aoDescartar():
+		pass
+		
 class AtaqueDistancia extends palavraChave:
 	
 	func _init():
@@ -108,9 +117,15 @@ class Meditar extends palavraChave:
 	
 class Passivo extends palavraChave:
 	
+	
 	func _init():
 		id=8
 		incentivoAtaqueDefesa = -6
+	
+	func aoJogar():
+		pai.dono.listaHabilidadesPassivas.append(efeito)
+		var xy = Efeitos.criarXY(efeito,pai.dono.listaHabilidadesPassivas)
+		pai.listaEfeitoMorrer.append(xy)
 
 class Golpear extends palavraChave:
 	

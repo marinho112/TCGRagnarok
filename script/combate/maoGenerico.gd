@@ -12,11 +12,6 @@ var jogador
 var cardZoom 
 
 
-
-
-func _ready():
-	pass
-	
 func definirJogador(parametro):
 	jogador = parametro
 	mao = parametro.listaMao

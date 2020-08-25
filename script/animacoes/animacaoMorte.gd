@@ -4,6 +4,10 @@ var ocilacao = 5
 var tempo= 1
 var contador =0
 
+func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
+	pai.get_node("controladorAnimacao").atualizarAoTermino=true
+	.play(dono,listaAlvos,4,velo)
+
 func _process(delta):
 	
 	if(contador<(tempo*velo)):
@@ -16,5 +20,7 @@ func _process(delta):
 	contador+=delta
 	
 func encerrar():
-	dono.queue_free()
-	.encerrar()
+	var listaDono = dono.carta.listaEfeitoMorrer+pai.jogador.listaAoMorrer
+	if(pai.resolveHabilidades(listaDono,pai.oponente.listaAoMorrer)):
+		dono.queue_free()
+		.encerrar()

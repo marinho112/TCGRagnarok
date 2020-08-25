@@ -86,11 +86,14 @@ func jogar(carta):
 			cartaLogica.revelada=true
 			var controlador = pai.get_node("ControladorCartas")
 			var cartaNova = controlador.criarMonstro(cartaLogica,jogador)
-			print(cartaLogica.raca)
 			mao.remove(mao.find(cartaLogica))
 			atualizaMao()
 			jogador.zeny -= cartaLogica.custo
 			jogador.areaZenys.atualizarZeny()
+			for palavra in cartaLogica.listaPalavraChave:
+				palavra.aoJogar()
+			pai.atualizaTodasCartas()
+
 			return cartaNova
 	else:
 		retornarCarta()
@@ -218,7 +221,7 @@ func moveu(carta):
 		moveu = true
 	
 	return moveu
-
+	
 
 func _on_Timer_timeout():
 	duploClik = false

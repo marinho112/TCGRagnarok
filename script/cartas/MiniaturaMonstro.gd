@@ -19,6 +19,7 @@ func carregaImagem():
 	fundo="ScrollContainer/fundo"
 	.carregaImagem()
 	$ScrollContainer/fundo.set_position(carta.posicaoImagem + Vector2(174,95))
+	
 
 func desenharPropriedade(complemento=""):
 	.desenharPropriedade("-Reduzido")
@@ -46,4 +47,5 @@ func verificaVida():
 func animacaoMorte():
 	var animacao = load("res://cenas/animacoes/animacaoMorte.tscn").instance()
 	animacao.definirPai(get_parent())
-	animacao.play(self,[],4)
+	animacao.play(self,[])
+	

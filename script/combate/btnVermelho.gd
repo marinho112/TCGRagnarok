@@ -8,7 +8,6 @@ func acaoClick():
 		0:
 			pass
 		1:
-			get_parent().subFase = 0
-			get_parent().fase = 10
+			get_parent().passeLivre = true
 		2:
 			pass

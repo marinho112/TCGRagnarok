@@ -175,6 +175,9 @@ func jogar(carta):
 			areaMao.atualizaMao()
 			jogador.zeny -= carta.custo
 			jogador.areaZenys.atualizarZeny()
+			for palavra in carta.listaPalavraChave:
+				palavra.aoJogar()
+			combate.atualizaTodasCartas()
 			retorno= true
 	else:
 		areaMao.atualizaMao()

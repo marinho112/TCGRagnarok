@@ -3,25 +3,36 @@ extends "res://script/cartas/Carta.gd"
 var fundo ="fundo"
 var miniatura = false
 var imovel = false
+var palavraPosition
 
 	
 func _ready():
-	add_to_group(Constante.GRUPO_CARTA_MONSTRO)	
-	
-func verificaVida():
-	desenhaAtributos()
-	if((carta.vida+carta.vidaBonus)<=carta.danoRecebido):
-		print("morreu")
+	add_to_group(Constante.GRUPO_CARTA_MONSTRO)
+	palavraPosition = $PalavraChaveObjeto.get_position()
 	
 
-func preparaCarta(carta = carta):
+
+func preparaCarta(carta = self.carta):
 	self.carta=carta
+	calcularBonus()
 	desenhaAtributos()
 	desenharPropriedade()
 	carregaImagem()
 	desenhaPalavrasChave()
 	desenharHabilidades()
 
+
+func calcularBonus():
+	var pai = get_parent()
+	var combate=get_node("/root/main/Combate/")
+	carta.zerarBonus()
+	if!(pai.is_in_group(Constante.GRUPO_AREA_MAO) or pai.is_in_group(Constante.GRUPO_AREA_MAO_OPONENTE)):
+		
+		var grandeLista = combate.jogador.listaHabilidadesPassivas + combate.oponente.listaHabilidadesPassivas
+		for habiilidade in grandeLista:
+			habiilidade.ativar(self)
+		
+	
 func desenhaAtributos():
 	var fonte = "cartas"
 	if(carta.tipo == Constante.CARTA_PERSONAGEM):
@@ -40,7 +51,6 @@ func desenhaAtributosComplementares():
 
 
 func desenharPropriedade(complemento = ""):
-	
 	var cor
 	var fraco
 	var forte
@@ -168,22 +178,16 @@ func desenhaPalavrasChave():
 			texto += url
 		$PalavraChaveObjeto.atualizaPalavraChave(palavra)
 	$PalavraChaveObjeto/texto.bbcode_text= texto
-	
-	
-	var position = $PalavraChaveObjeto.get_position()
-		
+
 	tamanho *= 10
 	if tamanho < 220:
 		novaScala.x = tamanho/220.0
-		
-		
-		
-		
+
 	var linhas = int(tamanho/220) +1
-	position.y += 25 * (4-linhas) 
+	var palavraPositionY=palavraPosition.y+ 25 * (4-linhas) 
 	novaScala.y*= (0.25 * linhas) 
 		
-	$PalavraChaveObjeto.set_position(position)
+	$PalavraChaveObjeto.set_position(Vector2(palavraPosition.x,palavraPositionY))
 	$PalavraChaveObjeto/Sprite.set_scale($PalavraChaveObjeto/Sprite.get_scale()*novaScala)
 	$PalavraChaveObjeto/Sprite.set_position($PalavraChaveObjeto/Sprite.get_position()*novaScala)
 	
@@ -218,5 +222,8 @@ func desenharHabilidades():
 func golpear(carta):
 	var retorno = self.carta.golpear(carta.carta)
 	carta.desenhaAtributos()
-	carta.verificaVida()
 	return retorno
+
+
+		
+		

@@ -24,7 +24,7 @@ func verificaVida():
 
 func exibirCartas():
 	var raiz = get_node("/root/main/Combate/")
-	raiz.pausar(4)
+	raiz.pausar(3)
 	var listaItens = [carta]
 	var lista = raiz.get_node("listaExibicaoCartas")
 	listaItens += carta.listaCartasRelacionadas

@@ -6,10 +6,12 @@ var listaTimes =[]
 var listaJogadores =[Classes.jogador.new(),Classes.jogador.new()]
 var listaPausa=[false,false,false,false,false]
 
-
+var verificandoVida = 0
+var listaCartasVerificandoVida
 var ativado = true
 var cursorMouse 
 
+var contadorHabilidade = 0
 var fase = -2
 var subFase = 0
 var rodada=0
@@ -18,7 +20,7 @@ var jogador
 var oponente
 var CARTAS_INICIAIS=5
 var bloqueado = false
-
+var passeLivre= false
 var confrontarAtaques1 = 0
 var confrontarAtaques2 = 0
 
@@ -32,7 +34,7 @@ func _ready():
 	$btnVermelho.set_text(0,false,false)
 	for x in 2:
 		for i in 60:
-			listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaAleatoria())
+			listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaPorID(7,listaJogadores[x]))
 			
 	listaJogadores[0].time = 0
 	listaJogadores[1].time = 1
@@ -79,6 +81,7 @@ func _process(delta):
 					if(ai.faseInicial(delta)):
 						fase = 1
 						subFase = 0
+						passeLivre=false
 				1:
 					#Comprar Carta
 					if(ai.inicioFaseDeCompra(delta)):
@@ -96,7 +99,10 @@ func _process(delta):
 						subFase = 0
 				4:
 					#Main fase 1
-					if(ai.fasePrincipal1(delta)):
+					if(passeLivre):
+						fase = 8
+						subFase = 0
+					elif(ai.fasePrincipal1(delta)):
 						fase = 5
 						subFase = 0
 						
@@ -117,11 +123,18 @@ func _process(delta):
 				8:
 					#Main fase 2
 					if(ai.inicioFasePrincipal2(delta)):
-						fase = 9
-						subFase = 0
+						if(passeLivre):
+							fase = 10
+							subFase = 0
+						else:
+							fase = 9
+							subFase = 0
 				9:
 					#Main fase 2
-					if(ai.fasePrincipal2(delta)):
+					if(passeLivre):
+						fase = 10
+						subFase = 0
+					elif(ai.fasePrincipal2(delta)):
 						fase = 10
 						subFase = 0
 				10:
@@ -142,8 +155,14 @@ func _process(delta):
 			if(faseInicial(delta)):
 				fimTurno(delta)
 		
-		
+	
+func zerarBonusEfemero():
+	var listaCartas = retornarTodasAsCartasEmCampo()
+	for carta in listaCartas:
+		carta.carta.zerarBonusEfemero()
+	
 func fimTurno(delta):
+	zerarBonusEfemero()
 	print ("ACABOU O TURNO "+str(turno))
 	fase = 0
 	subFase = 0
@@ -154,21 +173,24 @@ func fimTurno(delta):
 	jogador = oponente
 	oponente = aux
 	
-func resolveHabilidades(listaJogador,listaOponente):
+func resolveHabilidades(listaJogador,listaOponente,carta=null):
 	var qtdJogador = listaJogador.size() 
 	var qtdOponente = listaOponente.size()
-	if((qtdJogador+qtdOponente)<subFase):
-		if(subFase<qtdJogador):
-			listaJogador[subFase].ativar()
+	if(contadorHabilidade<(qtdJogador+qtdOponente)):
+		if(contadorHabilidade<qtdJogador):
+			listaJogador[contadorHabilidade].ativar(carta)
 		else:
-			listaOponente[subFase-qtdJogador].ativar()
+			listaOponente[contadorHabilidade-qtdJogador].ativar(carta)
+		contadorHabilidade+=1
 		return false
 	else:
+		contadorHabilidade=0
 		return true
+	
 	
 func comecarJogo(delta):
 	if(subFase==0):
-		pausar(2)
+		pausar(4)
 	if(subFase< (CARTAS_INICIAIS*2)):
 		if(subFase< CARTAS_INICIAIS):
 			comprarCarta(jogador)
@@ -177,7 +199,7 @@ func comecarJogo(delta):
 	else:
 		pausar(0)
 		return true
-			
+	
 	subFase+=1
 	return false
 	
@@ -295,7 +317,7 @@ func realizarAtaque(delta):
 		var tipOponente = oponente.time+1
 		var areaAtk= retornaListaAreas(tipJogador,1)
 		var retorno = true
-		if(areaAtk[subFase].carta != null):
+		if((areaAtk[subFase].carta != null)and(verificandoVida==0)):
 			var areaDef= retornaListaAreas(tipOponente,2)
 			if(areaDef[subFase].carta != null):
 				retorno=confrontar(areaAtk[subFase].carta,areaDef[subFase].carta)
@@ -303,8 +325,22 @@ func realizarAtaque(delta):
 				retorno=confrontar(areaAtk[subFase].carta,$Personagem,false)
 			else:
 				retorno=confrontar(areaAtk[subFase].carta,$Oponente,false)
+				
 		if (retorno):
-			subFase+=1
+			
+			if(verificandoVida==0):
+				var jogAtaq = retornaCartasArea(jogador.areaAtaque)
+				var jogDef= retornaCartasArea(jogador.areaDefesa)
+				var opoAtaq= retornaCartasArea(oponente.areaAtaque)
+				var opoDef= retornaCartasArea(oponente.areaDefesa)
+				listaCartasVerificandoVida= jogAtaq+jogDef+opoAtaq+opoDef
+			if(verificandoVida<listaCartasVerificandoVida.size()):
+				verificarMorte(listaCartasVerificandoVida[verificandoVida])
+				verificandoVida+=1
+			else:
+				verificandoVida =0
+				#atualizaTodasCartas()
+				subFase+=1
 		
 		return false
 	else:
@@ -391,12 +427,13 @@ func retornaCartasArea(alvo,cartas=true):
 func pausar(intensidade):
 	if(intensidade == 0):
 		$ControladorCartas.ativado = $ControladorCartas.ativado or listaPausa[0]
-		ativado = ativado or listaPausa[1]
+		$ControladorCartas.ativado = $ControladorCartas.ativado or listaPausa[1]
 		$mao.ativado = $mao.ativado or listaPausa[2]
 		$maoOponente.ativado = $maoOponente.ativado or listaPausa[2]
 		$Personagem.ativado = $Personagem.ativado or listaPausa[2]
 		$Oponente.ativado = $Oponente.ativado or listaPausa[2]
 		$Personagem.ativado = $Personagem.ativado or listaPausa[2]
+		ativado = ativado or listaPausa[3]
 		for item in listaPausa:
 			item = false
 			
@@ -404,7 +441,7 @@ func pausar(intensidade):
 		$ControladorCartas.ativado = false
 		listaPausa[0] = true
 	if(intensidade > 1):
-		ativado = false
+		$ControladorCartas.ativado = false
 		listaPausa[1]=true
 	if(intensidade >2):
 		$mao.ativado = false
@@ -414,8 +451,11 @@ func pausar(intensidade):
 		$Personagem.ativado = false
 		listaPausa[2]=true
 	if(intensidade >3):
-		ativado = true
-		listaPausa[1]=false
+		ativado = false
+		listaPausa[3]=true
+		$ControladorCartas.ativado = true
+	if(intensidade >4):
+		$ControladorCartas.ativado = false
 		
 
 func controlarDestaque(atacante):
@@ -500,3 +540,16 @@ func golpear(golpeador,alvo):
 	
 func verificarMorte(carta):
 	return carta.verificaVida()
+
+func retornarTodasAsCartasEmCampo():
+	var lista1 = retornaCartasArea($Container/Jogador1Ataque)
+	var lista2 = retornaCartasArea($Container/Jogador2Ataque)
+	var lista3 = retornaCartasArea($Container/Jogador1Defesa)
+	var lista4 = retornaCartasArea($Container/Jogador2Defesa)
+	return lista1+lista2+lista3+lista4
+
+func atualizaTodasCartas():
+	var listaCartas = retornarTodasAsCartasEmCampo()
+	
+	for carta in listaCartas:
+		carta.preparaCarta()

@@ -3,7 +3,7 @@ extends Node
 func _ready():
 	randomize()
 
-func carregaCartaAleatoria():
+func carregaCartaAleatoria(jogador):
 	
 	var arquivo = File.new()
 	#var erro = arquivo.open("res://dados/teste.data",File.WRITE)
@@ -37,13 +37,14 @@ func carregaCartaAleatoria():
 								arquivo.close()
 								carta = separaStringCarta(conteudo)
 								recebePalavrasChave(carta)
+								carta.dono = jogador
 								return carta
 	
 	arquivo.close()
 	return -1
 	
 	
-func carregaCartaPorID(id):
+func carregaCartaPorID(id,jogador):
 	
 	var arquivo = File.new()
 	#var erro = arquivo.open("res://dados/teste.data",File.WRITE)
@@ -69,6 +70,7 @@ func carregaCartaPorID(id):
 						arquivo.close()
 						carta = separaStringCarta(conteudo)
 						recebePalavrasChave(carta)
+						carta.dono = jogador
 						return carta
 	else:
 		print("ERRO!!")
@@ -267,7 +269,7 @@ func recebeCartasRelacionadas(carta):
 							letra = idTexto.length()
 					if passa:
 						var conteudo2 = conteudo.split(",")
-						var cartaRelacionada = carregaCartaPorID(conteudo2[1])
+						var cartaRelacionada = carregaCartaPorID(conteudo2[1],carta.dono)
 						lista.append(cartaRelacionada)
 		arquivo.close()
 		carta.listaPalavraChave = lista
@@ -306,7 +308,7 @@ func recebeHabilidades(id,carta):
 		carta.listaHabilidades = lista
 		var listaCartasAdicionar = []
 		for item in lista:
-			var novo = carregaCartaPorID(int(item[1]))
+			var novo = carregaCartaPorID(int(item[1]),carta.dono)
 			novo.revelada = true
 			listaCartasAdicionar.append(novo)
 		carta.listaCartasRelacionadas += listaCartasAdicionar

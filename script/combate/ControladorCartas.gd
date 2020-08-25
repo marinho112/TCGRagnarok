@@ -21,7 +21,7 @@ func _ready():
 	set_process(true)
 
 func _process(delta):
-	if (ativado and jogador.ativado):
+	if (jogador.ativado):
 		if((cursorMouse!=null) and (cartaSelecionada==null)):
 			if(Input.is_action_pressed("clicar")):
 				var passa= false

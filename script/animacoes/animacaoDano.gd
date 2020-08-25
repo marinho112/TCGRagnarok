@@ -4,7 +4,7 @@ var vel = 100
 var timer = 0.6
 
 func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
-	.play(dono,listaAlvos,2,velo)
+	.play(dono,listaAlvos,4,velo)
 	vel *= velo 
 	timer *= velo
 	

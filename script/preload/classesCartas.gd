@@ -13,6 +13,7 @@ class carta:
 	var descricao
 	var posicaoImagem
 	var revelada = false
+	var dono
 	
 	var listaPalavraChave = []
 	var listaMarcadores = []
@@ -24,6 +25,9 @@ class carta:
 			if (palavra.id == val):
 				return true
 		return false
+	
+	func zerarBonus():
+		pass
 	
 class objetoDeBatalha extends carta:
 	
@@ -41,34 +45,61 @@ class objetoDeBatalha extends carta:
 	var poderBonus = 0
 	var defesaBonus = 0
 	
+	var vidaBonusEfemero = 0
+	var poderBonusEfemero = 0
+	var defesaBonusEfemero = 0
+	
 	var listaHabilidades = []
+	var listaEfeitoMorrer = []
+	var listaEfeitoAtacar = []
+	var listaEfeitoBloquear = []
+	
+	func zerarBonus():
+		reduzirVidaBonus(vidaBonus)
+		poderBonus = 0
+		defesaBonus = 0
+		
+	func zerarBonusEfemero():
+		reduzirVidaBonusEfemero(vidaBonusEfemero)
+		poderBonusEfemero = 0
+		defesaBonusEfemero = 0
 	
 	func reduzirVidaBonus(val):
-		if (val<0):
-			val = 0
-		vidaBonus-= val
-		if ((vida + vidaBonus)<=danoRecebido):
-			danoRecebido = (vida + vidaBonus) -1
+		if(retornaVida()>0):
+			if (val<0):
+				val = 0
+			vidaBonus-= val
+			if (retornaVidaTotal()<=danoRecebido):
+				danoRecebido = (vida + vidaBonus) -1
+			
+	func reduzirVidaBonusEfemero(val):
+		if(retornaVida()>0):
+			if (val<0):
+				val = 0
+			vidaBonusEfemero-= val
+			if (retornaVidaTotal()<=danoRecebido):
+				danoRecebido = retornaVidaTotal() -1
+	
 	func retornaPoder():
-		return poder + poderBonus
+		return poder + poderBonus +poderBonusEfemero
 	func retornaVida():
 		return retornaVidaTotal() - danoRecebido
 	func retornaVidaTotal():
-		return vida + vidaBonus
+		return vida + vidaBonus +vidaBonusEfemero
 	func retornaDefesa():
-		return defesa + defesaBonus
+		return defesa + defesaBonus + defesaBonusEfemero
 		
 	func calculaDano(dano):
-		var retorno = dano - defesa
+		var retorno = dano - retornaDefesa()
 		if(retorno<0):
 			retorno = 0
 		return retorno
 	
 	func recebeDano(dano):
 		danoRecebido += dano
-		if(danoRecebido > (vida+vidaBonus)):
-			dano -= danoRecebido - vida+vidaBonus
-			danoRecebido= vida+vidaBonus
+		if(danoRecebido > retornaVidaTotal()):
+			dano -= (danoRecebido - retornaVidaTotal())
+			danoRecebido= retornaVidaTotal()
 		return dano
 	
 	func recebeDanoComDef(dano):
