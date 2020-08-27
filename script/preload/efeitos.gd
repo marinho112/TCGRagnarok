@@ -4,11 +4,19 @@ extends Node
 func getRaiz():
 	return get_node("/root/main/Combate/")
 
-func criarXY(eliminado,lista):
+func criarXY(eliminado,lista,alertaMsg=null):
 	var xy = eliminarXdeY.new()
-	xy.definirXY(eliminado,lista)
+	xy.definirXY(eliminado,lista,alertaMsg)
 	return xy
 	
+func alerta(local,texto,val=null):
+	var loadAnimacaoBonus=load("res://cenas/animacoes/animacaoAlertaBonus.tscn")
+	var animacao=loadAnimacaoBonus.instance()
+	animacao.setTexto(val,texto)
+	animacao.set_global_position(local.get_global_position())
+	animacao.definirPai(local.get_parent())
+	animacao.play(local,[])
+		
 func criarAtivadorDono(efeito,lista):
 	var novoAtivador = ativadorDono.new()
 	var XY = criarXY(novoAtivador,lista)
@@ -22,6 +30,18 @@ func criarContador(limite,efeito,lista,loop):
 	novoContador.iniciar(limite,efeito,XY,combate,loop)
 	return novoContador
 		
+		
+func adicionaPalavraChave(carta,novaPalavra,listaRemocao=null,alertaMsg=null):
+	var nTem=true
+	var lista = carta.listaPalavraChave
+	for palavra in lista:
+		if(palavra.id==novaPalavra.id):
+			nTem=false
+	if(nTem):	
+		lista.append(novaPalavra)
+		if(listaRemocao!= null):
+			listaRemocao.append(Efeitos.criarXY(novaPalavra,lista,alertaMsg))
+			
 func getEfeito(id,pai,palavraPai):
 	var retorno 	
 	match id:
@@ -47,6 +67,8 @@ func getEfeito(id,pai,palavraPai):
 			retorno = DarProtecao4Elementos.new()
 		11:
 			retorno = transformar.new()
+		12:
+			retorno = recebeAtaqueMultiplo.new()
 		_: 
 			return null
 	
@@ -71,13 +93,21 @@ class efeito:
 class eliminarXdeY extends efeito: 
 	var x
 	var y
+	var alertaMsg = null
+	var usado=false
 	
-	func definirXY(eliminado,lista):
+	func definirXY(eliminado,lista,alertaMsg=null):
+		id=Constante.EFEITO_XY
 		self.x=eliminado
 		self.y=lista
+		self.alertaMsg=alertaMsg
 	
 	func ativar(carta=null,alvo=null):
 		y.remove(y.find(x))
+		usado=true
+		if(alertaMsg!=null):
+			Efeitos.alerta(self.x.pai.obj,alertaMsg)
+		
 
 class contador extends efeito: 
 	var limite
@@ -93,6 +123,7 @@ class contador extends efeito:
 	func iniciar(limite,efeito,xy,combate,loop):
 		self.limite=limite
 		self.efeito=efeito
+		self.pai=efeito.pai
 		self.loop=loop
 		self.cont=0
 		self.xy=xy
@@ -117,7 +148,7 @@ class ativadorDono extends efeito:
 		id=Constante.EFEITO_ATIVADOR_DONO
 	
 	func iniciar(efeito,xy):
-		
+		self.pai=efeito.pai
 		self.efeito=efeito
 	
 	func ativar(carta=null,alvo=null):
@@ -132,18 +163,12 @@ class MaisXAtaque extends efeito:
 	func ativar(carta=null,alvo=null):
 		if(carta==null):
 			pai.poderBonusEfemero += palavraPai.val1
-			alerta(pai.obj)
+			Efeitos.alerta(pai.obj,"Poder",palavraPai.val1)
 		else:
 			carta.poderBonusEfemero+=palavraPai.val1
-			alerta(carta)
+			Efeitos.alerta(carta,"Poder",palavraPai.val1)
 			
-	func alerta(local):
-		var loadAnimacaoBonus=load("res://cenas/animacoes/animacaoAlertaBonus.tscn")
-		var animacao=loadAnimacaoBonus.instance()
-		animacao.setTexto(palavraPai.val1,"Poder")
-		animacao.set_global_position(local.get_global_position())
-		animacao.definirPai(local.get_parent())
-		animacao.play(local,[])
+
 		
 	func recebeDescricao():
 		var texto = .recebeDescricao()
@@ -236,11 +261,29 @@ class CureSeusPoringsEm3 extends efeito:
 		
 class DarProtecao4Elementos extends efeito:
 	
+	var listaProtecoes 
+	
 	func _init():
 		id=10
-	
+		var agua=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_AGUA)
+		var fogo=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_FOGO)
+		var terra=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_TERRA)
+		var vento=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_VENTO)
+		listaProtecoes = [agua,fogo,terra,vento]
+		
 	func ativar(carta=null,alvo=null):
-		pass
+		if(carta!=null):
+			if(carta.carta.dono == pai.dono):
+				if(carta.carta.subRaca==Constante.SUB_RACA_PORING):
+					var lista=carta.carta.listaPalavraChave
+					for item in listaProtecoes:
+						var nTem = true
+						for elemento in lista:
+							if((elemento.id==item.id)and(elemento.val1==item.val1)):
+								nTem=false
+						if(nTem):	
+							lista.append(item)
+							carta.carta.listaEfeitoMorrer.append(Efeitos.criarXY(item,lista))
 		
 class transformar extends efeito:
 	
@@ -254,3 +297,14 @@ class transformar extends efeito:
 		var texto = .recebeDescricao()
 		texto = texto.replace("&1",Ferramentas.receberTexto("carta",palavraPai.val1,0))
 	
+class recebeAtaqueMultiplo extends efeito:
+
+	func _init():
+		id=12
+	
+	func ativar(carta=null,alvo=null):
+		var novaPalavra=PalavrasChave.getPalavraChave(17,null,pai,null)
+		Efeitos.alerta(pai.obj,"Recebeu Palavra chaver!")
+		var alertaFim= "Perdeu Palavra Chave"
+		Efeitos.adicionaPalavraChave(pai,novaPalavra,pai.dono.listaFaseFinal,alertaFim)
+		

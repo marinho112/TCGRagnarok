@@ -102,6 +102,7 @@ const SUB_TIPO_ITEM_METRALHADORA=25
 const SUB_TIPO_ITEM_ESCOPETA=26
 const SUB_TIPO_ITEM_LANCAGRANADA=27
 
-#OUTROS
+#Efeitos
 const EFEITO_CONTADOR="efeito_contador"
 const EFEITO_ATIVADOR_DONO="efeito_ativador_dono"
+const EFEITO_XY="efeito_xy"

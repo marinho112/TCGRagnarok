@@ -27,6 +27,7 @@ class jogador:
 	var listaAoBloquear = []
 	var listaAoGolpear = []
 	var listaAoSerGolpeado = []
+	var listaAoReceberDano = []
 	var listaAoMorrer = []
 	var listaAoSairDeJogo = []
 	var listaHabilidadesPassivas = []

@@ -47,7 +47,6 @@ func golpear(carta):
 	
 	var retorno = self.carta.golpear(carta.carta)
 	carta.desenhaAtributos()
-	carta.verificaVida()
 	return retorno
 	
 

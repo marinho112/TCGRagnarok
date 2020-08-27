@@ -94,20 +94,74 @@ class objetoDeBatalha extends carta:
 			retorno = 0
 		return retorno
 	
-	func recebeDano(dano):
-		danoRecebido += dano
+	func recebeDano(dano,inimigo=null,propriedade= Constante.PROPRIEDADE_NEUTRO):
+		
+		danoRecebido += calcularPropriedadeBonus(dano,inimigo,propriedade)
 		if(danoRecebido > retornaVidaTotal()):
 			dano -= (danoRecebido - retornaVidaTotal())
 			danoRecebido= retornaVidaTotal()
 		return dano
 	
-	func recebeDanoComDef(dano):
-		return recebeDano(calculaDano(dano))
+	func recebeDanoComDef(dano,inimigo,propriedade):
+		return recebeDano(calculaDano(dano),inimigo,propriedade)
+	
+	func calcularPropriedadeBonus(dano,inimigo=null,propInimigo= Constante.PROPRIEDADE_NEUTRO):
+		var novoDano = dano
+		var fraco = null
+		var forte = null
 		
+		match propriedade:
+			
+			Constante.PROPRIEDADE_NEUTRO:
+				fraco=Constante.PROPRIEDADE_FANTASMA
+				forte= null
+			Constante.PROPRIEDADE_AGUA:
+				fraco=Constante.PROPRIEDADE_VENTO
+				forte=Constante.PROPRIEDADE_FOGO
+			Constante.PROPRIEDADE_FANTASMA:
+				fraco=Constante.PROPRIEDADE_FANTASMA
+				forte=Constante.PROPRIEDADE_NEUTRO
+			Constante.PROPRIEDADE_FOGO:
+				fraco=Constante.PROPRIEDADE_AGUA
+				forte=Constante.PROPRIEDADE_TERRA
+			Constante.PROPRIEDADE_MORTOVIVO:
+				fraco=Constante.PROPRIEDADE_SAGRADO
+				forte=Constante.PROPRIEDADE_VENENO
+			Constante.PROPRIEDADE_SAGRADO:
+				fraco=Constante.PROPRIEDADE_SOMBRIO
+				forte=Constante.PROPRIEDADE_FANTASMA
+			Constante.PROPRIEDADE_SOMBRIO:
+				fraco=Constante.PROPRIEDADE_SAGRADO
+				forte=Constante.PROPRIEDADE_MORTOVIVO
+			Constante.PROPRIEDADE_TERRA:
+				fraco=Constante.PROPRIEDADE_FOGO
+				forte=Constante.PROPRIEDADE_VENTO
+			Constante.PROPRIEDADE_VENENO:
+				fraco=null
+				forte=Constante.PROPRIEDADE_SOMBRIO
+			Constante.PROPRIEDADE_VENTO:
+				fraco=Constante.PROPRIEDADE_FOGO
+				forte=Constante.PROPRIEDADE_AGUA
+		
+		if(inimigo!=null):
+			for palavra in inimigo.listaPalavraChave:
+				if(palavra.id==11):
+					if(palavra.val1==self.propriedade):
+						novoDano -= inimigo.nivelPropriedade
+			
+		if(propInimigo==fraco):
+			novoDano -= inimigo.nivelPropriedade
+		if(propInimigo==forte):
+			novoDano+= nivelPropriedade
+		
+		if(novoDano<0):
+			novoDano=0
+		
+		return novoDano
 		
 	func golpear(inimigo):
 		
-		var danoCausado = inimigo.recebeDanoComDef(retornaPoder())
+		var danoCausado = inimigo.recebeDanoComDef(retornaPoder(),self,self.propriedade)
 		var retorno = danoCausado
 		return retorno
 		

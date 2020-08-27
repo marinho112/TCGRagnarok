@@ -31,6 +31,12 @@ func getPalavraChave(id,efeito,pai,val1):
 			retorno = Recarregar.new()
 		14:
 			retorno = InicioDeTurno.new()
+		15:
+			retorno = GolpeDuplo.new()
+		16:
+			retorno = Resiliente.new()
+		17:
+			retorno = AtaqueMultiplo.new()
 			
 	if ((efeito != null)and(efeito != 0)):
 		retorno.efeito= Efeitos.getEfeito(efeito,pai,retorno)
@@ -198,13 +204,22 @@ class Recarregar extends palavraChave:
 		var texto = .recebeDescricao()
 		texto = texto.replace("&1","("+str(turnos)+"/"+str(val1)+")")
 		return texto
+		
+	func aoJogar():
+		var lista= pai.dono.listaFaseInicial
+		var novoEfeito=Efeitos.criarContador(val1,efeito,lista,true)
+		lista.append(novoEfeito)
+		pai.listaEfeitoMorrer.append(novoEfeito.xy)
 
 class InicioDeTurno extends palavraChave:
 	
 	func _init():
 		id=14
 		incentivoAtaqueDefesa = -10
-
+	
+	func aoJogar():
+		adicionarEfeitoListaJogador(pai.dono.listaFaseInicial,pai)
+	
 class GolpeDuplo extends palavraChave:
 	
 	func _init():
@@ -216,3 +231,12 @@ class Resiliente extends palavraChave:
 	func _init():
 		id=16
 		incentivoAtaqueDefesa = -10
+	
+	func aoJogar():
+		adicionarEfeitoListaJogador(pai.dono.listaAoReceberDano,pai)
+		
+class AtaqueMultiplo extends palavraChave:
+	
+	func _init():
+		id=17
+		incentivoAtaqueDefesa = 15

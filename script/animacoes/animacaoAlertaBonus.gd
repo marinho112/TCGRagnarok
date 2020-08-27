@@ -11,10 +11,13 @@ func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
 	
 	
 func setTexto(num,string,negativo=false):
-	var sinal = "+"
-	if negativo:
-		sinal="-"
-	$Label.set_text(sinal+str(num)+" "+string)
+	if(num!= null):
+		var sinal = "+"
+		if negativo:
+			sinal="-"
+		$Label.set_text(sinal+str(num)+" "+string)
+	else:
+		$Label.set_text(string)
 	
 func _process(delta):
 	var position = get_global_position()

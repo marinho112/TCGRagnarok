@@ -40,9 +40,8 @@ func _process(delta):
 				var areaRelevante = controlador.receberAreaMaisRelevante(cartaSelecionada)
 				
 				if (areaRelevante != null):
-					var card = jogar(cartaSelecionada)
+					var card = jogar(cartaSelecionada,areaRelevante)
 					if(card != null):
-						controlador.positionAreaCarta(areaRelevante,card)
 						var lista = card.carta.listaPalavraChave
 						for elemento in lista:
 							if (elemento.id == 4):
@@ -78,7 +77,7 @@ func _process(delta):
 				cursorMousePosition=novaPosicao
 			return
 	
-func jogar(carta):
+func jogar(carta,areaRelevante=null):
 	#print(str(jogador.zeny)+"/"+str(jogador.maxZeny))
 	var cartaLogica = carta.carta
 	if(jogador.ativado and (!carta.zoom) and (cartaLogica.custo <= jogador.zeny) ):
@@ -91,9 +90,12 @@ func jogar(carta):
 			atualizaMao()
 			jogador.zeny -= cartaLogica.custo
 			jogador.areaZenys.atualizarZeny()
+			if(areaRelevante!=null):
+				pai.get_node("ControladorCartas").positionAreaCarta(areaRelevante,cartaNova)
 			for palavra in cartaLogica.listaPalavraChave:
 				palavra.aoJogar()
 			pai.atualizaTodasCartas()
+
 
 			return cartaNova
 	else:

@@ -25,6 +25,7 @@ func setTexto(texto):
 			$texto.bbcode_enabled = true
 			
 			for palavra in efeito.listaPalavras:
+				
 				var url = '[url=function'+str(palavra.id)+']'
 				url += palavra.recebeNome()
 				url+='[/url]'

@@ -7,7 +7,7 @@ var listaJogadores =[Classes.jogador.new(),Classes.jogador.new()]
 var listaPausa=[false,false,false,false,false]
 
 var verificandoVida = 0
-var listaCartasVerificandoVida
+var listaCartasVerificandoVida = []
 var ativado = true
 var cursorMouse 
 
@@ -34,7 +34,7 @@ func _ready():
 	$btnVermelho.set_text(0,false,false)
 	for x in 2:
 		for i in 60:
-			listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaPorID(8,listaJogadores[x]))
+			listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaPorID(20,listaJogadores[x]))
 			
 	listaJogadores[0].time = 0
 	listaJogadores[1].time = 1
@@ -204,7 +204,12 @@ func comecarJogo(delta):
 	subFase+=1
 	return false
 	
-	
+func limparListaEfeitos(lista):
+	for item in lista:
+		if(item.id==Constante.EFEITO_XY):
+			if(item.usado):
+				lista.remove(lista.find(item))
+
 func inicioPartida(delta):
 	if(resolveHabilidades(jogador.listaInicioPartida,oponente.listaInicioPartida)):
 		return true
@@ -284,7 +289,6 @@ func faseCombate(delta):
 		1: 
 			if(resolveHabilidades(jogador.listaAoAtacar,oponente.listaAoSerAtacado)):
 				atualizaTodasCartas()
-				print("atrualizou!")
 				if(retornaCartasArea(oponente.areaDefesa).size()==0):
 					subFase=3
 				else:
@@ -333,7 +337,6 @@ func realizarAtaque(delta):
 				retorno=confrontar(areaAtk[subFase].carta,$Oponente,false)
 				
 		if (retorno):
-			
 			if(verificandoVida==0):
 				var jogAtaq = retornaCartasArea(jogador.areaAtaque)
 				var jogDef= retornaCartasArea(jogador.areaDefesa)
@@ -366,6 +369,9 @@ func fasePrincipal2(delta):
 
 func inicioFaseFinal(delta):
 	if(resolveHabilidades(jogador.listaFaseFinal,oponente.listaFaseFinal)):
+		limparListaEfeitos(jogador.listaFaseFinal)
+		limparListaEfeitos(oponente.listaFaseFinal)
+		atualizaTodasCartas()
 		return true
 	else:
 		return false
@@ -503,6 +509,10 @@ func confrontar(golpeador,alvo,val = true):
 			confrontarAtaques1 +=1
 		if(alvo.carta.temPalavraChave(15)):
 			confrontarAtaques2 +=1
+		if(golpeador.carta.temPalavraChave(17)):
+			confrontarAtaques1 =3
+		if(alvo.carta.temPalavraChave(17)):
+			confrontarAtaques2 =3
 			
 		if(golpeador.carta.temPalavraChave(1)):
 			confrontarAtaques2=0
@@ -536,6 +546,7 @@ func finalizaConfronto():
 		return false
 		
 func golpear(golpeador,alvo):
+	
 	var animacao = load("res://cenas/animacoes/animacaoGolpear.tscn").instance()
 	animacao.definirPai(self)
 	animacao.set_global_position(golpeador.get_global_position())
