@@ -34,7 +34,7 @@ func _ready():
 	$btnVermelho.set_text(0,false,false)
 	for x in 2:
 		for i in 60:
-			listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaPorID(7,listaJogadores[x]))
+			listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaPorID(8,listaJogadores[x]))
 			
 	listaJogadores[0].time = 0
 	listaJogadores[1].time = 1
@@ -47,7 +47,8 @@ func _ready():
 	listaJogadores[0].personagem = ControlaDados.carregaPersonagemPorID((randi()%18+8))
 	listaJogadores[1].personagem = ControlaDados.carregaPersonagemPorID((randi()%18+8))
 	listaJogadores[1].ai.definirJogador(listaJogadores[1])
-	
+	listaJogadores[0].personagem.dono = listaJogadores[0]
+	listaJogadores[1].personagem.dono=listaJogadores[1]
 	jogador = listaJogadores[0]
 	oponente = listaJogadores[1]
 	$ControladorCartas.jogador=listaJogadores[0]
@@ -173,14 +174,14 @@ func fimTurno(delta):
 	jogador = oponente
 	oponente = aux
 	
-func resolveHabilidades(listaJogador,listaOponente,carta=null):
+func resolveHabilidades(listaJogador,listaOponente,carta=null,alvo=null):
 	var qtdJogador = listaJogador.size() 
 	var qtdOponente = listaOponente.size()
 	if(contadorHabilidade<(qtdJogador+qtdOponente)):
 		if(contadorHabilidade<qtdJogador):
-			listaJogador[contadorHabilidade].ativar(carta)
+			listaJogador[contadorHabilidade].ativar(carta,alvo)
 		else:
-			listaOponente[contadorHabilidade-qtdJogador].ativar(carta)
+			listaOponente[contadorHabilidade-qtdJogador].ativar(carta,alvo)
 		contadorHabilidade+=1
 		return false
 	else:
@@ -278,24 +279,29 @@ func faseCombate(delta):
 			var tipOponente = oponente.time+1
 			var areaAtk= retornaListaAreas(tipJogador,1,true)
 			var areaDef= retornaListaAreas(tipOponente,2,true)
-			if(retornaCartasArea(oponente.areaDefesa).size()==0):
-				subFase=2
-			else:
-				controlarDestaque(tipJogador)
-				subFase=1
+			controlarDestaque(tipJogador)
+			subFase=1
 		1: 
+			if(resolveHabilidades(jogador.listaAoAtacar,oponente.listaAoSerAtacado)):
+				atualizaTodasCartas()
+				print("atrualizou!")
+				if(retornaCartasArea(oponente.areaDefesa).size()==0):
+					subFase=3
+				else:
+					subFase=2
+		2:
 			#aguardar Oponente
 			$btnAzul.estado=0
 			$btnAzul.set_text(0,false)
 			if(oponente.ai.definirBloqueadores(true,delta)):
-				subFase=2
+				subFase=3
 				
-		2: 
+		3: 
 			#Confirmar Ataque
 			$btnAzul.estado=1
 			$btnAzul.set_text(5,true)
 			$btnVermelho.set_text(0,false,false)
-		3:
+		4:
 			$btnAzul.estado=0
 			$btnAzul.set_text(0,false)
 			return true

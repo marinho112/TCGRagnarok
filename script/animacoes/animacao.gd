@@ -31,4 +31,5 @@ func definirPai(novoPai):
 func encerrar():
 	var controla = pai.get_node("controladorAnimacao")
 	controla.listaAnimacoes.remove(controla.listaAnimacoes.find(self))
+	set_process(false)
 	queue_free()

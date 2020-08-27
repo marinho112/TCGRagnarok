@@ -173,6 +173,7 @@ func jogar(carta):
 			
 			mao.remove(mao.find(carta))
 			areaMao.atualizaMao()
+			carta.obj=cartaNova
 			jogador.zeny -= carta.custo
 			jogador.areaZenys.atualizarZeny()
 			for palavra in carta.listaPalavraChave:

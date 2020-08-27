@@ -12,7 +12,7 @@ func getPalavraChave(id,efeito,pai,val1):
 		4:
 			retorno = Imovel.new()
 		5:
-			retorno = BemVindo.new()
+			retorno = jogarCarta.new()
 		6:
 			retorno = Coletar.new()
 		7:
@@ -57,7 +57,12 @@ class palavraChave:
 		
 	func receberIncentivo():
 		return incentivoAtaqueDefesa
-
+	
+	func adicionarEfeitoListaJogador(lista,carta):
+		lista.append(efeito)
+		var xy = Efeitos.criarXY(efeito,lista)
+		carta.listaEfeitoMorrer.append(xy)
+	
 	func aoJogar():
 		pass
 	
@@ -83,16 +88,22 @@ class Ofensivo extends palavraChave:
 	func _init():
 		id=3
 		incentivoAtaqueDefesa = 7
+	
+	func aoJogar():
+		adicionarEfeitoListaJogador(pai.dono.listaAoAtacar,pai)
 		
 class Imovel extends palavraChave:
 	
 	func _init():
 		id=4
 		
-class BemVindo extends palavraChave:
+class jogarCarta extends palavraChave:
 	
 	func _init():
 		id=5
+		
+	func aoJogar():
+		efeito.ativar()
 		
 class Coletar extends palavraChave:
 	
@@ -110,6 +121,12 @@ class Meditar extends palavraChave:
 		texto += " "+str(val1) 
 		return texto
 		
+	func aoJogar():
+		var lista= pai.dono.listaFaseInicial
+		var novoEfeito=Efeitos.criarContador(val1,efeito,lista,false)
+		lista.append(novoEfeito)
+		pai.listaEfeitoMorrer.append(novoEfeito.xy)
+		
 	func recebeDescricao():
 		var texto = .recebeDescricao()
 		texto = texto.replace("&1",str(val1))
@@ -123,15 +140,19 @@ class Passivo extends palavraChave:
 		incentivoAtaqueDefesa = -6
 	
 	func aoJogar():
-		pai.dono.listaHabilidadesPassivas.append(efeito)
-		var xy = Efeitos.criarXY(efeito,pai.dono.listaHabilidadesPassivas)
-		pai.listaEfeitoMorrer.append(xy)
+		adicionarEfeitoListaJogador(pai.dono.listaHabilidadesPassivas,pai)
+		
 
 class Golpear extends palavraChave:
 	
 	func _init():
 		id=9
 		incentivoAtaqueDefesa = 5
+	
+	func aoJogar():
+		var novoEfeito = Efeitos.criarAtivadorDono(efeito,pai.dono.listaAoGolpear)
+		pai.dono.listaAoGolpear.append(novoEfeito)
+		pai.listaEfeitoMorrer.append(novoEfeito.xy)
 	
 class Afinidade extends palavraChave:
 
@@ -182,4 +203,16 @@ class InicioDeTurno extends palavraChave:
 	
 	func _init():
 		id=14
+		incentivoAtaqueDefesa = -10
+
+class GolpeDuplo extends palavraChave:
+	
+	func _init():
+		id=15
+		incentivoAtaqueDefesa = 10
+
+class Resiliente extends palavraChave:
+	
+	func _init():
+		id=16
 		incentivoAtaqueDefesa = -10

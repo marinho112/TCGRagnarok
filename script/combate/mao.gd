@@ -87,6 +87,7 @@ func jogar(carta):
 			var controlador = pai.get_node("ControladorCartas")
 			var cartaNova = controlador.criarMonstro(cartaLogica,jogador)
 			mao.remove(mao.find(cartaLogica))
+			cartaLogica.obj=cartaNova
 			atualizaMao()
 			jogador.zeny -= cartaLogica.custo
 			jogador.areaZenys.atualizarZeny()
@@ -179,6 +180,7 @@ func atualizaMao():
 		cartaNova.add_to_group(Constante.GRUPO_CARTA_NA_MAO)
 		posicaoMao.append(cartaNova.get_global_position())
 		maoVisual.append(cartaNova)
+		carta.obj=cartaNova
 		cartaNova.set_rotation(deg2rad(valorR))
 		
 		valorR-=variacaoRotate

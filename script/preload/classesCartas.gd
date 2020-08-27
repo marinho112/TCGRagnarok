@@ -14,6 +14,7 @@ class carta:
 	var posicaoImagem
 	var revelada = false
 	var dono
+	var obj
 	
 	var listaPalavraChave = []
 	var listaMarcadores = []
@@ -51,8 +52,6 @@ class objetoDeBatalha extends carta:
 	
 	var listaHabilidades = []
 	var listaEfeitoMorrer = []
-	var listaEfeitoAtacar = []
-	var listaEfeitoBloquear = []
 	
 	func zerarBonus():
 		reduzirVidaBonus(vidaBonus)
@@ -108,7 +107,7 @@ class objetoDeBatalha extends carta:
 		
 	func golpear(inimigo):
 		
-		var danoCausado = inimigo.recebeDanoComDef(poder)
+		var danoCausado = inimigo.recebeDanoComDef(retornaPoder())
 		var retorno = danoCausado
 		return retorno
 		
