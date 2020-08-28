@@ -10,7 +10,8 @@ func _ready():
 	add_to_group(Constante.GRUPO_CARTA_MONSTRO)
 	palavraPosition = $PalavraChaveObjeto.get_position()
 	
-
+func morre():
+	pass
 
 func preparaCarta(carta = self.carta):
 	self.carta=carta

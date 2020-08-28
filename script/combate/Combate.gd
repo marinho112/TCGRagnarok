@@ -34,7 +34,7 @@ func _ready():
 	$btnVermelho.set_text(0,false,false)
 	for x in 2:
 		for i in 60:
-			listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaAleatoriaIntervalo(1,39,listaJogadores[x]))
+			listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaAleatoriaIntervalo(5,5,listaJogadores[x]))
 			
 	listaJogadores[0].time = 0
 	listaJogadores[1].time = 1
@@ -117,6 +117,7 @@ func _process(delta):
 					if(ai.faseCombate(delta)):
 						fase = 7
 						subFase = 0
+						$ControladorCartas.defesa=false
 				7:
 					if(ai.realizarAtaque(delta)):
 						fase = 8
@@ -218,8 +219,13 @@ func inicioPartida(delta):
 	
 
 func faseInicial(delta):
+	print(jogador.listaFaseInicial)
 	if(resolveHabilidades(jogador.listaFaseInicial,oponente.listaFaseInicial)):
-	
+		for efeito in jogador.listaFaseInicial+oponente.listaFaseInicial:
+			if(efeito.id == Constante.EFEITO_CONTADOR):
+				if(efeito.usado):
+					efeito.xy.ativar()
+					
 		if(jogador.maxZeny < 10):
 			jogador.maxZeny+=1
 		jogador.zeny=jogador.maxZeny
@@ -438,7 +444,7 @@ func retornaCartasArea(alvo,cartas=true):
 
 func pausar(intensidade):
 	if(intensidade == 0):
-		$ControladorCartas.ativado = $ControladorCartas.ativado or listaPausa[0]
+		$ControladorCartas.interacaoAvancada = $ControladorCartas.interacaoAvancada or listaPausa[0]
 		$ControladorCartas.ativado = $ControladorCartas.ativado or listaPausa[1]
 		$mao.ativado = $mao.ativado or listaPausa[2]
 		$maoOponente.ativado = $maoOponente.ativado or listaPausa[2]
@@ -450,7 +456,7 @@ func pausar(intensidade):
 			item = false
 			
 	if(intensidade > 0):
-		$ControladorCartas.ativado = false
+		$ControladorCartas.interacaoAvancada = false
 		listaPausa[0] = true
 	if(intensidade > 1):
 		$ControladorCartas.ativado = false

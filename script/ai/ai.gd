@@ -22,6 +22,14 @@ var necessidadeDeDefesa = 0
 var antiNecessidadeDeDefesa = 0
 var tempoPassado = 0
 
+func debug():
+	print("Contador :"+str(contador))
+	print("CartasCampo :"+str(listaCartasCampo))
+	print("CartasCampoOponente :"+str(listaCartasCampoOponente))
+	print("CartasAtacantes :"+str(listaCartasAtacantes))
+	print("CartasBloqueio :"+str(listaCartasBloqueio))
+	#print(" :"+str())
+
 func definirJogador(jogador):
 	
 	self.jogador = jogador
@@ -119,9 +127,7 @@ func calcularCartaJogada(delta):
 func receberCartasPossiveis(zeny):
 	var lista = []
 	for item in jogador.listaMao:
-		#print(str(item.custo)+"/"+str(jogador.zeny))
 		if (item.custo <= zeny):
-			#print(str(item.custo))
 			lista.append(item)
 	
 	return lista
@@ -263,12 +269,14 @@ func posicionarCartasAtaque(delta):
 	var posicoesValidas = calcularPosicoesValidas(areaAtaque)
 	var posicoesValidasb = calcularPosicoesValidas(areaDefesa)
 	var numAtaque = listaCartasAtacantes.size()
+	
 	if(contador < numAtaque):
 		var carta = listaCartasAtacantes[contador]
 		if(!carta.posicaoJogo.is_in_group(Constante.GRUPO_AREA_CARTA_ATAQUE)):
 			for posicao in posicoesValidas:
 				if(posicao.carta==null):
 					combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
+					
 					return false
 				elif(listaCartasAtacantes.count(posicao.carta)==0):
 					if(!posicao.carta.carta.temPalavraChave(4)):
@@ -276,7 +284,6 @@ func posicionarCartasAtaque(delta):
 						return false
 		contador +=1
 	elif(contador < (numAtaque+listaCartasBloqueio.size())):
-		print("NUMERO: "+str(contador-numAtaque))
 		var carta = listaCartasBloqueio[contador-numAtaque]
 		var passa = true
 		if(!carta.posicaoJogo.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA)):
@@ -324,7 +331,6 @@ func definirBloqueadores(retorno,delta):
 		var tamanhoListaAD=listaDecidirAtaqueDefesa.size()
 		var listaValores = listaXmaiores(tamanhoListaAD,listaDecidirAtaqueDefesa)
 		listaOrdemBloqueio = defineOrdemAtaqueDefesa(listaCartasAtaqueOponente,listaCartasBloqueio)
-		##VENDO AQUI NO CODIGO PROBLEMA
 		print(listaOrdemBloqueio)	
 	if(combate.ativado):
 		var item = listaOrdemBloqueio[contador]
@@ -334,20 +340,23 @@ func definirBloqueadores(retorno,delta):
 			var areaBloqueio = listaCartasBloqueio[contador]
 			
 			combate.get_node("ControladorCartas").animacaoTrocaDeCartas(areaBloqueio,cartaBloqueio)
-			print("entrou")
+			
 		
 		contador+=1
-		print(contador)
-		return (contador>=6)
+	return (contador>=6)
 
-func defineOrdemAtaqueDefesa(listaA,listaB):
+func defineOrdemAtaqueDefesa(listaAtk,listaBloc):
 	var retorno = [null,null,null,null,null,null]
+	#MELHORAR ORDENAÇÂO!
 	var x = 0
-	for i in listaA.size():
-		var item = listaA[i]
+	var escolhido=false
+	for i in listaAtk.size():
+		var item = listaAtk[i]
 		if(item.carta!= null):
-			while(x<listaB.size()):
-				if(listaB[x].carta!=null):
+			escolhido=false
+			while((x<listaBloc.size())and (!escolhido)):
+				if(listaBloc[x].carta!=null):
 					retorno[i]=x
+					escolhido=true
 				x+=1
 	return retorno

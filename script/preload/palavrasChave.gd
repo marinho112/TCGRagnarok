@@ -70,6 +70,9 @@ class palavraChave:
 		carta.listaEfeitoMorrer.append(xy)
 	
 	func aoJogar():
+		aoMudarDeZona()
+	
+	func aoMudarDeZona():
 		pass
 	
 	func aoComprar():
@@ -96,6 +99,7 @@ class Ofensivo extends palavraChave:
 		incentivoAtaqueDefesa = 7
 	
 	func aoJogar():
+		.aoJogar()
 		adicionarEfeitoListaJogador(pai.dono.listaAoAtacar,pai)
 		
 class Imovel extends palavraChave:
@@ -109,6 +113,7 @@ class jogarCarta extends palavraChave:
 		id=5
 		
 	func aoJogar():
+		.aoJogar()
 		efeito.ativar()
 		
 class Coletar extends palavraChave:
@@ -117,17 +122,24 @@ class Coletar extends palavraChave:
 		id=6
 	
 class Meditar extends palavraChave:
-	
+	var turnos = 0
 	func _init():
 		id=7
 		incentivoAtaqueDefesa = -10
 		
 	func recebeNome():
 		var texto = .recebeNome()
-		texto += " "+str(val1) 
+		var complemento=""
+		if(val1-turnos>0):
+			complemento=" "+str(val1-turnos)
+		texto +=  complemento
 		return texto
 		
+	func aoMudarDeZona():
+		turnos = 0
+		
 	func aoJogar():
+		.aoJogar()
 		var lista= pai.dono.listaFaseInicial
 		var novoEfeito=Efeitos.criarContador(val1,efeito,lista,false)
 		lista.append(novoEfeito)
@@ -146,6 +158,7 @@ class Passivo extends palavraChave:
 		incentivoAtaqueDefesa = -6
 	
 	func aoJogar():
+		.aoJogar()
 		adicionarEfeitoListaJogador(pai.dono.listaHabilidadesPassivas,pai)
 		
 
@@ -156,6 +169,7 @@ class Golpear extends palavraChave:
 		incentivoAtaqueDefesa = 5
 	
 	func aoJogar():
+		.aoJogar()
 		var novoEfeito = Efeitos.criarAtivadorDono(efeito,pai.dono.listaAoGolpear)
 		pai.dono.listaAoGolpear.append(novoEfeito)
 		pai.listaEfeitoMorrer.append(novoEfeito.xy)
@@ -197,15 +211,19 @@ class Recarregar extends palavraChave:
 		incentivoAtaqueDefesa = -8
 	func recebeNome():
 		var texto = .recebeNome()
-		texto +=" "+str(val1) 
+		texto +=" "+"("+str(turnos)+"/"+str(val1)+")"
 		return texto
 		
+	func aoMudarDeZona():
+		turnos = 0
+	
 	func recebeDescricao():
 		var texto = .recebeDescricao()
 		texto = texto.replace("&1","("+str(turnos)+"/"+str(val1)+")")
 		return texto
 		
 	func aoJogar():
+		.aoJogar()
 		var lista= pai.dono.listaFaseInicial
 		var novoEfeito=Efeitos.criarContador(val1,efeito,lista,true)
 		lista.append(novoEfeito)
@@ -218,6 +236,7 @@ class InicioDeTurno extends palavraChave:
 		incentivoAtaqueDefesa = -10
 	
 	func aoJogar():
+		.aoJogar()
 		adicionarEfeitoListaJogador(pai.dono.listaFaseInicial,pai)
 	
 class GolpeDuplo extends palavraChave:
@@ -233,6 +252,7 @@ class Resiliente extends palavraChave:
 		incentivoAtaqueDefesa = -10
 	
 	func aoJogar():
+		.aoJogar()
 		adicionarEfeitoListaJogador(pai.dono.listaAoReceberDano,pai)
 		
 class AtaqueMultiplo extends palavraChave:

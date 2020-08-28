@@ -7,6 +7,7 @@ var listaJogadores =[]
 var jogador 
 
 var ativado = true
+var interacaoAvancada=true
 var defesa = false
 var cartaSelecionada = null
 var cursorMouse 
@@ -24,7 +25,6 @@ func _process(delta):
 	if (jogador.ativado and (pai.get_node("mao").cartaSelecionada==null) and (!pai.get_node("listaExibicaoCartas").ativado)):
 		if((cursorMouse!=null) and (cartaSelecionada==null)):
 			if(Input.is_action_pressed("clicar")):
-				var passa= false
 				for area in cursorMouse.get_overlapping_areas():
 					if((area.is_in_group(Constante.GRUPO_CARTA))and area.ativado and area.is_in_group(Constante.GRUPO_CARTA_EM_CAMPO)):
 						if(duploClick):
@@ -34,7 +34,12 @@ func _process(delta):
 							if(!area.zoom):
 								selecionaCarta(area)
 								cursorMousePosition = cursorMouse.get_global_position()
-	
+			if(Input.is_action_just_released("clicarDireito")):
+				for area in cursorMouse.get_overlapping_areas():
+					if((area.is_in_group(Constante.GRUPO_CARTA))and area.ativado and area.is_in_group(Constante.GRUPO_CARTA_EM_CAMPO)):
+						if(interacaoAvancada):
+							interacaoAvancada=false
+							area.morre()
 	
 		if(Input.is_action_just_released("clicar")):
 			duploClick = true
@@ -80,32 +85,40 @@ func receberAreaMaisRelevante(cartaSelecionada):
 	return menorArea
 
 func criarMonstro(carta,jogador):
-	var cartaNova = ControladorCartas.criarCartaMonstro(carta,pai,Vector2(0,0),true)
-	cartaNova.add_to_group(Constante.GRUPO_CARTA_EM_CAMPO)
-	var areas = pai.retornaListaAreas((jogador.time+1),2)
-	
-	for area in areas:
-		if area.carta == null:
-			positionAreaCarta(area,cartaNova)
-			return cartaNova
+	var area = retornarArea(jogador)
+	if(area!=null):
+		var cartaNova = ControladorCartas.criarCartaMonstro(carta,pai,Vector2(0,0),true)
+		cartaNova.add_to_group(Constante.GRUPO_CARTA_EM_CAMPO)
+		positionAreaCarta(area,cartaNova)
+		return cartaNova
+	else:
+		return null
 		
-	areas = pai.retornaListaAreas((jogador.time+1),1)
+func retornarArea(jogador,val=2):
 	
-	for area in areas:
-		if area.carta == null:
-			positionAreaCarta(area,cartaNova)
-			return cartaNova
+	var areas 
+	if((val==0) or val>1):
+		areas= pai.retornaListaAreas((jogador.time+1),2)
+		
+		for area in areas:
+			if area.carta == null:
+				return area
 	
-	return cartaNova
+	if(val>0):	
+		areas = pai.retornaListaAreas((jogador.time+1),1)
+		
+		for area in areas:
+			if area.carta == null:
+				return area
+				
+	return null
 
 func positionAreaCarta(area,carta):
 	
 	var auxArea
 	var auxCarta
-	
 	if((defesa)and(!area.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA))):
 		area= carta.posicaoJogo
-	
 	if(area!=null):
 		if(area.carta != null):
 			if(area.carta.imovel):

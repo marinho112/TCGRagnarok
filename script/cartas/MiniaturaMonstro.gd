@@ -35,10 +35,13 @@ func set_scale(scale):
 func desenharHabilidades():
 	pass
 
+func morre():
+	posicaoJogo.carta=null
+	animacaoMorte()
+	
 func verificaVida():
 	if(carta.retornaVida()<=0):
-		posicaoJogo.carta=null
-		animacaoMorte()
+		morre()
 		return true
 	else:
 		return false

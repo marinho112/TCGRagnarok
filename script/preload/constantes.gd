@@ -103,6 +103,6 @@ const SUB_TIPO_ITEM_ESCOPETA=26
 const SUB_TIPO_ITEM_LANCAGRANADA=27
 
 #Efeitos
-const EFEITO_CONTADOR="efeito_contador"
-const EFEITO_ATIVADOR_DONO="efeito_ativador_dono"
-const EFEITO_XY="efeito_xy"
+const EFEITO_CONTADOR= 9999999
+const EFEITO_ATIVADOR_DONO=9999998
+const EFEITO_XY=9999997

@@ -116,6 +116,7 @@ class contador extends efeito:
 	var loop
 	var xy
 	var combate
+	var usado = false
 	
 	func _init():
 		id=Constante.EFEITO_CONTADOR
@@ -137,7 +138,8 @@ class contador extends efeito:
 			if(loop):
 				cont=0
 			else:
-				xy.ativar()
+				usado=true
+		efeito.palavraPai.turnos=cont
 
 class ativadorDono extends efeito: 
 
@@ -248,7 +250,13 @@ class CriePoringDef extends efeito:
 		id=8
 	
 	func ativar(carta=null,alvo=null):
-		pass
+		var combate = pai.obj.get_parent()
+		var area = combate.get_node("ControladorCartas").retornarArea(pai.dono,0)
+		if(area!=null):
+			var cartaNova=ControladorCartas.criarCartaDoZero(1,pai.dono,combate,Vector2(0,0),true)
+			cartaNova.add_to_group(Constante.GRUPO_CARTA_EM_CAMPO)
+			combate.get_node("ControladorCartas").positionAreaCarta(area,cartaNova)
+			Efeitos.alerta(cartaNova,"Carta Criada!")
 		
 class CureSeusPoringsEm3 extends efeito:
 	

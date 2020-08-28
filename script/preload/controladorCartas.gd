@@ -7,6 +7,7 @@ func criaCartaAleatoria(jogador,pai,posicao,val=false):
 
 func criarCartaDoZero(idCarta,jogador,pai,posicao,val=false):
 	var carta = ControlaDados.carregaCartaPorID(idCarta,jogador)
+	carta.revelada=true
 	return criarCarta(carta,pai,posicao,val)
 	
 func criarCarta(carta,pai,posicao,val=false):

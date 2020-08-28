@@ -11,3 +11,5 @@ func acaoClick():
 			get_parent().passeLivre = true
 		2:
 			pass
+	
+	
