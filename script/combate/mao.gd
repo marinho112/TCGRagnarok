@@ -4,7 +4,7 @@ extends "res://script/combate/maoGenerico.gd"
 
 
 var cursorMouse
-var cartaSelecionada
+var cartaSelecionada = null
 var cursorMousePosition
 
 var duploClik = false
@@ -21,7 +21,7 @@ func _ready():
 	
 func _process(delta):
 	
-	if (ativado):
+	if (ativado and (pai.get_node("ControladorCartas").cartaSelecionada==null)):
 		
 		if((cursorMouse!=null) and (cartaSelecionada==null)):
 			

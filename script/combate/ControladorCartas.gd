@@ -8,7 +8,7 @@ var jogador
 
 var ativado = true
 var defesa = false
-var cartaSelecionada
+var cartaSelecionada = null
 var cursorMouse 
 var cursorMousePosition
 var duploClick = false
@@ -21,7 +21,7 @@ func _ready():
 	set_process(true)
 
 func _process(delta):
-	if (jogador.ativado):
+	if (jogador.ativado and (pai.get_node("mao").cartaSelecionada==null) and (!pai.get_node("listaExibicaoCartas").ativado)):
 		if((cursorMouse!=null) and (cartaSelecionada==null)):
 			if(Input.is_action_pressed("clicar")):
 				var passa= false
@@ -142,7 +142,7 @@ func animacaoTrocaDeCartas(area,carta):
 		return positionAreaCarta(area,carta)
 	var animacao=load("res://cenas/animacoes/animacaoTrocaMonstros.tscn").instance()
 	animacao.definirPai(get_parent())
-	animacao.play(carta.posicaoJogo,area,2)
+	animacao.play(carta.posicaoJogo,area,5)
 	
 
 func _on_Timer_timeout():

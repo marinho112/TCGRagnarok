@@ -3,6 +3,11 @@ extends Node
 func _ready():
 	randomize()
 
+func carregaCartaAleatoriaIntervalo(inicio,fim,jogador):
+	var rand = randi()%(fim-inicio+1)
+	rand+= inicio
+	return carregaCartaPorID(rand,jogador)
+
 func carregaCartaAleatoria(jogador):
 	
 	var arquivo = File.new()

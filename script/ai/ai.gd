@@ -120,7 +120,7 @@ func receberCartasPossiveis(zeny):
 	var lista = []
 	for item in jogador.listaMao:
 		#print(str(item.custo)+"/"+str(jogador.zeny))
-		if (item.custo < zeny):
+		if (item.custo <= zeny):
 			#print(str(item.custo))
 			lista.append(item)
 	
@@ -324,18 +324,21 @@ func definirBloqueadores(retorno,delta):
 		var tamanhoListaAD=listaDecidirAtaqueDefesa.size()
 		var listaValores = listaXmaiores(tamanhoListaAD,listaDecidirAtaqueDefesa)
 		listaOrdemBloqueio = defineOrdemAtaqueDefesa(listaCartasAtaqueOponente,listaCartasBloqueio)
-	
-	var item = listaOrdemBloqueio[contador]
-	if item!=null:
-		var cartaBloqueio = listaCartasBloqueio[item].carta
+		##VENDO AQUI NO CODIGO PROBLEMA
+		print(listaOrdemBloqueio)	
+	if(combate.ativado):
+		var item = listaOrdemBloqueio[contador]
+		if item!=null:
+			var cartaBloqueio = listaCartasBloqueio[item].carta
+			
+			var areaBloqueio = listaCartasBloqueio[contador]
+			
+			combate.get_node("ControladorCartas").animacaoTrocaDeCartas(areaBloqueio,cartaBloqueio)
+			print("entrou")
 		
-		var areaBloqueio = listaCartasBloqueio[contador]
-		
-		combate.get_node("ControladorCartas").animacaoTrocaDeCartas(areaBloqueio,cartaBloqueio)
-		print(combate.retornaCartasArea(areaDefesa,false))
-	
-	contador+=1
-	return (contador>=6)
+		contador+=1
+		print(contador)
+		return (contador>=6)
 
 func defineOrdemAtaqueDefesa(listaA,listaB):
 	var retorno = [null,null,null,null,null,null]
