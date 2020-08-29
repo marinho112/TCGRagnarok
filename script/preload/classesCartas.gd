@@ -27,6 +27,9 @@ class carta:
 				return true
 		return false
 	
+	func recebeNome():
+		return Ferramentas.receberTexto("cartas",nome)
+	
 	func zerarBonus():
 		pass
 	
@@ -105,10 +108,13 @@ class objetoDeBatalha extends carta:
 	func recebeDanoComDef(dano,inimigo,propriedade):
 		return recebeDano(calculaDano(dano),inimigo,propriedade)
 	
-	func calcularPropriedadeBonus(dano,inimigo=null,propInimigo= Constante.PROPRIEDADE_NEUTRO):
+	func calcularPropriedadeBonus(dano,inimigo=null,propInimigo= null):
 		var novoDano = dano
 		var fraco = null
 		var forte = null
+		
+		if (propInimigo==null):
+			return dano
 		
 		match propriedade:
 			

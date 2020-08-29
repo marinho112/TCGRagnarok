@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+resource_name = "TESTE"
+script/source = "extends Node2D
+
+
+func _ready():
+	add_to_group(Constante.GRUPO_AREA_MAO)
+	var listaCartas = []
+	var listaCartas2=[]
+	var jogador = Classes.jogador.new()
+	var espaco = load(\"res://script/ai/ai.gd\").new()
+	for i in 6:
+		if(i%2==0):
+			listaCartas.append(ControladorCartas.criarCartaDoZero((randi()%8)+1,jogador,self,Vector2((i*200),200)))
+			listaCartas2.append(ControladorCartas.criarCartaDoZero((randi()%8)+1,jogador,self,Vector2((i*200),400)))
+		else:
+			listaCartas.append(null)
+			listaCartas2.append(null)
+	
+	espaco.defineOrdemAtaqueDefesa(listaCartas,listaCartas2)
+	
+	#espaco.copiaListaOrdemForca(listaCartas)
+	
+	
+"
+
+[node name="TESTE" type="Node2D"]
+script = SubResource( 1 )

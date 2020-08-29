@@ -169,7 +169,7 @@ func jogar(carta):
 				#controlador.positionAreaCarta(areaRelevante,cartaNova)
 				var lista = carta.listaPalavraChave
 				for elemento in lista:
-					if (elemento.id == 4):
+					if ((elemento.id == 4)and(carta.retornaPoder()>0)):
 						for area in areaAtaque.get_children():
 							if (passa and area.is_in_group(Constante.GRUPO_AREA_CARTA)):
 								if(area.carta==null):
@@ -220,7 +220,7 @@ func defineNecessidadeDeDefesa():
 	defineListaCartasCampoOponente()
 	for item in listaCartasCampoOponente:
 		var carta = item.carta
-		necessidadeDeDefesa += (carta.retornaPoder()*3) 
+		necessidadeDeDefesa += (carta.retornaPoder()*3)
 		necessidadeDeDefesa -= carta.danoRecebido * 2
 		
 	necessidadeDeDefesa+= jogador.personagem.danoRecebido * 2
@@ -255,10 +255,12 @@ func calcularPosicoesCartasAtaque():
 	listaCartasAtacantes = []
 	listaCartasBloqueio = []
 	for c in listaCartasCampo.size():
-		var carta = listaCartasCampo[listaAtacantes[c]] 
-		if(listaCartasAtacantes.size()<numAtacantes):
+		var carta = listaCartasCampo[listaAtacantes[c]]
+		var x=0
+		if(x<numAtacantes):
 			if(!carta.carta.temPalavraChave(4)):
 				listaCartasAtacantes.append(carta)
+				x+=1
 		else:
 			if(!carta.carta.temPalavraChave(4)):
 				listaCartasBloqueio.append(carta)
@@ -331,7 +333,7 @@ func definirBloqueadores(retorno,delta):
 		var tamanhoListaAD=listaDecidirAtaqueDefesa.size()
 		var listaValores = listaXmaiores(tamanhoListaAD,listaDecidirAtaqueDefesa)
 		listaOrdemBloqueio = defineOrdemAtaqueDefesa(listaCartasAtaqueOponente,listaCartasBloqueio)
-		print(listaOrdemBloqueio)	
+		
 	if(combate.ativado):
 		var item = listaOrdemBloqueio[contador]
 		if item!=null:
@@ -345,18 +347,92 @@ func definirBloqueadores(retorno,delta):
 		contador+=1
 	return (contador>=6)
 
+
+func copiaListaOrdemForca(listaOld):
+	var lista = listaOld.duplicate()
+	var listaForca=[]
+	var listaNova=[]
+	var anterior = 0
+	var aux
+	for i in lista.size():
+		var item = lista[i].carta
+		var valor=0
+		if(item!=null):
+			valor = (item.carta.retornaVida()+(item.carta.retornaPoder()*5)+((item.carta.retornaDefesa()*item.carta.retornaDefesa()*5)+5))
+		listaForca.append([valor,lista[i]])
+	
+	for i in listaForca.size():
+		for x in listaForca.size():
+			if(listaForca[x][0]<listaForca[i][0]):
+				aux=listaForca[x]
+				listaForca[x]=listaForca[i]
+				listaForca[i]=aux
+	for item in listaForca:
+		listaNova.append(item[1])
+	return listaNova
+		
 func defineOrdemAtaqueDefesa(listaAtk,listaBloc):
 	var retorno = [null,null,null,null,null,null]
+	var listaEscolhidos=[]
 	#MELHORAR ORDENAÇÂO!
-	var x = 0
+	var copiaListaAtk = copiaListaOrdemForca(listaAtk)
+	var primeiro
+	var melhor
 	var escolhido=false
-	for i in listaAtk.size():
-		var item = listaAtk[i]
+	for item in copiaListaAtk:
+		var i = listaAtk.find(item) # Posicao na lista original
 		if(item.carta!= null):
 			escolhido=false
-			while((x<listaBloc.size())and (!escolhido)):
-				if(listaBloc[x].carta!=null):
-					retorno[i]=x
-					escolhido=true
-				x+=1
+			primeiro=null
+			melhor=null
+			for x in listaBloc.size():
+				if((listaBloc[i].carta!=null)and(listaBloc[i].carta.carta.temPalavraChave(4))):
+					melhor = i
+				elif(listaBloc[x].carta!=null):
+					if(!listaBloc[x].carta.carta.temPalavraChave(4)):
+						if(listaEscolhidos.find(x)==-1):
+							if(primeiro==null):
+								primeiro = x
+							if(melhor==null):
+								melhor=x
+							elif(xMelhorQueYContraZ(listaBloc[x].carta,listaBloc[melhor].carta,item.carta)):
+								melhor=x
+			
+			if(melhor!=null):
+				retorno[i]=melhor
+				listaEscolhidos.append(melhor)
+			
+	for x in retorno.size():
+		if(retorno[x]!=null):
+			if(retorno[retorno[x]]==x):
+				print(retorno)
+				retorno[x]=null
+				print(retorno)
 	return retorno
+
+func xMelhorQueYContraZ(x,y,z):
+	var retorno
+	var pontosX = retornaPontosASobreB(x,z)
+	var pontosY = retornaPontosASobreB(y,z)
+	var pontosZX= retornaPontosASobreB(z,x)
+	var pontosZY= retornaPontosASobreB(z,y)
+	
+	if((pontosZX>pontosX)and(pontosZY>pontosY)):
+		retorno = (pontosX<pontosY)
+	else:
+		retorno = (pontosX>=pontosY)
+	
+	return retorno
+		 
+func retornaPontosASobreB(A,B):
+	var pontos = 0
+	var BDef=B.carta.retornaVida() + B.carta.retornaDefesa()
+	if((A.carta.retornaVida()+A.carta.retornaDefesa())>B.carta.calcularPropriedadeBonus(B.carta.retornaPoder(),A.carta,A.carta.propriedade)):
+		pontos += 100
+	var ADano=A.carta.calcularPropriedadeBonus(A.carta.retornaPoder(),B.carta,B.carta.propriedade)
+	var ADiferenca= Ferramentas.positivo(ADano-BDef)
+	pontos-=ADiferenca *5
+	if(ADiferenca==0):
+		pontos+=120
+	
+	return pontos
