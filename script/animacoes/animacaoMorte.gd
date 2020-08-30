@@ -3,6 +3,7 @@ extends "res://script/animacoes/animacao.gd"
 var ocilacao = 5
 var tempo= 1
 var contador =0
+var morto = false
 
 func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
 	pai.get_node("controladorAnimacao").atualizarAoTermino=true
@@ -20,7 +21,12 @@ func _process(delta):
 	contador+=delta
 	
 func encerrar():
-	var listaDono = dono.carta.listaEfeitoMorrer+pai.jogador.listaAoMorrer
-	if(pai.resolveHabilidades(listaDono,pai.oponente.listaAoMorrer)):
+	
+	if(!morto):
+		var listaDono = dono.carta.listaEfeitoMorrer+pai.jogador.listaAoMorrer
+		if(pai.resolveHabilidades(listaDono,pai.oponente.listaAoMorrer)):
+			dono.set_visible(false)
+			morto=true
+	elif(dono.aoSairDeJogo(pai)):
 		dono.queue_free()
 		.encerrar()

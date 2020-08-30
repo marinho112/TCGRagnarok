@@ -1,6 +1,6 @@
 extends Node
 
-func getPalavraChave(id,efeito,pai,val1):
+func getPalavraChave(id,efeito,pai,val1,val2):
 	var retorno
 	match id:
 		1:
@@ -42,6 +42,7 @@ func getPalavraChave(id,efeito,pai,val1):
 		retorno.efeito= Efeitos.getEfeito(efeito,pai,retorno)
 	retorno.pai=pai
 	retorno.val1 = val1
+	retorno.val2 = val2
 	return retorno
 
 class palavraChave:
@@ -50,6 +51,7 @@ class palavraChave:
 	var efeito
 	var pai
 	var val1
+	var val2
 	var incentivoAtaqueDefesa = 0
 
 	func recebeNome():
@@ -67,7 +69,7 @@ class palavraChave:
 	func adicionarEfeitoListaJogador(lista,carta):
 		lista.append(efeito)
 		var xy = Efeitos.criarXY(efeito,lista)
-		carta.listaEfeitoMorrer.append(xy)
+		carta.listaEfeitoSairJogo.append(xy)
 	
 	func aoJogar():
 		aoMudarDeZona()
@@ -143,7 +145,7 @@ class Meditar extends palavraChave:
 		var lista= pai.dono.listaFaseInicial
 		var novoEfeito=Efeitos.criarContador(val1,efeito,lista,false)
 		lista.append(novoEfeito)
-		pai.listaEfeitoMorrer.append(novoEfeito.xy)
+		pai.listaEfeitoSairJogo.append(novoEfeito.xy)
 		
 	func recebeDescricao():
 		var texto = .recebeDescricao()
@@ -172,7 +174,7 @@ class Golpear extends palavraChave:
 		.aoJogar()
 		var novoEfeito = Efeitos.criarAtivadorDono(efeito,pai.dono.listaAoGolpear)
 		pai.dono.listaAoGolpear.append(novoEfeito)
-		pai.listaEfeitoMorrer.append(novoEfeito.xy)
+		pai.listaEfeitoSairJogo.append(novoEfeito.xy)
 	
 class Afinidade extends palavraChave:
 
@@ -227,7 +229,7 @@ class Recarregar extends palavraChave:
 		var lista= pai.dono.listaFaseInicial
 		var novoEfeito=Efeitos.criarContador(val1,efeito,lista,true)
 		lista.append(novoEfeito)
-		pai.listaEfeitoMorrer.append(novoEfeito.xy)
+		pai.listaEfeitoSairJogo.append(novoEfeito.xy)
 
 class InicioDeTurno extends palavraChave:
 	
@@ -253,7 +255,10 @@ class Resiliente extends palavraChave:
 	
 	func aoJogar():
 		.aoJogar()
-		adicionarEfeitoListaJogador(pai.dono.listaAoReceberDano,pai)
+		
+		var novoEfeito = Efeitos.criarAtivadorDano(efeito,pai.dono.listaAoGolpear)
+		pai.dono.listaAoReceberDano.append(novoEfeito)
+		pai.listaEfeitoSairJogo.append(novoEfeito.xy)
 		
 class AtaqueMultiplo extends palavraChave:
 	

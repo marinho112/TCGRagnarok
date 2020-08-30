@@ -4,7 +4,7 @@ var fundo ="fundo"
 var miniatura = false
 var imovel = false
 var palavraPosition
-
+var preDano = preload("res://cenas/animacoes/animacaoDano.tscn")
 	
 func _ready():
 	add_to_group(Constante.GRUPO_CARTA_MONSTRO)
@@ -50,6 +50,11 @@ func desenhaAtributosComplementares():
 	$raca.set_text(Ferramentas.receberTexto("racas",carta.raca))
 	$subRaca.set_text(Ferramentas.receberTexto("subRacas",int(carta.subRaca[0]),Constante.obterSubRaca(carta.subRaca)))
 
+func transformar(idNovaCarta):
+	var retorno = .transformar(idNovaCarta)
+	if(retorno):
+		imovel=carta.temPalavraChave(4)
+	return retorno
 
 func desenharPropriedade(complemento = ""):
 	var cor
@@ -81,7 +86,7 @@ func desenharPropriedade(complemento = ""):
 		Constante.PROPRIEDADE_SAGRADO:
 			cor="Rosa"
 			fraco="Preto"
-			forte="Banco"
+			forte="Branco"
 		Constante.PROPRIEDADE_SOMBRIO:
 			cor="Preto"
 			fraco="Rosa"
@@ -225,6 +230,12 @@ func golpear(carta):
 	carta.desenhaAtributos()
 	return retorno
 
+func curar(val):
+	var curado=carta.curar(val)
+	var novaAnimacao = preDano.instance()
+	novaAnimacao.definirPai(get_parent())
+	var posicao = get_node("coracao").get_global_position()
+	novaAnimacao.set_global_position(posicao)
+	novaAnimacao.play(self,[],null)
+	novaAnimacao.setDano(-val)
 
-		
-		

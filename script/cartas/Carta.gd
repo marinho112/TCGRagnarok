@@ -6,6 +6,7 @@ var selecionavel = false
 var carta
 var escondido = false
 var posicaoRaiz = Vector2(0,0)
+var novaLista = []
 
 
 
@@ -13,6 +14,9 @@ func _ready():
 	add_to_group(Constante.GRUPO_CARTA)	
 	setZoom(false)
 
+func preparaCarta(carta = self.carta):
+	desenhaAtributos()
+	
 func golpear(carta):
 	pass
 	
@@ -30,6 +34,20 @@ func exibirCartas():
 	listaItens += carta.listaCartasRelacionadas
 	lista.definirListaCartas(listaItens)
 
+func transformar(idNovaCarta):
+	var combate = get_node("/root/main/Combate/")
+	
+	if(ativado):
+		var cartaVelha= carta
+		var novaCarta =ControlaDados.carregaCartaPorID(idNovaCarta,cartaVelha.dono)
+		cartaVelha.migraValor(novaCarta)
+		preparaCarta(novaCarta)
+		
+		for palavra in carta.listaPalavraChave:
+			if(palavra.id!=5):
+				palavra.aoJogar()
+		
+	return true
 	
 func setZoom(zoom):
 	self.zoom=zoom
@@ -42,3 +60,10 @@ func setZoom(zoom):
 		set_z_index(0)
 		scale = Vector2(0.8,0.8)
 		$PalavraChaveObjeto.scale=Vector2(1.2,1.2)
+
+
+func aoSairDeJogo(combate):
+	var listaDono = carta.listaEfeitoSairJogo+carta.dono.listaAoSairDeJogo
+	if(combate.resolveHabilidades(listaDono,carta.dono.listaAoMorrer)):
+		return true
+	return false

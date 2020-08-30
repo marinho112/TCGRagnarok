@@ -3,7 +3,6 @@ extends "res://script/animacoes/animacao.gd"
 var preDano = preload("res://cenas/animacoes/animacaoDano.tscn")
 var acabado
 var cont=0
-var contadorHabilidade=0
 var listaLinhas = []
 
 func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
@@ -34,19 +33,6 @@ func _process(delta):
 func acabar():
 	acabado = true
 
-func resolveHabilidades(listaJogador,listaOponente,carta=null,alvo=null):
-	var qtdJogador = listaJogador.size() 
-	var qtdOponente = listaOponente.size()
-	if(contadorHabilidade<(qtdJogador+qtdOponente)):
-		if(contadorHabilidade<qtdJogador):
-			listaJogador[contadorHabilidade].ativar(carta,alvo)
-		else:
-			listaOponente[contadorHabilidade-qtdJogador].ativar(carta,alvo)
-		contadorHabilidade+=1
-		return false
-	else:
-		contadorHabilidade=0
-		return true
 
 func posicionarLinhas():
 	var posicaoDono = dono.get_global_position()
@@ -69,7 +55,7 @@ func posicionarLinhas():
 		var seno = distanciaY/diagonalDistancia
 		var cosseno = distanciaX/diagonalDistancia	
 		novaLinha.set_rotation_degrees(sin(1/seno))
-		#print(novaLinha.get_rotation_degrees())
+		
 	
 	
 

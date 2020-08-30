@@ -4,6 +4,7 @@ var pai
 var dono
 var listaAlvos = []
 var velo = 1.0
+var contadorHabilidade = 0
 
 func _ready():
 	add_to_group(Constante.GRUPO_ANIMACAO)
@@ -33,3 +34,19 @@ func encerrar():
 	controla.listaAnimacoes.remove(controla.listaAnimacoes.find(self))
 	set_process(false)
 	queue_free()
+
+func resolveHabilidades(listaJogador,listaOponente,carta=null,alvo=null):
+	var qtdJogador = listaJogador.size() 
+	var qtdOponente = listaOponente.size()
+	
+	if(contadorHabilidade<(qtdJogador+qtdOponente)):
+		if(contadorHabilidade<qtdJogador):
+			listaJogador[contadorHabilidade].ativar(carta,alvo)
+			
+		else:
+			listaOponente[contadorHabilidade-qtdJogador].ativar(carta,alvo)
+		contadorHabilidade+=1
+		return false
+	else:
+		contadorHabilidade=0
+		return true

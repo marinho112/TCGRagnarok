@@ -20,7 +20,14 @@ class carta:
 	var listaMarcadores = []
 	var listaEfeitos = []
 	var listaCartasRelacionadas = []
+	var listaEfeitoSairJogo = []
 	
+	func migraValor(carta):
+		carta.listaMarcadores=listaMarcadores
+		carta.dono=dono
+		carta.obj=obj
+		carta.revelada=revelada
+		
 	func temPalavraChave(val):
 		for palavra in listaPalavraChave:
 			if (palavra.id == val):
@@ -43,6 +50,8 @@ class objetoDeBatalha extends carta:
 	var raca
 	var subRaca
 	
+	
+	var mana=0
 	var danoRecebido = 0
 	
 	var vidaBonus = 0
@@ -56,6 +65,12 @@ class objetoDeBatalha extends carta:
 	var listaHabilidades = []
 	var listaEfeitoMorrer = []
 	
+	func migraValor(carta):
+		.migraValor(carta)
+		if((carta.tipo== Constante.CARTA_PERSONAGEM) or (carta.tipo==Constante.CARTA_MONSTRO)):
+			carta.mana=mana
+			carta.recebeDano(danoRecebido)
+			
 	func zerarBonus():
 		reduzirVidaBonus(vidaBonus)
 		poderBonus = 0
@@ -90,6 +105,13 @@ class objetoDeBatalha extends carta:
 		return vida + vidaBonus +vidaBonusEfemero
 	func retornaDefesa():
 		return defesa + defesaBonus + defesaBonusEfemero
+	
+	func curar(valor):
+		danoRecebido-=valor
+		if(danoRecebido<0):
+			valor -= danoRecebido
+			danoRecebido=0
+		return valor
 		
 	func calculaDano(dano):
 		var retorno = dano - retornaDefesa()
@@ -99,7 +121,8 @@ class objetoDeBatalha extends carta:
 	
 	func recebeDano(dano,inimigo=null,propriedade= Constante.PROPRIEDADE_NEUTRO):
 		
-		danoRecebido += calcularPropriedadeBonus(dano,inimigo,propriedade)
+		dano = calcularPropriedadeBonus(dano,inimigo,propriedade)
+		danoRecebido += dano
 		if(danoRecebido > retornaVidaTotal()):
 			dano -= (danoRecebido - retornaVidaTotal())
 			danoRecebido= retornaVidaTotal()
@@ -153,16 +176,16 @@ class objetoDeBatalha extends carta:
 			for palavra in inimigo.listaPalavraChave:
 				if(palavra.id==11):
 					if(palavra.val1==self.propriedade):
-						novoDano -= inimigo.nivelPropriedade
+						novoDano -= nivelPropriedade
 			
 		if(propInimigo==fraco):
-			novoDano -= inimigo.nivelPropriedade
+			novoDano += inimigo.nivelPropriedade
 		if(propInimigo==forte):
-			novoDano+= nivelPropriedade
+			novoDano -= nivelPropriedade
 		
 		if(novoDano<0):
 			novoDano=0
-		
+			
 		return novoDano
 		
 	func golpear(inimigo):

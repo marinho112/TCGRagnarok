@@ -17,6 +17,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 text = "0000"
 align = 1
 valign = 1
+clip_text = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

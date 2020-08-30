@@ -20,7 +20,6 @@ func _ready():
 	pai=get_parent()
 	cursorMouse = pai.get_parent().get_node("Mouse")
 	set_process(true)
-
 func _process(delta):
 	if (jogador.ativado and (pai.get_node("mao").cartaSelecionada==null) and (!pai.get_node("listaExibicaoCartas").ativado)):
 		if((cursorMouse!=null) and (cartaSelecionada==null)):

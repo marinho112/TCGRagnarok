@@ -34,7 +34,7 @@ func _ready():
 	$btnVermelho.set_text(0,false,false)
 	for x in 2:
 		for i in 60:
-			listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaAleatoriaIntervalo(1,38,listaJogadores[x]))
+			listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaAleatoriaIntervalo(1,25,listaJogadores[x]))
 			
 	listaJogadores[0].time = 0
 	listaJogadores[1].time = 1
@@ -56,6 +56,8 @@ func _ready():
 	#$maoOponente.definirJogador(listaJogadores[1])
 	$Personagem.atualizarPersonagem(listaJogadores[0].personagem)
 	$Oponente.atualizarPersonagem(listaJogadores[1].personagem)
+	listaJogadores[0].personagem.obj=$Personagem
+	listaJogadores[1].personagem.obj=$Oponente
 	$Personagem.carta.revelada=true
 	$Oponente.carta.revelada=true
 	set_process(true)
@@ -178,9 +180,11 @@ func fimTurno(delta):
 func resolveHabilidades(listaJogador,listaOponente,carta=null,alvo=null):
 	var qtdJogador = listaJogador.size() 
 	var qtdOponente = listaOponente.size()
+	
 	if(contadorHabilidade<(qtdJogador+qtdOponente)):
 		if(contadorHabilidade<qtdJogador):
 			listaJogador[contadorHabilidade].ativar(carta,alvo)
+			
 		else:
 			listaOponente[contadorHabilidade-qtdJogador].ativar(carta,alvo)
 		contadorHabilidade+=1
@@ -219,7 +223,6 @@ func inicioPartida(delta):
 	
 
 func faseInicial(delta):
-	print(jogador.listaFaseInicial)
 	if(resolveHabilidades(jogador.listaFaseInicial,oponente.listaFaseInicial)):
 		for efeito in jogador.listaFaseInicial+oponente.listaFaseInicial:
 			if(efeito.id == Constante.EFEITO_CONTADOR):

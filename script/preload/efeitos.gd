@@ -23,6 +23,12 @@ func criarAtivadorDono(efeito,lista):
 	novoAtivador.iniciar(efeito,XY)
 	return novoAtivador
 
+func criarAtivadorDano(efeito,lista):
+	var novoAtivador = ativadorDano.new()
+	var XY = criarXY(novoAtivador,lista)
+	novoAtivador.iniciar(efeito,XY)
+	return novoAtivador
+
 func criarContador(limite,efeito,lista,loop):
 	var novoContador = contador.new()
 	var XY = criarXY(novoContador,lista)
@@ -62,7 +68,7 @@ func getEfeito(id,pai,palavraPai):
 		8:
 			retorno = CriePoringDef.new()
 		9:
-			retorno = CureSeusPoringsEm3.new()
+			retorno = CureSeusPoringsEmX.new()
 		10:
 			retorno = DarProtecao4Elementos.new()
 		11:
@@ -152,10 +158,29 @@ class ativadorDono extends efeito:
 	func iniciar(efeito,xy):
 		self.pai=efeito.pai
 		self.efeito=efeito
+		self.xy=xy
 	
 	func ativar(carta=null,alvo=null):
 		if(efeito.pai==carta.carta):
 			efeito.ativar()
+			
+class ativadorDano extends efeito: 
+
+	var efeito
+	var xy
+	
+	func _init():
+		id=Constante.EFEITO_ATIVADOR_DANO
+	
+	func iniciar(efeito,xy):
+		self.pai=efeito.pai
+		self.efeito=efeito
+		self.xy=xy
+	
+	func ativar(carta=null,alvo=null):
+		if(efeito.pai==carta.carta):
+			if(efeito.pai.retornaVida()>0):
+				efeito.ativar()
 
 class MaisXAtaque extends efeito:
 	
@@ -258,14 +283,19 @@ class CriePoringDef extends efeito:
 			combate.get_node("ControladorCartas").positionAreaCarta(area,cartaNova)
 			Efeitos.alerta(cartaNova,"Carta Criada!")
 		
-class CureSeusPoringsEm3 extends efeito:
+class CureSeusPoringsEmX extends efeito:
 	
 	func _init():
 		id=9
 	
 	func ativar(carta=null,alvo=null):
-		pass
-	
+		var combate = pai.obj.get_parent()
+		if(combate.jogador==pai.dono):
+			var lista = combate.retornarTodasAsCartasEmCampo()
+			for item in lista:
+				if(item.carta.dono == pai.dono):
+					if(item.carta.subRaca==Constante.SUB_RACA_PORING):
+						item.curar(palavraPai.val1)
 		
 class DarProtecao4Elementos extends efeito:
 	
@@ -273,10 +303,10 @@ class DarProtecao4Elementos extends efeito:
 	
 	func _init():
 		id=10
-		var agua=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_AGUA)
-		var fogo=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_FOGO)
-		var terra=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_TERRA)
-		var vento=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_VENTO)
+		var agua=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_AGUA,null)
+		var fogo=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_FOGO,null)
+		var terra=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_TERRA,null)
+		var vento=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_VENTO,null)
 		listaProtecoes = [agua,fogo,terra,vento]
 		
 	func ativar(carta=null,alvo=null):
@@ -291,27 +321,33 @@ class DarProtecao4Elementos extends efeito:
 								nTem=false
 						if(nTem):	
 							lista.append(item)
-							carta.carta.listaEfeitoMorrer.append(Efeitos.criarXY(item,lista))
+							carta.carta.listaEfeitoSairJogo.append(Efeitos.criarXY(item,lista))
 		
 class transformar extends efeito:
-	
+	var valor
 	func _init():
 		id=11
+		
 	
 	func ativar(carta=null,alvo=null):
-		pass
+		var efeito = load("res://cenas/animacoes/animacaoTransformar.tscn").instance()
+		efeito.definirPai(pai.obj.get_parent())
+		efeito.transformarCarta(pai.obj,palavraPai.val2)
 	
+		
 	func recebeDescricao():
 		var texto = .recebeDescricao()
-		texto = texto.replace("&1",Ferramentas.receberTexto("carta",palavraPai.val1,0))
-	
+		var carta = ControlaDados.carregaCartaPorID(palavraPai.val2,pai.dono)
+		texto = texto.replace("&1",Ferramentas.receberTexto("cartas",carta.nome,0))
+		return texto
+		
 class recebeAtaqueMultiplo extends efeito:
 
 	func _init():
 		id=12
 	
 	func ativar(carta=null,alvo=null):
-		var novaPalavra=PalavrasChave.getPalavraChave(17,null,pai,null)
+		var novaPalavra=PalavrasChave.getPalavraChave(17,null,pai,null,null)
 		Efeitos.alerta(pai.obj,"Recebeu Palavra chaver!")
 		var alertaFim= "Perdeu Palavra Chave"
 		Efeitos.adicionaPalavraChave(pai,novaPalavra,pai.dono.listaFaseFinal,alertaFim)
