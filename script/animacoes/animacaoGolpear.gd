@@ -39,22 +39,31 @@ func posicionarLinhas():
 	#criarPonto(posicaoDono)
 	var tamanhoSprite = $linha.texture.get_size()
 	for alvo in listaAlvos:
+		var altura = 0
 		var novaLinha = $linha.duplicate()
-		#add_child(novaLinha)
+		var novaPonta = $ponta.duplicate()
+		add_child(novaLinha)
+		add_child(novaPonta)
 		listaLinhas.append(novaLinha)
+		listaLinhas.append(novaPonta)
 		var posicaoAlvo = alvo.get_global_position()
 		var posicaoMedia = (posicaoAlvo+posicaoDono)/2.0
+		if(posicaoDono<posicaoAlvo):
+			altura = 180
 		novaLinha.set_global_position(posicaoMedia)
 		#criarPonto(posicaoAlvo)
-		
 		var distanciaX = Ferramentas.positivo(posicaoDono.x-posicaoAlvo.x)
 		var distanciaY = Ferramentas.positivo(posicaoAlvo.y-posicaoDono.y)
 		var diagonalDistancia = sqrt((distanciaX*distanciaX)+(distanciaY*distanciaY))
 		var scala = diagonalDistancia/tamanhoSprite.x
-		novaLinha.set_scale(Vector2(scala/0.3,0.2))
+		novaLinha.set_scale(Vector2(scala/0.3,0.4))
+		novaPonta.set_scale(Vector2(1.5,1.5))
 		var seno = distanciaY/diagonalDistancia
-		var cosseno = distanciaX/diagonalDistancia	
-		novaLinha.set_rotation_degrees(sin(1/seno))
+		var cosseno = distanciaX/diagonalDistancia
+		novaPonta.set_global_position(posicaoAlvo)
+		novaLinha.set_rotation(-asin(seno))
+		novaPonta.set_rotation_degrees(rad2deg(-asin(seno))+altura)
+		
 		
 	
 	
