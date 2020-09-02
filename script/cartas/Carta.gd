@@ -61,7 +61,11 @@ func setZoom(zoom):
 		scale = Vector2(0.8,0.8)
 		$PalavraChaveObjeto.scale=Vector2(1.2,1.2)
 
-
+func terminar():
+	var novaCarta=ControlaDados.carregaCartaPorID(carta.id,carta.dono)
+	carta.dono.listaPilhaDescarte.append(novaCarta)
+	print(carta.dono.listaPilhaDescarte)
+	queue_free()
 func aoSairDeJogo(combate):
 	var listaDono = carta.listaEfeitoSairJogo+carta.dono.listaAoSairDeJogo
 	if(combate.resolveHabilidades(listaDono,carta.dono.listaAoMorrer)):

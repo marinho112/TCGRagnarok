@@ -28,5 +28,5 @@ func encerrar():
 			dono.set_visible(false)
 			morto=true
 	elif(dono.aoSairDeJogo(pai)):
-		dono.queue_free()
+		dono.terminar()
 		.encerrar()

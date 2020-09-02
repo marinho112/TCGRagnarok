@@ -32,9 +32,14 @@ func _ready():
 	cursorMouse= get_parent().get_node("Mouse")
 	$btnAzul.set_text(0,false)
 	$btnVermelho.set_text(0,false,false)
+	
 	for x in 2:
-		for i in 60:
-			listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaAleatoriaIntervalo(1,25,listaJogadores[x]))
+		var retorno = ControlaDados.carregaDeck("deck001",listaJogadores[x])
+		retorno[1].shuffle()
+		listaJogadores[x].listaBaralho = retorno[1]
+		listaJogadores[x].personagem = retorno[0]
+		#for i in 60:
+		#	listaJogadores[x].listaBaralho.append(ControlaDados.carregaCartaAleatoriaIntervalo(1,25,listaJogadores[x]))
 			
 	listaJogadores[0].time = 0
 	listaJogadores[1].time = 1
@@ -44,9 +49,8 @@ func _ready():
 	listaJogadores[1].ai.combate = self
 	listaJogadores[0].definirAreas($mao,$Personagem,$zenys,$Container/Jogador1Ataque,$Container/Jogador1Defesa)
 	listaJogadores[1].definirAreas($maoOponente,$Oponente,$zenysOponente,$Container/Jogador2Ataque,$Container/Jogador2Defesa)
-	listaJogadores[0].personagem = ControlaDados.carregaPersonagemPorID((randi()%18+8))
-	listaJogadores[1].personagem = ControlaDados.carregaPersonagemPorID((randi()%18+8))
 	listaJogadores[1].ai.definirJogador(listaJogadores[1])
+	#print(listaJogadores[0])
 	listaJogadores[0].personagem.dono = listaJogadores[0]
 	listaJogadores[1].personagem.dono=listaJogadores[1]
 	jogador = listaJogadores[0]
@@ -65,6 +69,9 @@ func _ready():
 func _process(delta):
 	var ai = jogador.ai
 	if ativado:
+		
+		verificarVencedor()
+			
 		if((fase==-2)and(turno==0)):
 			if(comecarJogo(delta)):
 				fase = -1
@@ -208,6 +215,13 @@ func comecarJogo(delta):
 	
 	subFase+=1
 	return false
+	
+func declararVencedor(jogadorVencedor):
+	pausar(5)
+	if(jogadorVencedor==listaJogadores[0]):
+		print("Jogador 1 é o vencedor!")
+	else:
+		print("Jogador 2 é o vencedor!")
 	
 func limparListaEfeitos(lista):
 	for item in lista:
@@ -538,11 +552,14 @@ func confrontar(golpeador,alvo,val = true):
 			golpear(alvo,golpeador)
 			confrontarAtaques2 -=1
 		return finalizaConfronto()
-	if(confrontarAtaques1>0):
-		golpear(golpeador,alvo)
+	
+	if((confrontarAtaques1>0)):
+		if(golpeador.carta.retornaVida()>0):
+			golpear(golpeador,alvo)
 		confrontarAtaques1 -= 1
-	if(confrontarAtaques2 > 0):
-		golpear(alvo,golpeador)
+	if((confrontarAtaques2 > 0)):
+		if(alvo.carta.retornaVida()>0):
+			golpear(alvo,golpeador)
 		confrontarAtaques2 -=1
 	return finalizaConfronto()
 	
@@ -579,3 +596,9 @@ func atualizaTodasCartas():
 	
 	for carta in listaCartas:
 		carta.preparaCarta()
+
+func verificarVencedor():
+	if(jogador.personagem.retornaVida()<=0):
+		declararVencedor(oponente)
+	elif(oponente.personagem.retornaVida()<=0):
+		declararVencedor(jogador)

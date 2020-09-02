@@ -11,7 +11,7 @@ class jogador:
 	var listaMao=[]
 	var listaCampoMonstro=[]
 	var listaEquipamento=[]
-	var listaCemiterio=[]
+	var listaPilhaDescarte=[]
 	
 	var listaInicioPartida = []
 	var listaFaseInicial = []

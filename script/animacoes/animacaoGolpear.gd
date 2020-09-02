@@ -50,6 +50,7 @@ func posicionarLinhas():
 		var posicaoMedia = (posicaoAlvo+posicaoDono)/2.0
 		if(posicaoDono<posicaoAlvo):
 			altura = 180
+		
 		novaLinha.set_global_position(posicaoMedia)
 		#criarPonto(posicaoAlvo)
 		var distanciaX = Ferramentas.positivo(posicaoDono.x-posicaoAlvo.x)
@@ -58,6 +59,8 @@ func posicionarLinhas():
 		var scala = diagonalDistancia/tamanhoSprite.x
 		novaLinha.set_scale(Vector2(scala/0.3,0.4))
 		novaPonta.set_scale(Vector2(1.5,1.5))
+		if (distanciaX == 0):
+			altura += 180
 		var seno = distanciaY/diagonalDistancia
 		var cosseno = distanciaX/diagonalDistancia
 		novaPonta.set_global_position(posicaoAlvo)

@@ -18,6 +18,7 @@ var listaCartasCampoOponente=[]
 var listaCartasAtacantes = null
 var listaOrdemBloqueio =[]
 var listaCartasBloqueio = []
+var listaCartasBloqueioCarta = []
 var necessidadeDeDefesa = 0
 var antiNecessidadeDeDefesa = 0
 var tempoPassado = 0
@@ -221,9 +222,9 @@ func defineNecessidadeDeDefesa():
 	for item in listaCartasCampoOponente:
 		var carta = item.carta
 		necessidadeDeDefesa += (carta.retornaPoder()*3)
-		necessidadeDeDefesa -= carta.danoRecebido * 2
+		#necessidadeDeDefesa -= carta.danoRecebido * 2
 		
-	necessidadeDeDefesa+= jogador.personagem.danoRecebido * 2
+	necessidadeDeDefesa+= jogador.personagem.danoRecebido * 5
 	necessidadeDeDefesa-= jogador.personagem.retornaVidaTotal() 
 
 
@@ -310,7 +311,7 @@ func calcularNumeroAtacantes():
 	if(fator>0):
 		numAtacantes = listaCartasCampo.size() - listaCartasCampoOponente.size()
 	else:
-		numAtacantes = listaCartasCampo.size()
+		numAtacantes = listaCartasCampo.size() - int(listaCartasCampoOponente.size()/2)
 	if(numAtacantes>6):
 		numAtacantes =6
 	if(numAtacantes<0):
@@ -333,11 +334,13 @@ func definirBloqueadores(retorno,delta):
 		var tamanhoListaAD=listaDecidirAtaqueDefesa.size()
 		var listaValores = listaXmaiores(tamanhoListaAD,listaDecidirAtaqueDefesa)
 		listaOrdemBloqueio = defineOrdemAtaqueDefesa(listaCartasAtaqueOponente,listaCartasBloqueio)
-		
+		listaCartasBloqueioCarta=[]
+		for elemento in listaCartasBloqueio:
+			listaCartasBloqueioCarta.append(elemento.carta)
 	if(combate.ativado):
 		var item = listaOrdemBloqueio[contador]
 		if item!=null:
-			var cartaBloqueio = listaCartasBloqueio[item].carta
+			var cartaBloqueio = listaCartasBloqueioCarta[item]
 			
 			var areaBloqueio = listaCartasBloqueio[contador]
 			
@@ -405,9 +408,8 @@ func defineOrdemAtaqueDefesa(listaAtk,listaBloc):
 	for x in retorno.size():
 		if(retorno[x]!=null):
 			if(retorno[retorno[x]]==x):
-				print(retorno)
 				retorno[x]=null
-				print(retorno)
+				
 	return retorno
 
 func xMelhorQueYContraZ(x,y,z):

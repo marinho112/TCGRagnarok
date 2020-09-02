@@ -115,7 +115,7 @@ func separaStringCarta(string):
 	
 	return carta
 
-func carregaPersonagemPorID(id):
+func carregaPersonagemPorID(id,jogador):
 	
 	var arquivo = File.new()
 	#var erro = arquivo.open("res://dados/teste.data",File.WRITE)
@@ -141,6 +141,7 @@ func carregaPersonagemPorID(id):
 						arquivo.close()
 						carta = separaStringPersonagem(conteudo)
 						#recebePalavrasChave(carta)
+						carta.dono = jogador
 						return carta
 	else:
 		print("ERRO!!")
@@ -355,3 +356,32 @@ func recebePalavrasPorEfeito(efeito):
 		print("ERRO!!")
 	arquivo.close()
 	return -1
+	
+func carregaDeck(nomeArquivo,jogador):
+	
+	var arquivo = File.new()
+	var caminho = "res://db/decks/"+nomeArquivo+".data"
+	var erro = arquivo.open(caminho,File.READ)
+	var linha1=true
+	var personagem
+	var listaDeck = []
+	while(!arquivo.eof_reached()):
+		var conteudo = arquivo.get_line()
+		if(linha1):
+			linha1=false
+			personagem=int(conteudo)
+		else:
+			listaDeck+=Array(conteudo.split(","))
+	
+	var personagemObj = carregaPersonagemPorID(personagem,jogador)
+	var listaObjDeck=[]
+	for item in listaDeck:
+		var val = item.split(":")
+		if(val.size()>1):
+			var carta = int(val[0])
+			var qtd = int(val[1])
+			for i in qtd:
+				listaObjDeck.append(carregaCartaPorID(carta,jogador))
+	
+	print(listaObjDeck.size())
+	return [personagemObj,listaObjDeck]
