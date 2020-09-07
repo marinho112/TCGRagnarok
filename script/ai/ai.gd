@@ -438,3 +438,41 @@ func retornaPontosASobreB(A,B):
 		pontos+=120
 	
 	return pontos
+
+func prepararLista(numSelecao,selecionador,tipoSelecao,obrigatorio=true,jogador=null,listaCartas=[]):
+	var lista = recebeListaSelecao(numSelecao,selecionador,tipoSelecao,obrigatorio,jogador,listaCartas)
+	var listaSelecionado = lista.duplicate()
+	while(listaSelecionado.size()>numSelecao):
+		var maior = null
+		for x in listaSelecionado.size():
+			if((maior==null)or(listaSelecionado[x].retornaVida()>listaSelecionado[maior].retornaVida())):
+				maior=x
+		listaSelecionado.remove(maior)
+	
+	var controlador = combate.get_node("ControladorSelecao")
+	controlador.novaLista=listaSelecionado
+	controlador.enviado=true
+	controlador.listaCartas=[]
+	controlador.selecionador=selecionador
+	controlador.numSelecao = null
+	controlador.ativado=true
+		
+func recebeListaSelecao(numSelecao,selecionador,tipoSelecao,obrigatorio=true,jogador=null,listaCartas=[]):
+	var lista =[]
+	match tipoSelecao:
+		
+		Constante.TIPO_SELECAO_MONSTRO_CAMPO:
+			for item in combate.retornarTodasAsCartasEmCampo(jogador):
+				lista.append(item.carta)
+		Constante.TIPO_SELECAO_CAMPO:
+			for item in combate.retornarTodasAsCartasEmCampo(jogador):
+				lista.append(item.carta)
+		Constante.TIPO_SELECAO_MAO:
+			if(jogador != combate.jogador):
+				lista+= combate.oponente.listaMao
+			if(jogador != combate.oponente):
+				lista+=combate.jogador.listaMao
+		Constante.TIPO_SELECAO_AREA_FLUTUANTE:
+			lista=listaCartas
+			
+	return lista

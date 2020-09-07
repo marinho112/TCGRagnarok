@@ -13,6 +13,7 @@ func acaoClick():
 		2:
 			get_parent().bloqueado = true
 			estado = 0
-			
-	
+		3:
+			estado = 0
+			get_parent().get_node("ControladorSelecao").enviado=true
 

@@ -7,12 +7,36 @@ var carta
 var escondido = false
 var posicaoRaiz = Vector2(0,0)
 var novaLista = []
-
-
+var time = 0
+var frame = 0
 
 func _ready():
 	add_to_group(Constante.GRUPO_CARTA)	
 	setZoom(false)
+	
+	
+func _process(delta):
+	animacaoBrilho(delta)
+	
+func defineBrilho(val):
+	$brilho.set_visible(val)
+
+func animacaoBrilho(delta):
+	if($brilho.is_visible()):
+		if(time>0.1):
+			time=0
+			$brilho.set_frame(frame)
+			var rot = $brilho.get_rotation_degrees()
+			if(rot>=270):
+				$brilho.set_rotation_degrees(rot+90)
+			else:
+				$brilho.set_rotation_degrees(0)
+				frame+=1
+				if(frame>1):
+					frame=0
+		else:
+			time+=delta
+
 
 func preparaCarta(carta = self.carta):
 	desenhaAtributos()
@@ -64,7 +88,6 @@ func setZoom(zoom):
 func terminar():
 	var novaCarta=ControlaDados.carregaCartaPorID(carta.id,carta.dono)
 	carta.dono.listaPilhaDescarte.append(novaCarta)
-	print(carta.dono.listaPilhaDescarte)
 	queue_free()
 func aoSairDeJogo(combate):
 	var listaDono = carta.listaEfeitoSairJogo+carta.dono.listaAoSairDeJogo

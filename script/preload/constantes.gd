@@ -13,9 +13,18 @@ const GRUPO_AREA_MAO="grupo_area_mao"
 const GRUPO_AREA_MAO_OPONENTE = "grupo_area_mao_oponente"
 const GRUPO_AREA_CAMPO="grupo_area_campo"
 const GRUPO_CARTA_EM_CAMPO = "carta_em_campo"
+const GRUPO_CARTA_FLUTUANTE = "carta_flutuante"
 const GRUPO_CARTA_NA_MAO= "carta_na_mao"
+const GRUPO_CARTA_NA_MAO_JOGADOR= "carta_na_mao_JOGADOR"
 const GRUPO_CARTA_NA_MAO_OPONENTE= "carta_na_mao_oponente"
 const GRUPO_ANIMACAO = "animacao"
+
+
+#Constantes tipos de selecao
+const TIPO_SELECAO_MAO ="tipo_selecao_mao"
+const TIPO_SELECAO_CAMPO = "tipo_selecao_campo"
+const TIPO_SELECAO_AREA_FLUTUANTE = "tipo_selecao_area_flutuante"
+const TIPO_SELECAO_MONSTRO_CAMPO = "tipo_selecao_monstro_campo"
 
 #Constantes de Tipo de Carta
 

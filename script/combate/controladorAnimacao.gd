@@ -18,8 +18,10 @@ func _process(delta):
 			ativado = false
 			get_parent().pausar(0)
 
-
-
+func estaAnimando():
+	if((listaAnimacoes.size()==0)and(!atualizarAoTermino)):
+		return false
+	return true
 func ativar(animacao = null):
 	ativado = true
 	if(animacao != null):

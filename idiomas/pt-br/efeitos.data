@@ -1,6 +1,7 @@
 //Descrição
+//Nome palavra chave = #id , Nome alternativo palavra chave = @id
 0.¶
-1.Recebe +&1/+0 até o final do turno.§¶
+1.Recebe +&1 de poder até o final do turno.§¶
 2.@6 uma vez.§¶
 3.Crie uma bala na mão.§¶
 4.Todos os seus porings recebem +1 de Defesa.§¶
@@ -12,5 +13,5 @@
 10.Seus Porings Possuem @11 a fogo,água,terra e vento.§¶
 11.Se transforma em &1.§¶
 12.Recebe #17.§¶
-13.§¶
+13.Causa &1 de dano em até &2 monstros alvos.§Causa &1 de dano em até &2 monstro alvo.¶
 14.§¶

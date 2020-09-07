@@ -34,7 +34,8 @@ func _ready():
 	$btnVermelho.set_text(0,false,false)
 	
 	for x in 2:
-		var retorno = ControlaDados.carregaDeck("deck001",listaJogadores[x])
+		var sortNum = randi()%1
+		var retorno = ControlaDados.carregaDeck("deck00"+str(2+sortNum),listaJogadores[x])
 		retorno[1].shuffle()
 		listaJogadores[x].listaBaralho = retorno[1]
 		listaJogadores[x].personagem = retorno[0]
@@ -183,7 +184,6 @@ func fimTurno(delta):
 	var aux = jogador
 	jogador = oponente
 	oponente = aux
-	
 func resolveHabilidades(listaJogador,listaOponente,carta=null,alvo=null):
 	var qtdJogador = listaJogador.size() 
 	var qtdOponente = listaOponente.size()
@@ -584,11 +584,18 @@ func golpear(golpeador,alvo):
 func verificarMorte(carta):
 	return carta.verificaVida()
 
-func retornarTodasAsCartasEmCampo():
-	var lista1 = retornaCartasArea($Container/Jogador1Ataque)
-	var lista2 = retornaCartasArea($Container/Jogador2Ataque)
-	var lista3 = retornaCartasArea($Container/Jogador1Defesa)
-	var lista4 = retornaCartasArea($Container/Jogador2Defesa)
+func retornarTodasAsCartasEmCampo(jogador=null):
+	var lista1=[]
+	var lista2=[]
+	var lista3=[]
+	var lista4=[]
+	
+	if(jogador!=listaJogadores[1]):
+		lista1 = retornaCartasArea($Container/Jogador1Ataque)
+		lista3 = retornaCartasArea($Container/Jogador1Defesa)
+	if(jogador!=listaJogadores[0]):
+		lista2 = retornaCartasArea($Container/Jogador2Ataque)
+		lista4 = retornaCartasArea($Container/Jogador2Defesa)
 	return lista1+lista2+lista3+lista4
 
 func atualizaTodasCartas():
@@ -602,3 +609,7 @@ func verificarVencedor():
 		declararVencedor(oponente)
 	elif(oponente.personagem.retornaVida()<=0):
 		declararVencedor(jogador)
+
+func prepararLista(numSelecao,selecionador,tipoSelecao,obrigatorio=true,jogador=null,listaCartas=[]):
+	$ControladorSelecao.prepararLista(numSelecao,selecionador,tipoSelecao,obrigatorio,jogador,listaCartas)
+	

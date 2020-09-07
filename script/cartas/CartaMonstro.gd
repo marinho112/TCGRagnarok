@@ -5,6 +5,7 @@ var miniatura = false
 var imovel = false
 var palavraPosition
 var preDano = preload("res://cenas/animacoes/animacaoDano.tscn")
+
 	
 func _ready():
 	add_to_group(Constante.GRUPO_CARTA_MONSTRO)
@@ -12,6 +13,7 @@ func _ready():
 	
 func morre():
 	pass
+
 
 func preparaCarta(carta = self.carta):
 	self.carta=carta
@@ -55,6 +57,8 @@ func transformar(idNovaCarta):
 	if(retorno):
 		imovel=carta.temPalavraChave(4)
 	return retorno
+
+
 
 func desenharPropriedade(complemento = ""):
 	var cor

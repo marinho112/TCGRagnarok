@@ -75,6 +75,8 @@ func getEfeito(id,pai,palavraPai):
 			retorno = transformar.new()
 		12:
 			retorno = recebeAtaqueMultiplo.new()
+		13:
+			retorno = causaXDanoEmYAlvos.new()
 		_: 
 			return null
 	
@@ -93,7 +95,9 @@ class efeito:
 	func ativar(carta=null,alvo=null):
 		pass
 	
-	func recebeDescricao():
+	func recebeDescricao(alternativo=false):
+		if(alternativo):
+			return Ferramentas.receberTexto("efeitos",id,1)
 		return Ferramentas.receberTexto("efeitos",id)
 
 class eliminarXdeY extends efeito: 
@@ -197,7 +201,7 @@ class MaisXAtaque extends efeito:
 			
 
 		
-	func recebeDescricao():
+	func recebeDescricao(alternativo=false):
 		var texto = .recebeDescricao()
 		texto = texto.replace("&1",str(palavraPai.val1))
 		
@@ -252,7 +256,7 @@ class DevolveArmaInimigo extends efeito:
 		print("ARMA DEVOLVIDA PARA MÂO DO INIMIGO")
 		pass
 		
-	func recebeDescricao():
+	func recebeDescricao(alternativo=false):
 		var texto = .recebeDescricao()
 		texto = texto.replace("&1",Ferramentas.receberTexto("palavrasChave",palavraPai.id,2))
 		
@@ -303,10 +307,10 @@ class DarProtecao4Elementos extends efeito:
 	
 	func _init():
 		id=10
-		var agua=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_AGUA,null)
-		var fogo=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_FOGO,null)
-		var terra=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_TERRA,null)
-		var vento=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_VENTO,null)
+		var agua=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_AGUA,null,null)
+		var fogo=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_FOGO,null,null)
+		var terra=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_TERRA,null,null)
+		var vento=PalavrasChave.getPalavraChave(11,null,pai,Constante.PROPRIEDADE_VENTO,null,null)
 		listaProtecoes = [agua,fogo,terra,vento]
 		
 	func ativar(carta=null,alvo=null):
@@ -335,7 +339,7 @@ class transformar extends efeito:
 		efeito.transformarCarta(pai.obj,palavraPai.val2)
 	
 		
-	func recebeDescricao():
+	func recebeDescricao(alternativo=false):
 		var texto = .recebeDescricao()
 		var carta = ControlaDados.carregaCartaPorID(palavraPai.val2,pai.dono)
 		texto = texto.replace("&1",Ferramentas.receberTexto("cartas",carta.nome,0))
@@ -347,8 +351,61 @@ class recebeAtaqueMultiplo extends efeito:
 		id=12
 	
 	func ativar(carta=null,alvo=null):
-		var novaPalavra=PalavrasChave.getPalavraChave(17,null,pai,null,null)
+		var novaPalavra=PalavrasChave.getPalavraChave(17,null,pai,null,null,null)
 		Efeitos.alerta(pai.obj,"Recebeu Palavra chaver!")
 		var alertaFim= "Perdeu Palavra Chave"
 		Efeitos.adicionaPalavraChave(pai,novaPalavra,pai.dono.listaFaseFinal,alertaFim)
 		
+
+class causaXDanoEmYAlvos extends efeito:
+	
+	var animacao=null
+	var cont =0
+	var combate
+	
+	func _init():
+		id=13
+	
+	func recebeDescricao(alternativo=false):
+		var texto 
+		if(palavraPai.val3==1):
+			texto = .recebeDescricao(true)
+		else:
+			texto = .recebeDescricao()
+		texto = texto.replace("&1",str(palavraPai.val2))
+		texto = texto.replace("&2",str(palavraPai.val3))
+		return texto
+	
+	func ativar(carta=null,alvo=null):
+		combate = pai.obj.get_parent()
+		if(combate.jogador == pai.dono):
+			cont=0
+			var qtd = palavraPai.val3
+			var target = combate.oponente
+			var ai = pai.dono.ai
+			var listaTarget = combate.retornarTodasAsCartasEmCampo(target)
+			if(qtd > listaTarget.size()):
+				qtd=listaTarget.size()
+			ai.prepararLista(qtd,self,Constante.TIPO_SELECAO_CAMPO,false,target)
+			
+	func fimSelecao(lista):
+		#!combate.get_node("controladorAnimacao").estaAnimando()
+		
+		if(cont<lista.size()):
+			if(!combate.get_node("controladorAnimacao").estaAnimando()):
+				var alvo = lista[cont].obj
+				var dono = pai.obj
+				animacao= load("res://cenas/animacoes/animacoesAtaques/animacaoAlvoDano.tscn").instance()
+				animacao.definirPai(combate)
+				var posicao = alvo.get_global_position()
+				animacao.set_global_position(posicao)
+				animacao.play(dono,[alvo],null,1)
+				cont+=1
+			return false
+		else:
+			if(animacao==null):
+				for item in lista:
+					combate.verificarMorte(item.obj)
+				animacao=null
+				return true
+			return false

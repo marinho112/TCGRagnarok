@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://sprites/cartas/monstros/bordas/Preto-Reduzido.png" type="Texture" id=1]
 [ext_resource path="res://cenas/elementos/PalavraChaveObjeto.tscn" type="PackedScene" id=2]
@@ -9,19 +9,25 @@
 [ext_resource path="res://sprites/cartas/caixaSuperior.png" type="Texture" id=7]
 [ext_resource path="res://sprites/cartas/coraçao-vermelho-e-preto.png" type="Texture" id=8]
 [ext_resource path="res://sprites/cartas/monstros/propriedade/circuloAzul-1d0585.png" type="Texture" id=9]
+[ext_resource path="res://sprites/cartas/brilho/brilho.tres" type="SpriteFrames" id=10]
 [ext_resource path="res://script/cartas/MiniaturaMonstro.gd" type="Script" id=14]
 [ext_resource path="res://cenas/cartas/fontes/valoresMedios.tres" type="DynamicFont" id=15]
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 150, 95 )
 
-[sub_resource type="StreamTexture" id=1]
+[sub_resource type="StreamTexture" id=2]
 flags = 4
 load_path = "res://.import/Shield.png-820585b9521aea80ea129deb7596d52f.stex"
 
 [node name="MiniaturaMonstro" type="Area2D"]
 scale = Vector2( 1, 0.85 )
 script = ExtResource( 14 )
+
+[node name="brilho" type="AnimatedSprite" parent="."]
+visible = false
+scale = Vector2( 0.4, 0.25 )
+frames = ExtResource( 10 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 margin_left = -147.0
@@ -62,7 +68,6 @@ texture = ExtResource( 9 )
 
 [node name="caixaSuperior" type="Sprite" parent="."]
 position = Vector2( -3.05176e-05, -75 )
-scale = Vector2( 1, 1 )
 texture = ExtResource( 7 )
 
 [node name="nome" type="Label" parent="."]
@@ -79,8 +84,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2( 1, 1 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="borda" type="Sprite" parent="."]
 scale = Vector2( 0.99, 0.99 )
@@ -94,7 +98,7 @@ texture = ExtResource( 4 )
 [node name="defesa" type="Sprite" parent="."]
 position = Vector2( 116, 68 )
 scale = Vector2( 0.045, 0.045 )
-texture = SubResource( 1 )
+texture = SubResource( 2 )
 
 [node name="poder" type="Sprite" parent="."]
 position = Vector2( 115, 10 )
@@ -166,4 +170,3 @@ __meta__ = {
 
 [node name="PalavraChaveObjeto" parent="." instance=ExtResource( 2 )]
 position = Vector2( -139.297, -12.7839 )
-scale = Vector2( 1, 1 )

@@ -78,7 +78,6 @@ func _process(delta):
 			return
 	
 func jogar(carta,areaRelevante=null):
-	#print(str(jogador.zeny)+"/"+str(jogador.maxZeny))
 	var cartaLogica = carta.carta
 	if(jogador.ativado and (!carta.zoom) and (cartaLogica.custo <= jogador.zeny) ):
 		if(cartaLogica.tipo == Constante.CARTA_MONSTRO):
@@ -119,6 +118,7 @@ func adicionaCartaMao(carta):
 	
 	mao.append(carta)
 	var novaCarta = ControladorCartas.criarCarta(carta,self,Vector2(0,0))
+	novaCarta.add_to_group(Constante.GRUPO_CARTA_NA_MAO_JOGADOR)
 	novaCarta.add_to_group(Constante.GRUPO_CARTA_NA_MAO)
 	maoVisual.append(novaCarta)
 	posicaoMao = []
@@ -179,6 +179,7 @@ func atualizaMao():
 		carta = mao[num]
 		cartaNova = ControladorCartas.criarCarta(carta,self,posicaoInicial)
 		cartaNova.posicaoRaiz=posicaoInicial
+		cartaNova.add_to_group(Constante.GRUPO_CARTA_NA_MAO_JOGADOR)
 		cartaNova.add_to_group(Constante.GRUPO_CARTA_NA_MAO)
 		posicaoMao.append(cartaNova.get_global_position())
 		maoVisual.append(cartaNova)
@@ -200,7 +201,7 @@ func receberCartaNaFrente():
 	
 	var retorno 
 	for area in cursorMouse.get_overlapping_areas():
-		if((area.is_in_group(Constante.GRUPO_CARTA))and area.ativado and area.is_in_group(Constante.GRUPO_CARTA_NA_MAO)):
+		if((area.is_in_group(Constante.GRUPO_CARTA))and area.ativado and area.is_in_group(Constante.GRUPO_CARTA_NA_MAO_JOGADOR)):
 			retorno = area
 			if(retorno == cardZoom):
 				return retorno

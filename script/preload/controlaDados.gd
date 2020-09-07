@@ -242,7 +242,7 @@ func recebePalavrasChave(carta):
 							letra = idTexto.length()
 					if passa:
 						var conteudo2 = conteudo.split(",")
-						lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),carta,int(conteudo2[3]),int(conteudo2[4])))
+						lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),carta,int(conteudo2[3]),int(conteudo2[4]),int(conteudo2[5])))
 		arquivo.close()
 		carta.listaPalavraChave = lista
 					
@@ -348,7 +348,7 @@ func recebePalavrasPorEfeito(efeito):
 							letra = idTexto.length()
 						if (passa and (letra == (idTexto.length()-1))):
 							var conteudo2 = conteudo.split(",")
-							lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),efeito.pai,int(conteudo2[3]),int(conteudo2[4])))
+							lista.append(PalavrasChave.getPalavraChave(int(conteudo2[1]),int(conteudo2[2]),efeito.pai,int(conteudo2[3]),int(conteudo2[4]),int(conteudo2[5])))
 		arquivo.close()
 		efeito.listaPalavras = lista
 					
@@ -383,5 +383,4 @@ func carregaDeck(nomeArquivo,jogador):
 			for i in qtd:
 				listaObjDeck.append(carregaCartaPorID(carta,jogador))
 	
-	print(listaObjDeck.size())
 	return [personagemObj,listaObjDeck]

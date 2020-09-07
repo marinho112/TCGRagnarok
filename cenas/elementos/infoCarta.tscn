@@ -11,7 +11,6 @@ extents = Vector2( 134.424, 58.9845 )
 script = ExtResource( 2 )
 
 [node name="fundo" type="Sprite" parent="."]
-modulate = Color( 1, 1, 1, 0.784314 )
 scale = Vector2( 0.555, 0.25 )
 texture = ExtResource( 1 )
 

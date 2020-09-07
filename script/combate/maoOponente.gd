@@ -32,6 +32,7 @@ func atualizaMao():
 		cartaNova = ControladorCartas.criarCarta(carta,self,posicaoInicial)
 		cartaNova.posicaoRaiz=posicaoInicial
 		cartaNova.add_to_group(Constante.GRUPO_CARTA_NA_MAO_OPONENTE)
+		cartaNova.add_to_group(Constante.GRUPO_CARTA_NA_MAO)
 		posicaoMao.append(cartaNova.get_global_position())
 		maoVisual.append(cartaNova)
 		cartaNova.set_rotation(deg2rad(valorR+180))
@@ -70,9 +71,9 @@ func adicionaCartaMao(carta):
 		carta.set_global_position(posicaoInicial)
 		carta.posicaoRaiz=posicaoInicial
 		carta.add_to_group(Constante.GRUPO_CARTA_NA_MAO_OPONENTE)
+		carta.add_to_group(Constante.GRUPO_CARTA_NA_MAO)
 		posicaoMao.append(carta.get_global_position())
 		carta.set_rotation(deg2rad(valorR+180))
-		
 		valorR+=-variacaoRotate
 		if!(par and (num==(mao.size()-mao.size()/2-1))):
 			if((num==(mao.size()-(mao.size()+1)/2))):

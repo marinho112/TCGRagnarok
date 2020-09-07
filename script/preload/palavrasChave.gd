@@ -1,6 +1,6 @@
 extends Node
 
-func getPalavraChave(id,efeito,pai,val1,val2):
+func getPalavraChave(id,efeito,pai,val1,val2,val3):
 	var retorno
 	match id:
 		1:
@@ -43,6 +43,7 @@ func getPalavraChave(id,efeito,pai,val1,val2):
 	retorno.pai=pai
 	retorno.val1 = val1
 	retorno.val2 = val2
+	retorno.val3 = val3
 	return retorno
 
 class palavraChave:
@@ -52,6 +53,7 @@ class palavraChave:
 	var pai
 	var val1
 	var val2
+	var val3
 	var incentivoAtaqueDefesa = 0
 
 	func recebeNome():
