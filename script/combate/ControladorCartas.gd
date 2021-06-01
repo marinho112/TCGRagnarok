@@ -9,6 +9,7 @@ var jogador
 var ativado = true
 var interacaoAvancada=true
 var defesa = false
+var podeJogar=false
 var cartaSelecionada = null
 var cursorMouse 
 var cursorMousePosition
@@ -17,11 +18,12 @@ var pai
 
 func _ready():
 	
-	pai=get_parent()
+	pai=get_parent().get_parent()
 	cursorMouse = pai.get_parent().get_node("Mouse")
 	set_process(true)
+	
 func _process(delta):
-	if (jogador.ativado and (pai.get_node("mao").cartaSelecionada==null) and (!pai.get_node("listaExibicaoCartas").ativado)):
+	if (jogador.ativado and (pai.get_node("controladorMao/mao").cartaSelecionada==null) and (!pai.get_node("controladorCampo/listaExibicaoCartas").ativado)):
 		if((cursorMouse!=null) and (cartaSelecionada==null)):
 			if(Input.is_action_pressed("clicar")):
 				for area in cursorMouse.get_overlapping_areas():
@@ -97,14 +99,14 @@ func retornarArea(jogador,val=2):
 	
 	var areas 
 	if((val==0) or val>1):
-		areas= pai.retornaListaAreas((jogador.time+1),2)
+		areas= pai.get_node("controladorCampo").retornaListaAreas((jogador.time+1),2)
 		
 		for area in areas:
 			if area.carta == null:
 				return area
 	
 	if(val>0):	
-		areas = pai.retornaListaAreas((jogador.time+1),1)
+		areas = pai.get_node("controladorCampo").retornaListaAreas((jogador.time+1),1)
 		
 		for area in areas:
 			if area.carta == null:
@@ -116,7 +118,7 @@ func positionAreaCarta(area,carta):
 	
 	var auxArea
 	var auxCarta
-	if((defesa)and(!area.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA))):
+	if(((defesa)and(!area.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA)))or(!podeJogar)):
 		area= carta.posicaoJogo
 	if(area!=null):
 		if(area.carta != null):
@@ -163,10 +165,10 @@ func _on_Timer_timeout():
 func selecionaCarta(carta):
 	
 	if carta == null:
-		pai.get_node("mao").ativado = true
+		pai.get_node("controladorMao/mao").ativado = true
 		cartaSelecionada.set_z_index(0)
 	else:
-		pai.get_node("mao").ativado = false
+		pai.get_node("controladorMao/mao").ativado = false
 		carta.set_z_index(10)
 	
 	cartaSelecionada = carta

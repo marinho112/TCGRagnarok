@@ -1,19 +1,35 @@
 extends "res://script/classes/botao.gd"
 
-var estado = 0
+var estado = Constante.INPUT_BTN_AZUL
 
 func acaoClick():
+	var jogador=get_parent().get_parent().get_node("controladorDeFases").retornaJogador()
+	var input= Classes.InputUsuario.new(jogador,estado)
+	get_parent().get_parent().inputDoUsuario.append(input)
 	
-	match(estado):
-		0:
-			pass
-		1:
-			get_parent().subFase+=1
-			estado = 0
-		2:
-			get_parent().bloqueado = true
-			estado = 0
-		3:
-			estado = 0
-			get_parent().get_node("ControladorSelecao").enviado=true
+func mudaEstado(estadoNovo):
+	match(estadoNovo):
+		Constante.INPUT_BTN_AZUL_BLOQUEIO:
+			estado=estadoNovo
+			set_text(6,true,true)
+		Constante.INPUT_BTN_AZUL_ATAQUE:
+			estado=estadoNovo
+			set_text(1,true,true)
+		Constante.INPUT_BTN_AZUL_DANO:
+			estado=estadoNovo
+			set_text(5,true,true)
+		Constante.INPUT_BTN_AZUL_ENVIAR:
+			estado=estadoNovo
+			set_text(7,true,true)
+		Constante.INPUT_BTN_AZUL_PRONTO:
+			estado=estadoNovo
+			set_text(9,true,true)	
+		Constante.INPUT_BTN_DESATIVADO:
+			estado=estadoNovo
+			set_text(0,false,false)	
+		_:
+			estado=Constante.INPUT_BTN_AZUL
+			set_text(2,true,true)
+
+
 

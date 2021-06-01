@@ -4,7 +4,8 @@ var cont = 0
 var timer = 0.2
 var frame = 0
 
-func _process(delta):
+func executa(delta):
+	executando=true
 	cont+=delta
 	if(cont>timer):
 		cont=0

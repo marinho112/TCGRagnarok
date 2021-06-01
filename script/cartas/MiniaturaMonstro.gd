@@ -2,7 +2,6 @@ extends "res://script/cartas/CartaMonstro.gd"
 
 var posicaoJogo
 
-
 func _ready():
 	._ready()
 	add_to_group(Constante.GRUPO_CARTA_REDUZIDA)
@@ -49,6 +48,7 @@ func verificaVida():
 
 func animacaoMorte():
 	var animacao = load("res://cenas/animacoes/animacaoMorte.tscn").instance()
+	print(get_parent())
 	animacao.definirPai(get_parent())
 	animacao.play(self,[])
 	

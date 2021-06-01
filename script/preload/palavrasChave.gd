@@ -41,10 +41,33 @@ func getPalavraChave(id,efeito,pai,val1,val2,val3):
 	if ((efeito != null)and(efeito != 0)):
 		retorno.efeito= Efeitos.getEfeito(efeito,pai,retorno)
 	retorno.pai=pai
+	retorno.zonas=palavraRecebeZonas(id)
 	retorno.val1 = val1
 	retorno.val2 = val2
 	retorno.val3 = val3
 	return retorno
+
+func palavraRecebeZonas(palavraId):
+	var zonas=[]
+	var listaZonaCampo=[7,8,9,13,14,16]
+	var listaZonaMao=[]
+	var listaZonaDeck=[]
+	
+	for i in listaZonaCampo.size():
+		if(listaZonaCampo[i]==palavraId):
+			i=listaZonaCampo.size()
+			zonas.append(Constante.GRUPO_AREA_CAMPO)
+	for i in listaZonaMao.size():
+		if(listaZonaMao[i]==palavraId):
+			i=listaZonaMao.size()
+			zonas.append(Constante.GRUPO_CARTA_NA_MAO)
+	for i in listaZonaDeck.size():
+		if(listaZonaDeck[i]==palavraId):
+			i=listaZonaDeck.size()
+			zonas.append(Constante.GRUPO_CARTA_NO_BARALHO)
+	
+	return zonas
+	
 
 class palavraChave:
 	
@@ -55,6 +78,7 @@ class palavraChave:
 	var val2
 	var val3
 	var incentivoAtaqueDefesa = 0
+	var zonas = []
 
 	func recebeNome():
 		return Ferramentas.receberTexto("palavrasChave",id)
@@ -68,10 +92,13 @@ class palavraChave:
 	func receberIncentivo():
 		return incentivoAtaqueDefesa
 	
-	func adicionarEfeitoListaJogador(lista,carta):
+	func adicionarEfeitoListaJogador(lista,carta,efeito=null):
+		if(efeito==null):
+			efeito=self.efeito
+		efeito.listaZonas+=zonas
 		lista.append(efeito)
-		var xy = Efeitos.criarXY(efeito,lista)
-		carta.listaEfeitoSairJogo.append(xy)
+		#var xy = Efeitos.criarXY(efeito,lista)
+		#carta.listaEfeitoSairJogo.append(xy)
 	
 	func aoJogar():
 		aoMudarDeZona()
@@ -146,8 +173,9 @@ class Meditar extends palavraChave:
 		.aoJogar()
 		var lista= pai.dono.listaFaseInicial
 		var novoEfeito=Efeitos.criarContador(val1,efeito,lista,false)
-		lista.append(novoEfeito)
-		pai.listaEfeitoSairJogo.append(novoEfeito.xy)
+		#lista.append(novoEfeito)
+		adicionarEfeitoListaJogador(lista,pai,novoEfeito)
+		#pai.listaEfeitoSairJogo.append(novoEfeito.xy)
 		
 	func recebeDescricao():
 		var texto = .recebeDescricao()
@@ -175,8 +203,9 @@ class Golpear extends palavraChave:
 	func aoJogar():
 		.aoJogar()
 		var novoEfeito = Efeitos.criarAtivadorDono(efeito,pai.dono.listaAoGolpear)
-		pai.dono.listaAoGolpear.append(novoEfeito)
-		pai.listaEfeitoSairJogo.append(novoEfeito.xy)
+		#pai.dono.listaAoGolpear.append(novoEfeito)
+		adicionarEfeitoListaJogador(pai.dono.listaAoGolpear,pai,novoEfeito)
+		#pai.listaEfeitoSairJogo.append(novoEfeito.xy)
 	
 class Afinidade extends palavraChave:
 
@@ -231,7 +260,7 @@ class Recarregar extends palavraChave:
 		var lista= pai.dono.listaFaseInicial
 		var novoEfeito=Efeitos.criarContador(val1,efeito,lista,true)
 		lista.append(novoEfeito)
-		pai.listaEfeitoSairJogo.append(novoEfeito.xy)
+		#pai.listaEfeitoSairJogo.append(novoEfeito.xy)
 
 class InicioDeTurno extends palavraChave:
 	
@@ -260,7 +289,7 @@ class Resiliente extends palavraChave:
 		
 		var novoEfeito = Efeitos.criarAtivadorDano(efeito,pai.dono.listaAoGolpear)
 		pai.dono.listaAoReceberDano.append(novoEfeito)
-		pai.listaEfeitoSairJogo.append(novoEfeito.xy)
+		#pai.listaEfeitoSairJogo.append(novoEfeito.xy)
 		
 class AtaqueMultiplo extends palavraChave:
 	

@@ -18,8 +18,8 @@ func transformarCarta(carta,idNovaCarta):
 	
 	play(cartaVelha,[],4)
 	
-func _process(delta):
-
+func executa(delta):
+	executando=true
 	if transformado:
 		if(efeitosProntos):
 			pai.limparListaEfeitos(cartaVelha.carta.dono.listaAoReceberDano)

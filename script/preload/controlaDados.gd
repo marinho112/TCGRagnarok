@@ -218,6 +218,7 @@ func completaCartaMonstro(id,carta):
 	arquivo.close()
 	return false
 
+
 func recebePalavrasChave(carta):
 	
 	var arquivo = File.new()

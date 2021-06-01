@@ -65,10 +65,10 @@ func _on_Timer_timeout():
 
 func exibirCartas():
 	if carta!= null:
-		var raiz = get_node("/root/main/Combate/")
-		raiz.pausar(2)
+		var raiz = get_node("/root/main/ControladorDeTurnos/")
+		raiz.pausar(3)
 		var listaItens = [carta]
-		var lista = raiz.get_node("listaExibicaoCartas")
+		var lista = raiz.get_node("controladorCampo/listaExibicaoCartas")
 		listaItens += carta.listaCartasRelacionadas
 		lista.definirListaCartas(listaItens)
 	else:

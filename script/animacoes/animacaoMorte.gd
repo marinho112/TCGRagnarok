@@ -6,11 +6,11 @@ var contador =0
 var morto = false
 
 func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
-	pai.get_node("controladorAnimacao").atualizarAoTermino=true
+	pai.get_node("controladorDeAnimacao").atualizarAoTermino=true
 	.play(dono,listaAlvos,4,velo)
 
-func _process(delta):
-	
+func executa(delta):
+	executando=true
 	if(contador<(tempo*velo)):
 		var position = dono.posicaoJogo.get_global_position()
 		var ajuste = Vector2(randi()%ocilacao,randi()%ocilacao)
@@ -24,9 +24,9 @@ func encerrar():
 	
 	if(!morto):
 		var listaDono = dono.carta.listaEfeitoMorrer+pai.jogador.listaAoMorrer
-		if(pai.resolveHabilidades(listaDono,pai.oponente.listaAoMorrer)):
-			dono.set_visible(false)
-			morto=true
+		#if(pai.resolveHabilidades(listaDono,pai.oponente.listaAoMorrer)):
+		dono.set_visible(false)
+		morto=true
 	elif(dono.aoSairDeJogo(pai)):
 		dono.terminar()
 		.encerrar()

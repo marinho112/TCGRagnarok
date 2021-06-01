@@ -12,11 +12,14 @@ const GRUPO_AREA_CARTA_DEFESA="area_carta_defesa"
 const GRUPO_AREA_MAO="grupo_area_mao"
 const GRUPO_AREA_MAO_OPONENTE = "grupo_area_mao_oponente"
 const GRUPO_AREA_CAMPO="grupo_area_campo"
+const GRUPO_AREA_BARALHO="grupo_area_baralho"
 const GRUPO_CARTA_EM_CAMPO = "carta_em_campo"
 const GRUPO_CARTA_FLUTUANTE = "carta_flutuante"
+const GRUPO_CARTA_MORTA = "carta_morta"
 const GRUPO_CARTA_NA_MAO= "carta_na_mao"
 const GRUPO_CARTA_NA_MAO_JOGADOR= "carta_na_mao_JOGADOR"
 const GRUPO_CARTA_NA_MAO_OPONENTE= "carta_na_mao_oponente"
+const GRUPO_CARTA_NO_BARALHO="carta_no_baralho"
 const GRUPO_ANIMACAO = "animacao"
 
 
@@ -25,6 +28,38 @@ const TIPO_SELECAO_MAO ="tipo_selecao_mao"
 const TIPO_SELECAO_CAMPO = "tipo_selecao_campo"
 const TIPO_SELECAO_AREA_FLUTUANTE = "tipo_selecao_area_flutuante"
 const TIPO_SELECAO_MONSTRO_CAMPO = "tipo_selecao_monstro_campo"
+
+#Constantes de Fases
+
+const FASE_INICIAL=0
+const FASE_COMPRA=1
+const FASE_PRINCIPAL1=2
+const FASE_ATAQUE=3
+const FASE_BLOQUEIO=4
+const FASE_DANO=5
+const FASE_PRINCIPAL2=6
+const FASE_FINAL=7
+
+#Constantes de Tipo de Input
+
+const INPUT_BTN_AZUL=0
+const INPUT_BTN_VERMELHO=1
+const INPUT_JOGAR_CARTA=2
+const INPUT_CLICK_BARALHO=3
+const INPUT_CLICK_PALAVRA_CHAVE=4
+const INPUT_BTN_AZUL_BLOQUEIO=5
+const INPUT_BTN_VERMELHO_CANCEL=6
+const INPUT_BTN_AZUL_ATAQUE=7
+const INPUT_BTN_AZUL_DANO=8
+const INPUT_BTN_AZUL_ENVIAR=9
+const INPUT_BTN_AZUL_PRONTO=10
+const INPUT_BTN_DESATIVADO=99
+
+#Constantes Valores do Jogo
+
+const VALOR_CARTAS_INICIAIS=5
+const VALOR_MAXIMO_CARTAS=10
+const VALOR_MAXIMO_CARTAS_FINAL_TURNO=8
 
 #Constantes de Tipo de Carta
 

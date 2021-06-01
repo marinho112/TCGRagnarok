@@ -15,11 +15,11 @@ func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
 	.play(dono,listaAlvos,5,velo)
 	vel *= velo
 	if(dono.time == 0):
-		inicio = pai.get_node("deck")
-		destino = pai.get_node("mao")
+		inicio = pai.get_node("controladorBaralho/deck")
+		destino = pai.get_node("controladorMao/mao")
 	else:
-		inicio = pai.get_node("deckOponente")
-		destino = pai.get_node("maoOponente")
+		inicio = pai.get_node("controladorBaralho/deckOponente")
+		destino = pai.get_node("controladorMao/maoOponente")
 	
 	
 	posicaoInicio = inicio.get_global_position()
@@ -37,9 +37,9 @@ func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
 	fator.y=0.5
 	
 	
-func _process(delta):
+func executa(delta):
 	
-	
+	executando=true
 	var posicaoAtual = imagem.get_global_position()
 	#print(posicaoAtual)
 	var diferenca = posicaoAtual - posicaoFinal
@@ -65,6 +65,6 @@ func _process(delta):
 	else:
 		imagem.set_visible(false)
 		imagem.queue_free()
-		pai.executarCompra(dono)
+		pai.get_node("controladorBaralho").executarCompra(dono)
 		encerrar()
 

@@ -51,15 +51,15 @@ func verificaVida():
 	print("NÂO IMPLEMENTADO NA CARTA GENERICA")
 
 func exibirCartas():
-	var raiz = get_node("/root/main/Combate/")
+	var raiz = get_node("/root/main/ControladorDeTurnos/")
 	raiz.pausar(3)
 	var listaItens = [carta]
-	var lista = raiz.get_node("listaExibicaoCartas")
+	var lista = raiz.get_node("controladorCampo/listaExibicaoCartas")
 	listaItens += carta.listaCartasRelacionadas
 	lista.definirListaCartas(listaItens)
 
 func transformar(idNovaCarta):
-	var combate = get_node("/root/main/Combate/")
+	var combate = get_node("/root/main/ControladorDeTurnos/")
 	
 	if(ativado):
 		var cartaVelha= carta
@@ -91,6 +91,6 @@ func terminar():
 	queue_free()
 func aoSairDeJogo(combate):
 	var listaDono = carta.listaEfeitoSairJogo+carta.dono.listaAoSairDeJogo
-	if(combate.resolveHabilidades(listaDono,carta.dono.listaAoMorrer)):
-		return true
-	return false
+	#if(combate.resolveHabilidades(listaDono,carta.dono.listaAoMorrer)):
+	return true
+	#return false

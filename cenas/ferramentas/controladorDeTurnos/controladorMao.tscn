@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://cenas/Telas/mao.tscn" type="PackedScene" id=1]
+[ext_resource path="res://script/combate/maoOponente.gd" type="Script" id=2]
+
+[node name="controladorMao" type="Node2D"]
+
+[node name="mao" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, 405 )
+scale = Vector2( 0.6, 0.6 )
+z_index = 1
+
+[node name="maoOponente" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, -465 )
+scale = Vector2( 0.6, 0.6 )
+z_index = 1
+script = ExtResource( 2 )

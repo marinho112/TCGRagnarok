@@ -4,7 +4,7 @@ extends "res://script/combate/maoGenerico.gd"
 
 func _ready():
 	add_to_group(Constante.GRUPO_AREA_MAO_OPONENTE)
-	pai= get_parent()
+	pai= get_parent().get_parent()
 	atualizaMao()
 
 func atualizaMao():

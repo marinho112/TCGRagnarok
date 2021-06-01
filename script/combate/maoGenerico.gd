@@ -9,7 +9,7 @@ var variacaoX=70
 var variacaoY=8
 var variacaoRotate = 1.5
 var jogador 
-var cardZoom 
+var cardZoom=null
 
 
 func definirJogador(parametro):

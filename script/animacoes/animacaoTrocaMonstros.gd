@@ -29,7 +29,8 @@ func encerrar():
 	pai.get_node('ControladorCartas').positionAreaCarta(destino,cartaOrigem)
 	.encerrar()
 
-func _process(delta):
+func executa(delta):
+	executando=true
 	if(moverCarta(cartaOrigem,destino,delta)):
 		encerrar()
 	

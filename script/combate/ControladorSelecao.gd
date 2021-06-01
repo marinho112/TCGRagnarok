@@ -32,7 +32,7 @@ func desativar():
 		for carta in listaCartas:
 			carta.queue_free()
 		ativado = false
-		pai.ativado=true
+		#pai.ativado=true
 		pai.get_node("ControladorCartas").ativado = true
 		pai.get_node("mao").ativado = true
 		
@@ -40,6 +40,7 @@ func _process(delta):
 	if ativado:
 		definirBtns(delta)
 		if(!enviado):
+			#Definir tipo de seleção
 			match tipoSelecao:
 				Constante.TIPO_SELECAO_CAMPO:
 					selecao(delta,Constante.GRUPO_CARTA_EM_CAMPO,jogador)
@@ -107,6 +108,7 @@ func definirBtns(delta):
 			btn2.set_text(2,true,true)
 			btn2.estado = 2
 
+#Selecionar item dependendo do tipo de seleção
 func selecao(delta,tipo,jogador):
 	if Input.is_action_just_pressed("clicar"):
 		var area = receberAreaMaisRelevante(pai.cursorMouse,tipo,jogador)

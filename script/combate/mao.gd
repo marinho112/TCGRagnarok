@@ -1,27 +1,24 @@
 extends "res://script/combate/maoGenerico.gd"
 
 
-
-
 var cursorMouse
 var cartaSelecionada = null
 var cursorMousePosition
 
 var duploClik = false
-var cartaDoZoom 
 
 var tamanhoMao
 
 func _ready():
 	add_to_group(Constante.GRUPO_AREA_MAO)
-	pai= get_parent()
+	pai= get_parent().get_parent()
 	cursorMouse = pai.get_parent().get_node("Mouse")
 	set_process(true)
 	
 	
 func _process(delta):
 	
-	if (ativado and (pai.get_node("ControladorCartas").cartaSelecionada==null)):
+	if (ativado and (pai.get_node("controladorCampo/ControladorCartas").cartaSelecionada==null)):
 		
 		if((cursorMouse!=null) and (cartaSelecionada==null)):
 			
@@ -35,22 +32,15 @@ func _process(delta):
 			var item = receberCartaNaFrente()
 			
 			if(cartaSelecionada!=null):
-				var cont =0
-				var controlador = pai.get_node("ControladorCartas")
-				var areaRelevante = controlador.receberAreaMaisRelevante(cartaSelecionada)
-				
-				if (areaRelevante != null):
-					var card = jogar(cartaSelecionada,areaRelevante)
-					if(card != null):
-						var lista = card.carta.listaPalavraChave
-						for elemento in lista:
-							if (elemento.id == 4):
-								card.imovel=true
-				else:
-					retornarCarta()
-						
-				
-				selecionaCarta(null)
+				if(!cartaSelecionada.zoom):
+					var cont =0
+					var controlador = pai.get_node("controladorCampo/ControladorCartas")
+					var areaRelevante = controlador.receberAreaMaisRelevante(cartaSelecionada)
+					var estado=Constante.INPUT_JOGAR_CARTA
+					var jogadorObj=get_parent().get_parent().get_node("controladorDeFases").listaJogadores[0]
+					var input= Classes.InputUsuario.new(jogadorObj,estado,[areaRelevante,cartaSelecionada,self])
+					get_parent().get_parent().inputDoUsuario.append(input)
+				cartaSelecionada=null
 			
 			if(item != null):
 				if(duploClik):
@@ -60,8 +50,10 @@ func _process(delta):
 				else:
 					duploClik = true
 					$Timer.start()
+					
 					if(item.zoom):
-						cartaDoZoom = item
+						var cartaDoZoom = item
+						zoomCarta(cartaDoZoom,false)
 					else:
 						if !cardZoom:
 							zoomCarta(item,true)
@@ -79,10 +71,12 @@ func _process(delta):
 	
 func jogar(carta,areaRelevante=null):
 	var cartaLogica = carta.carta
-	if(jogador.ativado and (!carta.zoom) and (cartaLogica.custo <= jogador.zeny) ):
+	if((cartaLogica.custo <= jogador.zeny) ):
 		if(cartaLogica.tipo == Constante.CARTA_MONSTRO):
+			if(cardZoom==carta):
+				cardZoom=null
 			cartaLogica.revelada=true
-			var controlador = pai.get_node("ControladorCartas")
+			var controlador = pai.get_node("controladorCampo/ControladorCartas")
 			var cartaNova = controlador.criarMonstro(cartaLogica,jogador)
 			mao.remove(mao.find(cartaLogica))
 			cartaLogica.obj=cartaNova
@@ -90,26 +84,27 @@ func jogar(carta,areaRelevante=null):
 			jogador.zeny -= cartaLogica.custo
 			jogador.areaZenys.atualizarZeny()
 			if(areaRelevante!=null):
-				pai.get_node("ControladorCartas").positionAreaCarta(areaRelevante,cartaNova)
+				pai.get_node("controladorCampo/ControladorCartas").positionAreaCarta(areaRelevante,cartaNova)
 			for palavra in cartaLogica.listaPalavraChave:
 				palavra.aoJogar()
-			pai.atualizaTodasCartas()
-
-
+			pai.get_node("controladorCampo").atualizaTodasCartas()
 			return cartaNova
 	else:
+		if(cartaLogica.custo > jogador.zeny):
+			print("Carta de custo indevido.")
 		retornarCarta()
 		return null
 		
 func selecionaCarta(carta):
 	
 	if carta == null:
-		pai.get_node("ControladorCartas").ativado = true
-		cartaSelecionada.set_z_index(0)
+		pai.get_node("controladorCampo/ControladorCartas").ativado = true
+		if(cartaSelecionada!=null):
+			cartaSelecionada.set_z_index(0)
 		if cardZoom != null:
 			cardZoom.set_z_index(100)
 	else:
-		pai.get_node("ControladorCartas").ativado = false
+		pai.get_node("controladorCampo/ControladorCartas").ativado = false
 		carta.set_z_index(100)
 	
 	cartaSelecionada = carta
@@ -230,8 +225,6 @@ func moveu(carta):
 
 func _on_Timer_timeout():
 	duploClik = false
-	if(cartaDoZoom!=null):
-		zoomCarta(cartaDoZoom,false)
-		cartaDoZoom = null
+	
 		
 	

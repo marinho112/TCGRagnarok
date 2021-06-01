@@ -5,6 +5,9 @@ var dono
 var listaAlvos = []
 var velo = 1.0
 var contadorHabilidade = 0
+var controla
+var executado=false
+var executando=false
 
 func _ready():
 	add_to_group(Constante.GRUPO_ANIMACAO)
@@ -14,12 +17,13 @@ func play(dono,listaAlvos = [],pause = null,velo = 1.0):
 	self.dono=dono
 	self.velo = velo
 	self.listaAlvos = listaAlvos
-	set_process(true)
-	var controla = pai.get_node("controladorAnimacao")
+	#set_process(true)
+	controla = pai.get_node("controladorDeAnimacao")
+	#executando=true
 	if(pause != null):
 		pai.pausar(pause)
-		controla.listaAnimacoes.append(self)
-		controla.ativado = true
+		controla.adicionarAnimacao(self)
+		#controla.ativado = true
 
 	
 
@@ -30,10 +34,11 @@ func definirPai(novoPai):
 		set_z_index(120)
 		
 func encerrar():
-	var controla = pai.get_node("controladorAnimacao")
-	controla.listaAnimacoes.remove(controla.listaAnimacoes.find(self))
-	set_process(false)
-	queue_free()
+	#controla.listaAnimacoes.remove(controla.listaAnimacoes.find(self))
+	pai.pausar(0)
+	executado=true
+	#set_process(false)
+	#queue_free()
 
 func resolveHabilidades(listaJogador,listaOponente,carta=null,alvo=null):
 	var qtdJogador = listaJogador.size() 

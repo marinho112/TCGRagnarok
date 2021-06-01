@@ -27,7 +27,7 @@ func preparaCarta(carta = self.carta):
 
 func calcularBonus():
 	var pai = get_parent()
-	var combate=get_node("/root/main/Combate/")
+	var combate=get_node("/root/main/ControladorDeTurnos/")
 	carta.zerarBonus()
 	if!(pai.is_in_group(Constante.GRUPO_AREA_MAO) or pai.is_in_group(Constante.GRUPO_AREA_MAO_OPONENTE)):
 		

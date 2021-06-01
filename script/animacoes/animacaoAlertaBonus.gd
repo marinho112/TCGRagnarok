@@ -19,7 +19,8 @@ func setTexto(num,string,negativo=false):
 	else:
 		$Label.set_text(string)
 	
-func _process(delta):
+func executa(delta):
+	executando=true
 	var position = get_global_position()
 	var movimento = Vector2(0.6,-1) * vel * delta
 	var novaPosition = position+movimento

@@ -4,14 +4,17 @@ var preDano = preload("res://cenas/animacoes/animacaoDano.tscn")
 var acabado
 var cont=0
 var listaLinhas = []
+var listaAnimacoes= []
 
-func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
-	.play(dono,listaAlvos,4,velo)
+func play(dono,listaAlvos = [],pausar = 4,velo = 1.0):
+	.play(dono,listaAlvos,pausar,velo)
 	posicionarLinhas()
+	if(!pausar):
+		listaAnimacoes[0].append(self)
 	$AnimationPlayer.play("main",-1,velo)
 
-func _process(delta):
-	
+func executa(delta):
+	executando=true
 	if(acabado):
 		if(cont < listaAlvos.size()):
 			var alvo = listaAlvos[cont]
@@ -24,6 +27,7 @@ func _process(delta):
 				var causado = dono.golpear(alvo)
 				novaAnimacao.setDano(causado)
 				novaAnimacao.play(dono,[alvo],null,velo)
+				listaAnimacoes[1].append(novaAnimacao)
 				
 		else:
 			acabado=false
@@ -70,7 +74,8 @@ func posicionarLinhas():
 		
 	
 	
-
+func setListaAnimacao(lista):
+	listaAnimacoes=lista
 
 func criarPonto(position):
 	var novaLinha = $linha.duplicate()

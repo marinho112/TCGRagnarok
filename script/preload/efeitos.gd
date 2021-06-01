@@ -2,7 +2,7 @@ extends Node
 
 
 func getRaiz():
-	return get_node("/root/main/Combate/")
+	return get_node("/root/main/ControladorDeTurnos/")
 
 func criarXY(eliminado,lista,alertaMsg=null):
 	var xy = eliminarXdeY.new()
@@ -19,21 +19,21 @@ func alerta(local,texto,val=null):
 		
 func criarAtivadorDono(efeito,lista):
 	var novoAtivador = ativadorDono.new()
-	var XY = criarXY(novoAtivador,lista)
-	novoAtivador.iniciar(efeito,XY)
+	#var XY = criarXY(novoAtivador,lista)
+	novoAtivador.iniciar(efeito)
 	return novoAtivador
 
 func criarAtivadorDano(efeito,lista):
 	var novoAtivador = ativadorDano.new()
-	var XY = criarXY(novoAtivador,lista)
-	novoAtivador.iniciar(efeito,XY)
+	#var XY = criarXY(novoAtivador,lista)
+	novoAtivador.iniciar(efeito)
 	return novoAtivador
 
 func criarContador(limite,efeito,lista,loop):
 	var novoContador = contador.new()
-	var XY = criarXY(novoContador,lista)
+	#var XY = criarXY(novoContador,lista)
 	var combate = getRaiz()
-	novoContador.iniciar(limite,efeito,XY,combate,loop)
+	novoContador.iniciar(limite,efeito,combate,loop)
 	return novoContador
 		
 		
@@ -91,6 +91,7 @@ class efeito:
 	var pai
 	var palavraPai
 	var listaPalavras = []
+	var listaZonas = []
 	
 	func ativar(carta=null,alvo=null):
 		pass
@@ -99,6 +100,27 @@ class efeito:
 		if(alternativo):
 			return Ferramentas.receberTexto("efeitos",id,1)
 		return Ferramentas.receberTexto("efeitos",id)
+	
+	func verificaPai():
+		var superPai=pai.obj.get_parent()
+		var listaCartas = []
+		for item in listaZonas:
+			if(item == Constante.GRUPO_CARTA_MORTA):
+				return false
+			if(item == Constante.GRUPO_AREA_CAMPO):
+				listaCartas += superPai.get_node("controladorCampo").retornaListaAreas(pai.dono.time+1,1,true)
+				listaCartas += superPai.get_node("controladorCampo").retornaListaAreas(pai.dono.time+1,2,true)
+			if(item == Constante.GRUPO_CARTA_NA_MAO):
+				listaCartas += pai.dono.listaMao
+			if(item == Constante.GRUPO_CARTA_NO_BARALHO):
+				listaCartas += pai.dono.listaBaralho
+		for item in listaCartas:
+			if(pai.obj==item):
+				return true
+		return false
+		
+	func removeEfeito():
+		listaZonas.push_front(Constante.GRUPO_CARTA_MORTA)
 
 class eliminarXdeY extends efeito: 
 	var x
@@ -113,7 +135,7 @@ class eliminarXdeY extends efeito:
 		self.alertaMsg=alertaMsg
 	
 	func ativar(carta=null,alvo=null):
-		y.remove(y.find(x))
+		y[y.find(x)].removeEfeito()
 		usado=true
 		if(alertaMsg!=null):
 			Efeitos.alerta(self.x.pai.obj,alertaMsg)
@@ -124,20 +146,20 @@ class contador extends efeito:
 	var cont
 	var efeito
 	var loop
-	var xy
+	#var xy
 	var combate
 	var usado = false
 	
 	func _init():
 		id=Constante.EFEITO_CONTADOR
 	
-	func iniciar(limite,efeito,xy,combate,loop):
+	func iniciar(limite,efeito,combate,loop):
 		self.limite=limite
 		self.efeito=efeito
 		self.pai=efeito.pai
 		self.loop=loop
 		self.cont=0
-		self.xy=xy
+		#self.xy=xy
 		self.combate=combate
 	
 	func ativar(carta=null,alvo=null):
@@ -154,15 +176,15 @@ class contador extends efeito:
 class ativadorDono extends efeito: 
 
 	var efeito
-	var xy
+	#var xy
 	
 	func _init():
 		id=Constante.EFEITO_ATIVADOR_DONO
 	
-	func iniciar(efeito,xy):
+	func iniciar(efeito):
 		self.pai=efeito.pai
 		self.efeito=efeito
-		self.xy=xy
+		#self.xy=xy
 	
 	func ativar(carta=null,alvo=null):
 		if(efeito.pai==carta.carta):
@@ -171,15 +193,15 @@ class ativadorDono extends efeito:
 class ativadorDano extends efeito: 
 
 	var efeito
-	var xy
+	#var xy
 	
 	func _init():
 		id=Constante.EFEITO_ATIVADOR_DANO
 	
-	func iniciar(efeito,xy):
+	func iniciar(efeito):
 		self.pai=efeito.pai
 		self.efeito=efeito
-		self.xy=xy
+		#self.xy=xy
 	
 	func ativar(carta=null,alvo=null):
 		if(efeito.pai==carta.carta):
@@ -378,15 +400,21 @@ class causaXDanoEmYAlvos extends efeito:
 	
 	func ativar(carta=null,alvo=null):
 		combate = pai.obj.get_parent()
-		if(combate.jogador == pai.dono):
+		if(combate.get_node("controladorDeFases").retornaJogador().jogador == pai.dono):
 			cont=0
 			var qtd = palavraPai.val3
 			var target = combate.oponente
 			var ai = pai.dono.ai
-			var listaTarget = combate.retornarTodasAsCartasEmCampo(target)
+			var listaTarget = combate.get_node("controladorCampo").retornarTodasAsCartasEmCampo(target)
 			if(qtd > listaTarget.size()):
 				qtd=listaTarget.size()
-			ai.prepararLista(qtd,self,Constante.TIPO_SELECAO_CAMPO,false,target)
+			var proximoItemPilha=null
+			var modo = 12
+			var numAlvos = 1
+			var itemPilha = ClassesSelecao.selecaoCampoItemPilha.new(combate,pai.dono,proximoItemPilha,modo,numAlvos)
+			combate.get_node("controladorPilha").adicionarTopoDaPilha(itemPilha)
+			
+			#ai.prepararLista(qtd,self,Constante.TIPO_SELECAO_CAMPO,false,target)
 			
 	func fimSelecao(lista):
 		#!combate.get_node("controladorAnimacao").estaAnimando()

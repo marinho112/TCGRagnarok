@@ -15,7 +15,7 @@ var delay=false
 var tamanhoCartas= Vector2(1.5,1.5)
 
 func _ready():
-	mouse = get_parent().get_parent().get_node("Mouse")
+	mouse = get_parent().get_parent().get_parent().get_node("Mouse")
 	set_process(true)
 	
 func aguardar():
@@ -33,11 +33,12 @@ func _process(delta):
 			elif((position.y<190)and(position.y>-190)):
 				if(duploClick):
 					duploClick = false
-					get_node("/root/main/Combate").pausar(0)
+					get_node("/root/main/ControladorDeTurnos").pausar(0)
 					limparCartas()
 				else:
 					duploClick = true
 					$Timer.start()
+					
 					
 func definirListaCartas(lista):
 	set_visible(true)
