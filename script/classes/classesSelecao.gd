@@ -10,7 +10,7 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 	var proximoItemPilha
 	var tipoDeSelecao
 	var enviado = false
-	var listaRetorno
+	var listaRetorno=[]
 	var listaCartasCriar
 	var listaCartas = []
 	
@@ -35,13 +35,16 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 	func main(delta):
 		definirBtns(delta)
 		if(!enviado):
-			match combate.inputAtual:
-				Constante.INPUT_BTN_VERMELHO_CANCEL:
-					cancelar()
-				Constante.INPUT_BTN_AZUL_ENVIAR:
-					enviar()
-				Constante.INPUT_BTN_AZUL_PRONTO:
-					enviar()
+			if(combate.inputAtual!=null):
+				if(combate.inputAtual.jogador == combate.get_node("controladorDeFases").retornaJogador()):
+					match combate.inputAtual.tipo:
+						Constante.INPUT_BTN_VERMELHO_CANCEL:
+							print("Vermelho")
+							cancelar()
+						Constante.INPUT_BTN_AZUL_ENVIAR:
+							enviar()
+						Constante.INPUT_BTN_AZUL_PRONTO:
+							enviar()
 			
 			#Definir tipo de seleção
 			match tipoDeSelecao:
@@ -132,3 +135,33 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 		combate.get_node("controladorMao/mao").ativado = true
 		combate.get_node("controladorMao/maoOponente").ativado = true
 		executado=true
+
+class itemSelecaoPilha extends Classes.ItemPilha:
+	
+	var carta
+	var alvo
+	var item
+	var tipoItem
+	var listaSelecionados
+	var pause= null
+	var velo = 1.0
+	var dono
+	
+	func _init(combate,jogador,item,tipoItem,carta=null,alvo=null).(combate,jogador):
+		self.carta=carta
+		self.alvo=alvo
+		self.item=item
+		self.tipoItem=tipoItem
+		dono=jogador
+		
+	func main(delta):
+		match tipoItem:
+			Constante.OBJ_ANIMACAO:
+				for selsecionado in listaSelecionados:
+					var animacao = item.instance()
+					animacao.definirPai(combate)
+					animacao.play(dono,[selsecionado],pause,velo)
+			Constante.OBJ_EFEITO:
+				item.ativar(carta,alvo)
+		executado=true
+	

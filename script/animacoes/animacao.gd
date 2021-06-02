@@ -13,7 +13,7 @@ func _ready():
 	add_to_group(Constante.GRUPO_ANIMACAO)
 	
 
-func play(dono,listaAlvos = [],pause = null,velo = 1.0):
+func play(dono,listaAlvos = [],pause = null,velo = 1.0,sequencia=null):
 	self.dono=dono
 	self.velo = velo
 	self.listaAlvos = listaAlvos
@@ -22,7 +22,10 @@ func play(dono,listaAlvos = [],pause = null,velo = 1.0):
 	#executando=true
 	if(pause != null):
 		pai.pausar(pause)
-		controla.adicionarAnimacao(self)
+		if(sequencia!=null):
+			controla.adicionarAnimacaoSequencia(self,sequencia)
+		else:	
+			controla.adicionarAnimacao(self)
 		#controla.ativado = true
 
 	

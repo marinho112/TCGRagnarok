@@ -5,7 +5,7 @@ var tempo= 1
 var contador =0
 var morto = false
 
-func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
+func play(dono,listaAlvos = [],pausar = null,velo = 1.0,sequencia=null):
 	pai.get_node("controladorDeAnimacao").atualizarAoTermino=true
 	.play(dono,listaAlvos,4,velo)
 

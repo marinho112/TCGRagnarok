@@ -13,6 +13,9 @@ func removeAnimacaoDoTopo():
 
 func adicionarAnimacao(animacao):
 	animacoes.append(animacao)
+
+func adicionarAnimacaoSequencia(animacao,posi):
+	animacoes.insert(posi,animacao)
 	
 func executaAnimacoes(delta):
 	if(animacoes.size()>0):

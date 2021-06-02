@@ -55,6 +55,13 @@ const INPUT_BTN_AZUL_ENVIAR=9
 const INPUT_BTN_AZUL_PRONTO=10
 const INPUT_BTN_DESATIVADO=99
 
+#Constantes Tipos Objetos
+
+const OBJ_ITEM_PILHA="objeto_item_pilha"
+const OBJ_EFEITO="objeto_efeito"
+const OBJ_ANIMACAO="objeto_animacao"
+const OBJ_PALAVRA_CHAVE="objeto_palavra_chave"
+
 #Constantes Valores do Jogo
 
 const VALOR_CARTAS_INICIAIS=5

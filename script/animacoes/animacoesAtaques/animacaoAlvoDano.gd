@@ -5,7 +5,11 @@ var timer = 0.2
 var frame = 0
 
 func executa(delta):
-	executando=true
+	if(executando==false):
+		var alvo = listaAlvos[0]
+		var posicao = alvo.get_global_position()
+		self.set_global_position(posicao)
+		executando=true
 	cont+=delta
 	if(cont>timer):
 		cont=0
@@ -25,5 +29,5 @@ func encerrar():
 	animacao.set_global_position(posicao)
 	var causado = dono.golpear(alvo)
 	animacao.setDano(causado)
-	animacao.play(dono,[alvo],null,1)
+	animacao.play(dono,[alvo],null,1,1)
 	.encerrar()

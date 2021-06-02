@@ -11,7 +11,7 @@ var imagem
 var raio
 var fator = Vector2(0,0)
 
-func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
+func play(dono,listaAlvos = [],pausar = null,velo = 1.0,sequencia=null):
 	.play(dono,listaAlvos,5,velo)
 	vel *= velo
 	if(dono.time == 0):

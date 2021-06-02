@@ -11,7 +11,7 @@ var indiceZ
 
 var vel = 5
 
-func play(paraOrigem,paraDestino=null,pause = null,velo = 1.0):
+func play(paraOrigem,paraDestino=null,pause = null,velo = 1.0,sequencia=null):
 	origem = paraOrigem
 	cartaOrigem =paraOrigem.carta
 	destino = paraDestino

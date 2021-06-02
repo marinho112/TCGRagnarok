@@ -17,7 +17,7 @@ var rodada=0
 var turno = 0
 var jogador 
 var oponente
-var CARTAS_INICIAIS=5
+var CARTAS_INICIAIS=Constante.VALOR_CARTAS_INICIAIS
 var bloqueado = false
 var passeLivre= false
 var confrontarAtaques1 = 0

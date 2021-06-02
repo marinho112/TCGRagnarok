@@ -3,7 +3,7 @@ extends "res://script/animacoes/animacao.gd"
 var vel = 50
 var timer = 0.8
 
-func play(dono,listaAlvos = [],pausar = null,velo = 1.0):
+func play(dono,listaAlvos = [],pausar = null,velo = 1.0,sequencia=null):
 	.play(dono,listaAlvos,4,velo)
 	vel *= velo 
 	timer *= velo

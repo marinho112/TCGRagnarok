@@ -6,7 +6,7 @@ var cont=0
 var listaLinhas = []
 var listaAnimacoes= []
 
-func play(dono,listaAlvos = [],pausar = 4,velo = 1.0):
+func play(dono,listaAlvos = [],pausar = 4,velo = 1.0,sequencia=null):
 	.play(dono,listaAlvos,pausar,velo)
 	posicionarLinhas()
 	if(!pausar):

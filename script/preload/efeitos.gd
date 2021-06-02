@@ -408,7 +408,8 @@ class causaXDanoEmYAlvos extends efeito:
 			var listaTarget = combate.get_node("controladorCampo").retornarTodasAsCartasEmCampo(target)
 			if(qtd > listaTarget.size()):
 				qtd=listaTarget.size()
-			var proximoItemPilha=null
+			var animacaoDano=load("res://cenas/animacoes/animacoesAtaques/animacaoAlvoDano.tscn")
+			var proximoItemPilha=ClassesSelecao.itemSelecaoPilha.new(combate,pai.dono,animacaoDano,Constante.OBJ_ANIMACAO,carta)
 			var modo = 12
 			var numAlvos = 1
 			var itemPilha = ClassesSelecao.selecaoCampoItemPilha.new(combate,pai.dono,proximoItemPilha,modo,numAlvos)
@@ -437,3 +438,40 @@ class causaXDanoEmYAlvos extends efeito:
 				animacao=null
 				return true
 			return false
+
+class executaAnimacao extends efeito:
+	
+	var animacao=null
+	var dono
+	var listaAlvos= []
+	var pause= null
+	var velo = 1.0
+	
+	func _init():
+		id=14
+	
+	func defineAnimacao(animacao,dono,listaAlvos= [],pause=null,velo=1.0):
+		self.animacao=animacao
+		self.dono=dono
+		self.listaAlvos=listaAlvos
+		self.pause=pause
+		self.velo=velo
+	
+	func ativar(carta=null,alvo=null):
+		animacao.play(dono,listaAlvos,pause,velo)
+
+class efeitoPilha extends Classes.ItemPilha:
+	
+	var carta
+	var alvo
+	var efeito
+	var listaSelecionados
+	
+	func _init(combate,jogador,efeito,carta,alvo).(combate,jogador):
+		self.carta=carta
+		self.alvo=alvo
+		self.efeito=efeito
+		
+	func main(delta):
+		efeito.ativar(carta,alvo)
+		executado=true
