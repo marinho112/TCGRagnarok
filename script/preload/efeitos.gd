@@ -163,7 +163,7 @@ class contador extends efeito:
 		self.combate=combate
 	
 	func ativar(carta=null,alvo=null):
-		if(efeito.pai.dono==combate.jogador):
+		if(efeito.pai.dono==combate.get_node("controladorDeFases").retornaJogador().jogador):
 			cont+=1
 		if(cont>=limite):
 			efeito.ativar(carta)
@@ -302,11 +302,11 @@ class CriePoringDef extends efeito:
 	
 	func ativar(carta=null,alvo=null):
 		var combate = pai.obj.get_parent()
-		var area = combate.get_node("ControladorCartas").retornarArea(pai.dono,0)
+		var area = combate.get_node("controladorCampo/ControladorCartas").retornarArea(pai.dono,0)
 		if(area!=null):
 			var cartaNova=ControladorCartas.criarCartaDoZero(1,pai.dono,combate,Vector2(0,0),true)
 			cartaNova.add_to_group(Constante.GRUPO_CARTA_EM_CAMPO)
-			combate.get_node("ControladorCartas").positionAreaCarta(area,cartaNova)
+			combate.get_node("controladorCampo/ControladorCartas").positionAreaCarta(area,cartaNova,true)
 			Efeitos.alerta(cartaNova,"Carta Criada!")
 		
 class CureSeusPoringsEmX extends efeito:
@@ -359,6 +359,7 @@ class transformar extends efeito:
 		var efeito = load("res://cenas/animacoes/animacaoTransformar.tscn").instance()
 		efeito.definirPai(pai.obj.get_parent())
 		efeito.transformarCarta(pai.obj,palavraPai.val2)
+		
 	
 		
 	func recebeDescricao(alternativo=false):
@@ -403,14 +404,14 @@ class causaXDanoEmYAlvos extends efeito:
 		if(combate.get_node("controladorDeFases").retornaJogador().jogador == pai.dono):
 			cont=0
 			var qtd = palavraPai.val3
-			var target = combate.oponente
-			var ai = pai.dono.ai
+			var target = combate.get_oponente(combate.get_node("controladorDeFases").retornaJogador().jogador)
 			var listaTarget = combate.get_node("controladorCampo").retornarTodasAsCartasEmCampo(target)
 			if(qtd > listaTarget.size()):
 				qtd=listaTarget.size()
 			var animacaoDano=load("res://cenas/animacoes/animacoesAtaques/animacaoAlvoDano.tscn")
-			var proximoItemPilha=ClassesSelecao.itemSelecaoPilha.new(combate,pai.dono,animacaoDano,Constante.OBJ_ANIMACAO,carta)
-			var modo = 12
+			var proximoItemPilha=ClassesSelecao.itemSelecaoPilha.new(combate,pai.dono,animacaoDano,Constante.OBJ_ANIMACAO,pai)
+			proximoItemPilha.pause=4
+			var modo = Constante.TIPO_SELECAO_CAMPO
 			var numAlvos = 1
 			var itemPilha = ClassesSelecao.selecaoCampoItemPilha.new(combate,pai.dono,proximoItemPilha,modo,numAlvos)
 			combate.get_node("controladorPilha").adicionarTopoDaPilha(itemPilha)

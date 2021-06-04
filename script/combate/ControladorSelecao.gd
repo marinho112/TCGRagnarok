@@ -92,7 +92,7 @@ func definirBtns(delta):
 		var numItens = listaSelecao.size()
 		var btn = pai.get_node("btnAzul")
 		var btn2 = pai.get_node("btnVermelho")
-		if(numItens<numSelecao):
+		if((numItens<numSelecao) or enviado):
 			btn.estado=0
 			btn.set_text(0,false)
 		else:

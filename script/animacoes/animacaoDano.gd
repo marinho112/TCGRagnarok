@@ -29,3 +29,6 @@ func executa(delta):
 		set_global_position(novaPosition)	
 		timer -= delta
 
+func encerrar():
+	.encerrar()
+

@@ -34,13 +34,14 @@ func set_scale(scale):
 func desenharHabilidades():
 	pass
 
-func morre():
+func morre(algoz):
+	.morre(algoz)
 	posicaoJogo.carta=null
 	animacaoMorte()
 	
-func verificaVida():
+func verificaVida(algoz):
 	if(carta.retornaVida()<=0):
-		morre()
+		morre(algoz)
 		return true
 	else:
 		return false
@@ -48,7 +49,7 @@ func verificaVida():
 
 func animacaoMorte():
 	var animacao = load("res://cenas/animacoes/animacaoMorte.tscn").instance()
-	print(get_parent())
+	print("MORREU!")
 	animacao.definirPai(get_parent())
 	animacao.play(self,[])
 	

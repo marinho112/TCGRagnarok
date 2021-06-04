@@ -4,6 +4,8 @@ extends Node
 
 const GRUPO_MOUSE="grupo_mouse"
 const GRUPO_CARTA="grupo_carta"
+const GRUPO_PERSONAGEM_JOGADOR="grupo_personagem_jogador"
+const GRUPO_PERSONAGEM_OPONENTE="grupo_personagem_oponente"
 const GRUPO_CARTA_MONSTRO="grupo_carta_monstro"
 const GRUPO_CARTA_REDUZIDA ="grupo_carta_reduzida"
 const GRUPO_AREA_CARTA="area_carta"
@@ -55,12 +57,19 @@ const INPUT_BTN_AZUL_ENVIAR=9
 const INPUT_BTN_AZUL_PRONTO=10
 const INPUT_BTN_DESATIVADO=99
 
+#Constantes Tipos Logicos
+
+const LOGI_CARTA="carta_logica"
+const LOGI_JOGADOR="jogador_logico"
+
 #Constantes Tipos Objetos
 
 const OBJ_ITEM_PILHA="objeto_item_pilha"
 const OBJ_EFEITO="objeto_efeito"
 const OBJ_ANIMACAO="objeto_animacao"
 const OBJ_PALAVRA_CHAVE="objeto_palavra_chave"
+const OBJ_CARTA="objeto_carta"
+const OBJ_JOGADOR="objeto_jogador"
 
 #Constantes Valores do Jogo
 

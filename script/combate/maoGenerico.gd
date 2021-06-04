@@ -28,9 +28,11 @@ func zoomCarta(carta,booleano):
 			elemento.setZoom(false)
 		if(carta != null):
 			carta.setZoom(true)
-			cardZoom.set_z_index(100)
+			if(cardZoom!=null):
+				cardZoom.set_z_index(100)
 	else:
 		if(carta.zoom):
-			cardZoom.set_z_index(0)
+			if(cardZoom!=null):
+				cardZoom.set_z_index(0)
 			carta.setZoom(false)
 			cardZoom = null

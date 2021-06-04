@@ -64,3 +64,4 @@ func definirJogadores(novaListaJogadores):
 
 func retornaJogador():
 	return listaJogadores[jogadorAtual]
+

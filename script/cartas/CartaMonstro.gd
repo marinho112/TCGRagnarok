@@ -11,8 +11,7 @@ func _ready():
 	add_to_group(Constante.GRUPO_CARTA_MONSTRO)
 	palavraPosition = $PalavraChaveObjeto.get_position()
 	
-func morre():
-	pass
+
 
 
 func preparaCarta(carta = self.carta):
@@ -230,6 +229,10 @@ func desenharHabilidades():
 			tamanho = 1
 
 func golpear(carta):
+	get_parent().resolveHabilidades(self.carta.dono.listaAoGolpear,carta.dono.listaAoSerGolpeado)
+	return causarDano(carta)
+
+func causarDano(carta):
 	var retorno = self.carta.golpear(carta.carta)
 	carta.desenhaAtributos()
 	return retorno

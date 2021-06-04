@@ -22,7 +22,7 @@ func executa(delta):
 	executando=true
 	if transformado:
 		if(efeitosProntos):
-			pai.limparListaEfeitos(cartaVelha.carta.dono.listaAoReceberDano)
+			#pai.limparListaEfeitos(cartaVelha.carta.dono.listaAoReceberDano)
 			var alerta = load("res://cenas/animacoes/animacaoAlertaBonus.tscn").instance()
 			alerta.definirPai(pai)
 			alerta.setTexto(null,"Transformado!")

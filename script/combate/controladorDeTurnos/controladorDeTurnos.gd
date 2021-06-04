@@ -99,6 +99,8 @@ func _process(delta):
 	
 #Excluir |TUDO A BAIXO!
 func pausar(intensidade):
+	if(intensidade == -1):
+		return
 	if(intensidade == 0):
 		$controladorCampo/ControladorCartas.interacaoAvancada = $controladorCampo/ControladorCartas.interacaoAvancada or listaPausa[0]
 		$controladorCampo/ControladorCartas.ativado = $controladorCampo/ControladorCartas.ativado or listaPausa[1]
@@ -136,6 +138,19 @@ func get_oponente(jogador):
 	if(jogador == oponente):
 		oponente= listaJogadores[1]
 	return oponente	
+
+func declararVencedor(jogadorVencedor):
+	pausar(5)
+	if(jogadorVencedor==listaJogadores[0]):
+		print("Jogador 1 é o vencedor!")
+	else:
+		print("Jogador 2 é o vencedor!")
+
+func verificarVencedor():
+	if(jogador.personagem.retornaVida()<=0):
+		declararVencedor(oponente)
+	elif(oponente.personagem.retornaVida()<=0):
+		declararVencedor(jogador)
 
 func resolveHabilidades(listaJogador,listaOponente,carta=null,alvo=null):
 	var lista= listaJogador+listaOponente

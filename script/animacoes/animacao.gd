@@ -12,6 +12,7 @@ var executando=false
 func _ready():
 	add_to_group(Constante.GRUPO_ANIMACAO)
 	
+	
 
 func play(dono,listaAlvos = [],pause = null,velo = 1.0,sequencia=null):
 	self.dono=dono

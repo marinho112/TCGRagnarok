@@ -114,11 +114,11 @@ func retornarArea(jogador,val=2):
 				
 	return null
 
-func positionAreaCarta(area,carta):
+func positionAreaCarta(area,carta,livre=false):
 	
 	var auxArea
 	var auxCarta
-	if(((defesa)and(!area.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA)))or(!podeJogar)):
+	if(((defesa)and(!area.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA)))or(!podeJogar and !livre)):
 		area= carta.posicaoJogo
 	if(area!=null):
 		if(area.carta != null):
@@ -134,8 +134,6 @@ func positionAreaCarta(area,carta):
 		area.carta = carta
 	if(carta!=null):
 		auxArea = carta.posicaoJogo
-			
-		
 		carta.posicaoJogo = area
 		carta.set_global_position(area.get_global_position())
 		var escala = (area.get_parent().get_scale()) * area.get_parent().get_parent().get_scale()

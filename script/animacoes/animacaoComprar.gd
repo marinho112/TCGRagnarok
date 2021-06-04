@@ -25,6 +25,7 @@ func play(dono,listaAlvos = [],pausar = null,velo = 1.0,sequencia=null):
 	posicaoInicio = inicio.get_global_position()
 	rotacionado = inicio.get_rotation()
 	imagem = ControladorCartas.criaCartaEscondida(0,pai,posicaoInicio)
+	imagem.set_visible(false)
 	imagem.set_rotation(rotacionado)
 	imagem.set_scale(Vector2(0.5,0.5))
 	posicaoFinal = destino.get_global_position()
@@ -39,6 +40,8 @@ func play(dono,listaAlvos = [],pausar = null,velo = 1.0,sequencia=null):
 	
 func executa(delta):
 	
+	if(!executando):
+		imagem.set_visible(true)
 	executando=true
 	var posicaoAtual = imagem.get_global_position()
 	#print(posicaoAtual)

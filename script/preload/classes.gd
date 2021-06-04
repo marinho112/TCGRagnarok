@@ -7,6 +7,7 @@ class jogador:
 	var personagem
 	var time
 	var ai
+	var verificadorTipo=Constante.LOGI_JOGADOR
 	
 	var listaBaralho=[]
 	var listaMao=[]
@@ -22,18 +23,18 @@ class jogador:
 	var listaFasePrincipal2 = []
 	var listaAoJogarCarta = []
 	var listaAoEntrarEmJogo = []
-	var listaFaseCombate = []
+	#var listaFaseCombate = []
 	var listaAoAtacar = []
 	var listaAoSerAtacado = []
 	var listaAoBloquear = []
 	var listaAoGolpear = []
 	var listaAoSerGolpeado = []
 	var listaAoReceberDano = []
+	var listaAoCausarDano = []
 	var listaAoMorrer = []
-	var listaAoSairDeJogo = []
+	var listaAoMatar = []
+	#var listaAoSairDeJogo = []
 	var listaHabilidadesPassivas = []
-	
-	
 	var listaFaseFinal = []
 	
 	var controlador
@@ -59,6 +60,9 @@ class jogador:
 		zeny.setJogador(self)
 		areaAtaque=ataque
 		areaDefesa=defesa
+	
+	func retornaListasEfeito():
+		return [listaInicioPartida,listaFaseInicial,listaFaseCompra,listaAoComprar,listaFasePrincipal1,listaFasePrincipal2,listaAoJogarCarta,listaAoEntrarEmJogo,listaAoAtacar,listaAoSerAtacado,listaAoBloquear,listaAoGolpear,listaAoSerGolpeado,listaAoReceberDano,listaAoCausarDano,listaAoMorrer,listaAoMatar,listaHabilidadesPassivas,listaFaseFinal]
 
 class fasesJogador:
 	var jogador

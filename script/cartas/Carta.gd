@@ -9,6 +9,7 @@ var posicaoRaiz = Vector2(0,0)
 var novaLista = []
 var time = 0
 var frame = 0
+var verificadorTipo=Constante.OBJ_CARTA
 
 func _ready():
 	add_to_group(Constante.GRUPO_CARTA)	
@@ -46,8 +47,11 @@ func golpear(carta):
 	
 func desenhaAtributos():
 	pass
+
+func morre(algoz):	
+	get_parent().resolveHabilidades(carta.dono.listaAoMorrer,algoz.dono.listaAoMatar)
 	
-func verificaVida():
+func verificaVida(algoz):
 	print("NÂO IMPLEMENTADO NA CARTA GENERICA")
 
 func exibirCartas():
@@ -66,7 +70,11 @@ func transformar(idNovaCarta):
 		var novaCarta =ControlaDados.carregaCartaPorID(idNovaCarta,cartaVelha.dono)
 		cartaVelha.migraValor(novaCarta)
 		preparaCarta(novaCarta)
-		
+		print(cartaVelha.dono.retornaListasEfeito().size())
+		for lista in cartaVelha.dono.retornaListasEfeito():
+			for efeito in lista:
+				if cartaVelha == efeito.pai:
+					efeito.listaZonas.push_front(Constante.GRUPO_CARTA_MORTA)
 		for palavra in carta.listaPalavraChave:
 			if(palavra.id!=5):
 				palavra.aoJogar()

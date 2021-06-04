@@ -4,6 +4,7 @@ var carta
 var ativado = true
 var duploClick = false
 var jogador
+var verificadorTipo=Constante.OBJ_JOGADOR
 
 func _ready():
 	set_process(true)

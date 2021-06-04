@@ -1,10 +1,14 @@
 extends Node2D
+var controlador
+
+func _ready():
+	controlador=get_parent()
 
 func comprarCarta(jogadorr):
 	if(jogadorr.listaBaralho.size()>0):
 		if(jogadorr.listaMao.size()<Constante.VALOR_MAXIMO_CARTAS):
 			var animacao=load("res://cenas/animacoes/animacaoComprar.tscn").instance()
-			animacao.definirPai(get_parent())
+			animacao.definirPai(controlador)
 			animacao.play(jogadorr)
 		else:
 			#DESCARTAR CARTA COMPRADA
@@ -17,7 +21,9 @@ func executarCompra(jogadorr):
 	var carta = jogadorr.listaBaralho[0]
 	if(jogadorr.time==0):
 		carta.revelada = true
-		get_parent().get_node("controladorMao/mao").adicionaCartaMao(carta)
+		controlador.get_node("controladorMao/mao").adicionaCartaMao(carta)
 	else:
-		get_parent().get_node("controladorMao/maoOponente").adicionaCartaMao(carta)
+		controlador.get_node("controladorMao/maoOponente").adicionaCartaMao(carta)
 	jogadorr.listaBaralho.remove(0)
+	controlador.resolveHabilidades(jogadorr.listaAoComprar,controlador.get_oponente(jogadorr).listaAoComprar)
+	

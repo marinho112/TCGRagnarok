@@ -1,5 +1,7 @@
 extends Node
 
+func verificaLogicoObjeto(carta):
+	return carta.verificadorTipo
 
 class carta:
 	
@@ -15,6 +17,7 @@ class carta:
 	var revelada = false
 	var dono
 	var obj
+	var verificadorTipo=Constante.LOGI_CARTA
 	
 	var listaPalavraChave = []
 	var listaMarcadores = []
@@ -126,6 +129,10 @@ class objetoDeBatalha extends carta:
 		if(danoRecebido > retornaVidaTotal()):
 			dano -= (danoRecebido - retornaVidaTotal())
 			danoRecebido= retornaVidaTotal()
+		var inimigoLista=[]
+		if(inimigo!=null):
+			inimigoLista=inimigo.dono.listaAoCausarDano
+		obj.pai.resolveHabilidades(dono.listaAoReceberDano,inimigoLista)
 		return dano
 	
 	func recebeDanoComDef(dano,inimigo,propriedade):
@@ -192,6 +199,8 @@ class objetoDeBatalha extends carta:
 		
 		var danoCausado = inimigo.recebeDanoComDef(retornaPoder(),self,self.propriedade)
 		var retorno = danoCausado
+		if(inimigo.obj!=null):
+			inimigo.obj.verificaVida(self)
 		return retorno
 		
 class personagem extends objetoDeBatalha:

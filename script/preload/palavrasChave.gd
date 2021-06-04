@@ -259,8 +259,9 @@ class Recarregar extends palavraChave:
 		.aoJogar()
 		var lista= pai.dono.listaFaseInicial
 		var novoEfeito=Efeitos.criarContador(val1,efeito,lista,true)
-		lista.append(novoEfeito)
-		#pai.listaEfeitoSairJogo.append(novoEfeito.xy)
+		adicionarEfeitoListaJogador(lista,pai,novoEfeito)
+		#lista.append(novoEfeito)
+		
 
 class InicioDeTurno extends palavraChave:
 	

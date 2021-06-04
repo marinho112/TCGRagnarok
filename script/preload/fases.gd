@@ -39,6 +39,9 @@ class inicioDoJogo extends fase:
 	
 	func definicao(delta):
 		.definicao(delta)
+		var campo=controlador.get_node("controladorCampo")
+		campo.get_node("btnAzul").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
+		campo.get_node("btnVermelho").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
 		print("Jogo Iniciado")
 		for i in (Constante.VALOR_CARTAS_INICIAIS*2):
 			if(i< Constante.VALOR_CARTAS_INICIAIS):
@@ -67,6 +70,10 @@ class faseInicial extends fase:
 	func definicao(delta):
 		.definicao(delta)
 		print("Fase Inicial")
+		if(jogador.jogador.maxZeny < 10):
+			jogador.jogador.maxZeny+=1
+			jogador.jogador.areaZenys.atualizarZeny()
+			
 		controlador.get_node("controladorCampo/ControladorCartas").defesa = false
 		listaInicioJogador=jogador.jogador.listaFaseInicial
 		#listaFimJogador=jogador.jogador.
@@ -76,8 +83,6 @@ class faseInicial extends fase:
 	
 	func main(delta):
 		
-		if(jogador.jogador.maxZeny < 10):
-			jogador.jogador.maxZeny+=1
 		jogador.jogador.zeny=jogador.jogador.maxZeny
 		jogador.jogador.areaZenys.atualizarZeny()
 		
@@ -179,11 +184,11 @@ class faseAtaque extends fase:
 		controlador.get_node("controladorCampo").get_node("btnVermelho").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
 		var tipJogador= jogador.jogador.time+1
 		
-		var tipOponente = controlador.get_oponente(jogador.jogador).time+1
+		#var tipOponente = controlador.get_oponente(jogador.jogador).time+1
 		
 		
-		var areaAtk= controlador.get_node("controladorCampo").retornaListaAreas(tipJogador,1,true)
-		var areaDef= controlador.get_node("controladorCampo").retornaListaAreas(tipOponente,2,true)
+		#var areaAtk= controlador.get_node("controladorCampo").retornaListaAreas(tipJogador,1,true)
+		#var areaDef= controlador.get_node("controladorCampo").retornaListaAreas(tipOponente,2,true)
 		controlador.get_node("controladorCampo").controlarDestaque(tipJogador)
 		return 1
 		
@@ -196,11 +201,11 @@ class faseBloqueio extends fase:
 		.definicao(delta)
 		print("Fase Bloqueio")
 		controlador.get_node("controladorCampo/ControladorCartas").defesa = true
-		#listaInicioJogador=jogador.jogador.
-		#listaFimJogador=jogador.jogador.
-		#listaInicioOponente=get_oponente(jogador.jogador).
-		#listaFimOponente=get_oponente(jogador.jogador).
-	
+		listaInicioJogador=jogador.jogador.listaAoSerAtacado
+		listaFimJogador=jogador.jogador.listaAoBloquear
+		listaInicioOponente=controlador.get_oponente(jogador.jogador).listaAoSerAtacado
+		listaFimOponente=controlador.get_oponente(jogador.jogador).listaAoBloquear
+		
 	func main(delta):
 		controlador.get_node("controladorCampo").get_node("btnAzul").mudaEstado(Constante.INPUT_BTN_AZUL_BLOQUEIO)
 		controlador.get_node("controladorCampo").get_node("btnVermelho").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
@@ -220,7 +225,7 @@ class faseDano extends fase:
 	var momento
 	var area
 	var oponente
-	var listaCartasVerificandoVida
+	#var listaCartasVerificandoVida
 	
 	func definicao(delta):
 		.definicao(delta)
@@ -248,9 +253,9 @@ class faseDano extends fase:
 				var jogDef= area.retornaCartasArea(jogador.jogador.areaDefesa)
 				var opoAtaq= area.retornaCartasArea(oponente.areaAtaque)
 				var opoDef= area.retornaCartasArea(oponente.areaDefesa)
-				listaCartasVerificandoVida= jogAtaq+jogDef+opoAtaq+opoDef
-				for vida in listaCartasVerificandoVida:
-					controlador.get_node("controladorCampo").verificarMorte(vida)
+				#listaCartasVerificandoVida= jogAtaq+jogDef+opoAtaq+opoDef
+				#for vida in listaCartasVerificandoVida:
+				#	controlador.get_node("controladorCampo").verificarMorte(vida)
 				momento=2
 			2:
 				return 1

@@ -13,6 +13,7 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 	var listaRetorno=[]
 	var listaCartasCriar
 	var listaCartas = []
+	var timerSelecao=0
 	
 	func _init(combate,jogador,proximoItemPilha,tipoDeSelecao,modo=3,numAlvos=1,listaCartasCriar=[]).(combate,jogador):
 		self.numAlvos=numAlvos
@@ -39,13 +40,11 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 				if(combate.inputAtual.jogador == combate.get_node("controladorDeFases").retornaJogador()):
 					match combate.inputAtual.tipo:
 						Constante.INPUT_BTN_VERMELHO_CANCEL:
-							print("Vermelho")
 							cancelar()
 						Constante.INPUT_BTN_AZUL_ENVIAR:
 							enviar()
 						Constante.INPUT_BTN_AZUL_PRONTO:
 							enviar()
-			
 			#Definir tipo de seleção
 			match tipoDeSelecao:
 				Constante.TIPO_SELECAO_CAMPO:
@@ -61,9 +60,11 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 			
 	
 	func cancelar():
+		print("Seleção cancelada!")
 		desativar()
 	
 	func enviar():
+		print("Enviada Selecao")
 		if(listaRetorno.size()>0):
 			var novaLista=[]
 			for item in listaRetorno:
@@ -71,12 +72,13 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 			proximoItemPilha.listaSelecionados=novaLista
 			combate.get_node("controladorPilha").adicionarTopoDaPilha(proximoItemPilha)
 			enviado=true
+			combate.get_node("controladorCampo/btnAzul").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
 
 	func definirBtns(delta):
 		combate.get_node("controladorCampo/btnVermelho").mudaEstado(Constante.INPUT_BTN_VERMELHO_CANCEL)
 		var btnAzul=combate.get_node("controladorCampo/btnAzul")
 		
-		if(listaRetorno.size()==0):
+		if((listaRetorno.size()==0) or enviado):
 			btnAzul.mudaEstado(Constante.INPUT_BTN_DESATIVADO)
 		elif(listaRetorno.size()<numAlvos):
 			btnAzul.mudaEstado(Constante.INPUT_BTN_AZUL_ENVIAR)
@@ -84,8 +86,9 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 			btnAzul.mudaEstado(Constante.INPUT_BTN_AZUL_PRONTO)
 		
 	func selecao(delta,tipo,jogador):
-		if Input.is_action_just_pressed("clicar"):
+		if (Input.is_action_just_pressed("clicar")and(timerSelecao<=0)):
 			var area = receberAreaMaisRelevante(combate.cursorMouse,tipo,jogador)
+			timerSelecao=0.5
 			if(area!=null):
 				var posiArea = listaRetorno.find(area)
 				if(posiArea==-1):
@@ -95,8 +98,10 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 				else:
 					listaRetorno.remove(posiArea)
 					area.defineBrilho(false)
-				
-				
+			print(listaRetorno)
+		else:
+			timerSelecao-=delta
+			
 	func receberAreaMaisRelevante(cartaSelecionada,tipo,jogador):
 		var lista = cartaSelecionada.get_overlapping_areas()
 		var menorArea = null
@@ -125,9 +130,10 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 		combate.get_node("controladorMao/maoOponente").ativado = false
 		
 	func desativar():
-		
-		for item in listaRetorno:
-			item.get_node("brilho").set_visible(false)
+		var oponente = combate.get_oponente(combate.get_node("controladorDeFases").retornaJogador().jogador)
+		for item in combate.get_node("controladorCampo").retornarTodasAsCartasEmCampo(oponente):
+			if(item!=null):
+				item.get_node("brilho").set_visible(false)
 				
 		for carta in listaCartas:
 			carta.queue_free()
@@ -160,7 +166,10 @@ class itemSelecaoPilha extends Classes.ItemPilha:
 				for selsecionado in listaSelecionados:
 					var animacao = item.instance()
 					animacao.definirPai(combate)
-					animacao.play(dono,[selsecionado],pause,velo)
+					var aniDono=dono
+					if(carta!=null):
+						aniDono=carta
+					animacao.play(aniDono,[selsecionado],pause,velo)
 			Constante.OBJ_EFEITO:
 				item.ativar(carta,alvo)
 		executado=true
