@@ -10,7 +10,7 @@ func play(dono,listaAlvos = [],pausar = 4,velo = 1.0,sequencia=null):
 	.play(dono,listaAlvos,pausar,velo)
 	posicionarLinhas()
 	if(!pausar):
-		listaAnimacoes[0].append(self)
+		listaAnimacoes.append(self)
 	$AnimationPlayer.play("main",-1,velo)
 
 func executa(delta):
@@ -27,7 +27,7 @@ func executa(delta):
 				var causado = dono.golpear(alvo)
 				novaAnimacao.setDano(causado)
 				novaAnimacao.play(dono,[alvo],null,velo)
-				listaAnimacoes[1].append(novaAnimacao)
+				listaAnimacoes.append(novaAnimacao)
 				
 		else:
 			acabado=false

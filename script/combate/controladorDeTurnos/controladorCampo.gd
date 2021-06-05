@@ -47,6 +47,7 @@ func retornarTodasAsCartasEmCampo(jogador=null):
 		lista2 = retornaCartasArea($Container/Jogador2Ataque)
 		lista4 = retornaCartasArea($Container/Jogador2Defesa)
 	return lista1+lista2+lista3+lista4
+	
 
 func atualizaTodasCartas():
 	var listaCartas = retornarTodasAsCartasEmCampo()
@@ -103,7 +104,7 @@ func confrontar(golpeador,alvo,val = true):
 	if((confrontarAtaques1+confrontarAtaques2) == 0):
 		confrontarAtaques1 = 1
 		confrontarAtaques2 = 1
-		animacoes=[[],[]]
+		
 		
 		if(golpeador.carta.temPalavraChave(15)):
 			confrontarAtaques1 +=1
@@ -119,7 +120,7 @@ func confrontar(golpeador,alvo,val = true):
 		if(alvo.carta.temPalavraChave(12) and val):
 			confrontarAtaques1=0
 		
-
+	animacoes=[]
 	var iniciativa = [golpeador.carta.temPalavraChave(2),alvo.carta.temPalavraChave(2)]
 	if((iniciativa[0]and(confrontarAtaques1>0)) or (iniciativa[1] and (confrontarAtaques2>0))):
 		if(iniciativa[0] and (confrontarAtaques1>0)):
@@ -138,12 +139,10 @@ func confrontar(golpeador,alvo,val = true):
 		if(alvo.carta.retornaVida()>0):
 			golpear(alvo,golpeador)
 		confrontarAtaques2 -=1
-	
 	var preMulti = preload("res://cenas/animacoes/multiAnimacoes.tscn")
-	for item in animacoes:
-		var animacao = preMulti.instance()
-		animacao.definirPai(get_parent())
-		animacao.play(golpeador,item,4)
+	var animacao = preMulti.instance()
+	animacao.definirPai(get_parent())
+	animacao.play(golpeador,animacoes,4)
 		
 	return finalizaConfronto()
 	

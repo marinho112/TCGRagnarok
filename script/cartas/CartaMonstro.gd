@@ -229,7 +229,11 @@ func desenharHabilidades():
 			tamanho = 1
 
 func golpear(carta):
-	get_parent().resolveHabilidades(self.carta.dono.listaAoGolpear,carta.dono.listaAoSerGolpeado)
+	var controlador=get_node("/root/main/ControladorDeTurnos/")
+	var objCarta
+	if(ClassesCartas.verificaLogicoObjeto(carta)==Constante.OBJ_JOGADOR):
+		objCarta=carta.carta
+	controlador.resolveHabilidades(self.carta.dono.listaAoGolpear,objCarta.dono.listaAoSerGolpeado)
 	return causarDano(carta)
 
 func causarDano(carta):

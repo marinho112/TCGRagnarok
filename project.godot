@@ -31,6 +31,7 @@ PalavrasChave="*res://script/preload/palavrasChave.gd"
 Efeitos="*res://script/preload/efeitos.gd"
 ControladorCartas="*res://script/preload/controladorCartas.gd"
 ClassesSelecao="*res://script/classes/classesSelecao.gd"
+ClasseBonus="*res://script/preload/classeBonus.gd"
 
 [display]
 

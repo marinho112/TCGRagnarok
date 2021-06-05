@@ -5,7 +5,6 @@ var posicaoJogo
 func _ready():
 	._ready()
 	add_to_group(Constante.GRUPO_CARTA_REDUZIDA)
-	
 	miniatura = true
 
 func desenhaAtributosComplementares():

@@ -49,7 +49,7 @@ func getPalavraChave(id,efeito,pai,val1,val2,val3):
 
 func palavraRecebeZonas(palavraId):
 	var zonas=[]
-	var listaZonaCampo=[7,8,9,13,14,16]
+	var listaZonaCampo=[3,7,8,9,13,14,16]
 	var listaZonaMao=[]
 	var listaZonaDeck=[]
 	

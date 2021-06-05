@@ -5,9 +5,11 @@ var ativado = true
 var duploClick = false
 var jogador
 var verificadorTipo=Constante.OBJ_JOGADOR
+var pai
 
 func _ready():
 	set_process(true)
+	pai=get_parent().get_parent()
 
 func _process(delta):
 	if ativado:
@@ -54,7 +56,7 @@ func golpear(carta):
 func desenhaAtributos():
 	atualizaInfoPersonagem()
 
-func verificaVida():
+func verificaVida(algoz):
 	if(carta.retornaVida()<=0):
 		print("Jogador "+str(jogador.time)+" MORREU!!!")
 		return true

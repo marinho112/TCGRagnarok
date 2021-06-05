@@ -57,7 +57,7 @@ class inicioDoJogo extends fase:
 		
 	
 	func main(delta):
-		
+		jogador.jogador.maxZeny+=5
 		controlador.get_node("controladorDeFases").selecionarFase(Constante.FASE_PRINCIPAL1)
 		controlador.get_node("controladorDeFases").inicioDoJogo=null
 		return 0
@@ -175,11 +175,12 @@ class faseAtaque extends fase:
 	func definicao(delta):
 		.definicao(delta)
 		print("Fase Ataque")
-		listaInicioJogador=jogador.jogador.listaFaseCombate
+		listaInicioJogador=jogador.jogador.listaAoAtacar
 		#listaFimJogador=jogador.jogador.
-		listaInicioOponente=controlador.get_oponente(jogador.jogador).listaFaseCombate
+		listaInicioOponente=controlador.get_oponente(jogador.jogador).listaAoSerAtacado
 		#listaFimOponente=get_oponente(jogador.jogador).
-	
+		print(listaInicioJogador)
+		
 	func main(delta):
 		controlador.get_node("controladorCampo").get_node("btnVermelho").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
 		var tipJogador= jogador.jogador.time+1
@@ -284,9 +285,18 @@ class faseFinal extends fase:
 		#listaFimOponente=get_oponente(jogador.jogador).
 	
 	func main(delta):
+		controlador.get_node("controladorCampo").atualizaTodasCartas()
 		return 1
 		
 	func fim(delta):
+		var area= controlador.get_node("controladorCampo").retornarTodasAsCartasEmCampo()
+		
+		for carta in area:
+			carta.carta.zerarBonusEfemero()
+			for item in carta.carta.listaMarcadores:
+				item.endOfTurn()
+			carta.preparaCarta()
+		
 		return 1
 		
 class combatePilha extends Classes.ItemPilha:
@@ -316,4 +326,5 @@ class combatePilha extends Classes.ItemPilha:
 			else:
 				executado=campo.confrontar(areaAtk[subFase].carta,campo.get_node("Oponente"),false)
 		
+	
 		

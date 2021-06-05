@@ -4,8 +4,9 @@ extends Node
 func getRaiz():
 	return get_node("/root/main/ControladorDeTurnos/")
 
-func criarXY(eliminado,lista,alertaMsg=null):
+func criarXY(carta,eliminado,lista,alertaMsg=null):
 	var xy = eliminarXdeY.new()
+	xy.pai=carta
 	xy.definirXY(eliminado,lista,alertaMsg)
 	return xy
 	
@@ -46,7 +47,10 @@ func adicionaPalavraChave(carta,novaPalavra,listaRemocao=null,alertaMsg=null):
 	if(nTem):	
 		lista.append(novaPalavra)
 		if(listaRemocao!= null):
-			listaRemocao.append(Efeitos.criarXY(novaPalavra,lista,alertaMsg))
+			var xy=Efeitos.criarXY(carta,novaPalavra,lista,alertaMsg)
+			xy.listaZonas.append(Constante.GRUPO_AREA_CAMPO)
+			novaPalavra.adicionarEfeitoListaJogador(listaRemocao,carta,xy)
+			
 			
 func getEfeito(id,pai,palavraPai):
 	var retorno 	
@@ -135,7 +139,10 @@ class eliminarXdeY extends efeito:
 		self.alertaMsg=alertaMsg
 	
 	func ativar(carta=null,alvo=null):
-		y[y.find(x)].removeEfeito()
+		print(y)
+		y.remove(y.find(x))
+		print(y)
+		self.removeEfeito()
 		usado=true
 		if(alertaMsg!=null):
 			Efeitos.alerta(self.x.pai.obj,alertaMsg)
@@ -347,7 +354,7 @@ class DarProtecao4Elementos extends efeito:
 								nTem=false
 						if(nTem):	
 							lista.append(item)
-							carta.carta.listaEfeitoSairJogo.append(Efeitos.criarXY(item,lista))
+							carta.carta.listaEfeitoSairJogo.append(Efeitos.criarXY(carta,item,lista))
 		
 class transformar extends efeito:
 	var valor

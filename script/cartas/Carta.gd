@@ -4,6 +4,7 @@ var ativado = true
 var zoom = false
 var selecionavel = false
 var carta
+var pai
 var escondido = false
 var posicaoRaiz = Vector2(0,0)
 var novaLista = []
@@ -14,7 +15,7 @@ var verificadorTipo=Constante.OBJ_CARTA
 func _ready():
 	add_to_group(Constante.GRUPO_CARTA)	
 	setZoom(false)
-	
+	pai=get_node("/root/main/ControladorDeTurnos/")
 	
 func _process(delta):
 	animacaoBrilho(delta)
@@ -55,10 +56,10 @@ func verificaVida(algoz):
 	print("NÂO IMPLEMENTADO NA CARTA GENERICA")
 
 func exibirCartas():
-	var raiz = get_node("/root/main/ControladorDeTurnos/")
-	raiz.pausar(3)
+	
+	pai.pausar(3)
 	var listaItens = [carta]
-	var lista = raiz.get_node("controladorCampo/listaExibicaoCartas")
+	var lista = pai.get_node("controladorCampo/listaExibicaoCartas")
 	listaItens += carta.listaCartasRelacionadas
 	lista.definirListaCartas(listaItens)
 
