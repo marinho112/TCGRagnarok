@@ -5,6 +5,7 @@ var faseId=0;
 class fase:
 	
 	var id
+	var tipo
 	var jogador
 	var controlador 
 	var mao 
@@ -37,6 +38,9 @@ class fase:
 class inicioDoJogo extends fase:
 	var comprado=false
 	
+	func _init():
+		tipo = Constante.FASE_INICIO_DE_JOGO
+	
 	func definicao(delta):
 		.definicao(delta)
 		var campo=controlador.get_node("controladorCampo")
@@ -67,6 +71,9 @@ class inicioDoJogo extends fase:
 
 class faseInicial extends fase:
 	
+	func _init():
+		tipo = Constante.FASE_INICIAL
+	
 	func definicao(delta):
 		.definicao(delta)
 		print("Fase Inicial")
@@ -94,6 +101,9 @@ class faseInicial extends fase:
 class faseCompra extends fase:
 	var comprado=false
 	
+	func _init():
+		tipo = Constante.FASE_COMPRA
+	
 	func definicao(delta):
 		.definicao(delta)
 		print("Fase Compra")
@@ -117,6 +127,9 @@ class fasePrincipal1 extends fase:
 	
 	var numFasePrincipal=1
 	
+	func _init():
+		tipo = Constante.FASE_PRINCIPAL1
+	
 	func definicao(delta):
 		.definicao(delta)
 		print("Fase Principal "+str(numFasePrincipal))
@@ -135,17 +148,24 @@ class fasePrincipal1 extends fase:
 	
 	func main(delta):
 		var campo=controlador.get_node("controladorCampo")
-		var areaAtk= campo.retornaListaAreas(1,1,true)
-		if((areaAtk.size()>0) and (numFasePrincipal==1)):
-			campo.get_node("btnAzul").mudaEstado(Constante.INPUT_BTN_AZUL_ATAQUE)
+		var areaAtk= campo.retornaListaAreas(jogador.jogador.time+1,1,true)
+		if(jogador.jogador==controlador.jogador):
+			if((areaAtk.size()>0) and (numFasePrincipal==1)):
+				campo.get_node("btnAzul").mudaEstado(Constante.INPUT_BTN_AZUL_ATAQUE)
+			else:
+				campo.get_node("btnAzul").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
+			campo.get_node("btnVermelho").mudaEstado(Constante.INPUT_BTN_VERMELHO)
 		else:
 			campo.get_node("btnAzul").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
-		campo.get_node("btnVermelho").mudaEstado(Constante.INPUT_BTN_VERMELHO)
+			campo.get_node("btnVermelho").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
+		
 		var input= controlador.inputAtual
 		if(input==null):
 			return 0
-		if(input.jogador.jogador != controlador.jogador):
-			print("Jogador Errado")
+		if(input.jogador != jogador):
+			print("Jogador Errado1")
+			return 0
+		
 		match input.tipo:
 			Constante.INPUT_JOGAR_CARTA:
 				var areaRelevante =input.obj[0]
@@ -171,6 +191,9 @@ class fasePrincipal1 extends fase:
 		
 		
 class faseAtaque extends fase:
+	
+	func _init():
+		tipo = Constante.FASE_ATAQUE
 	
 	func definicao(delta):
 		.definicao(delta)
@@ -198,6 +221,9 @@ class faseAtaque extends fase:
 		
 class faseBloqueio extends fase:
 	
+	func _init():
+		tipo = Constante.FASE_BLOQUEIO
+	
 	func definicao(delta):
 		.definicao(delta)
 		print("Fase Bloqueio")
@@ -208,10 +234,17 @@ class faseBloqueio extends fase:
 		listaFimOponente=controlador.get_oponente(jogador.jogador).listaAoBloquear
 		
 	func main(delta):
-		controlador.get_node("controladorCampo").get_node("btnAzul").mudaEstado(Constante.INPUT_BTN_AZUL_BLOQUEIO)
-		controlador.get_node("controladorCampo").get_node("btnVermelho").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
+		if(jogador.jogador == controlador.oponente):
+			controlador.get_node("controladorCampo/btnAzul").mudaEstado(Constante.INPUT_BTN_AZUL_BLOQUEIO)
+		else:
+			controlador.get_node("controladorCampo/btnAzul").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
+		
+		controlador.get_node("controladorCampo/btnVermelho").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
 		var input= controlador.inputAtual
 		if(input==null):
+			return 0
+		if(input.jogador != controlador.get_node("controladorDeFases").retornaOponente(jogador)):
+			print("Jogador Errado")
 			return 0
 		match input.tipo:
 			Constante.INPUT_BTN_AZUL_BLOQUEIO:
@@ -222,6 +255,9 @@ class faseBloqueio extends fase:
 		return 1
 		
 class faseDano extends fase:
+	
+	func _init():
+		tipo = Constante.FASE_DANO
 	
 	var momento
 	var area
@@ -242,7 +278,7 @@ class faseDano extends fase:
 	func main(delta):
 		controlador.get_node("controladorCampo").get_node("btnAzul").mudaEstado(Constante.INPUT_BTN_DESATIVADO)#Constante.INPUT_BTN_AZUL_DANO)
 		controlador.get_node("controladorCampo").get_node("btnVermelho").mudaEstado(Constante.INPUT_BTN_DESATIVADO)
-		var input= controlador.inputAtual
+		#var input= controlador.inputAtual
 		match momento:
 			0:
 				for i in 6:
@@ -270,10 +306,13 @@ class fasePrincipal2 extends fasePrincipal1:
 	
 	func _init():
 		numFasePrincipal=2
-		
+		tipo = Constante.FASE_PRINCIPAL2
 		
 		
 class faseFinal extends fase:
+	
+	func _init():
+		tipo = Constante.FASE_FINAL
 	
 	func definicao(delta):
 		.definicao(delta)

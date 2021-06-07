@@ -62,6 +62,17 @@ func definirJogadores(novaListaJogadores):
 		if(inicioDoJogo.jogador==null):
 			inicioDoJogo.jogador=novoJogador
 
-func retornaJogador():
-	return listaJogadores[jogadorAtual]
+func retornaJogador(jogador=null):
+	if(jogador==null):
+		return listaJogadores[jogadorAtual]
+	for joga in listaJogadores:
+		if(joga.jogador==jogador):
+			return joga
+	return null
+	
+func retornaOponente(jogador):
+	if(listaJogadores[0]==jogador):
+		return listaJogadores[0]
+	else:
+		return listaJogadores[1]
 

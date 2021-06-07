@@ -22,7 +22,9 @@ func preparaCarta(carta = self.carta):
 	carregaImagem()
 	desenhaPalavrasChave()
 	desenharHabilidades()
-
+	for palavra in carta.listaPalavraChave:
+		if(palavra.efeito!=null):
+			palavra.efeito.superPai=get_node("/root/main/ControladorDeTurnos/")
 
 func calcularBonus():
 	var pai = get_parent()
@@ -230,7 +232,7 @@ func desenharHabilidades():
 
 func golpear(carta):
 	var controlador=get_node("/root/main/ControladorDeTurnos/")
-	var objCarta
+	var objCarta=carta
 	if(ClassesCartas.verificaLogicoObjeto(carta)==Constante.OBJ_JOGADOR):
 		objCarta=carta.carta
 	controlador.resolveHabilidades(self.carta.dono.listaAoGolpear,objCarta.dono.listaAoSerGolpeado)

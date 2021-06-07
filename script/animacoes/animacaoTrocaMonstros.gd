@@ -26,7 +26,7 @@ func play(paraOrigem,paraDestino=null,pause = null,velo = 1.0,sequencia=null):
 
 func encerrar():
 	cartaOrigem.set_z_index(indiceZ)
-	pai.get_node('ControladorCartas').positionAreaCarta(destino,cartaOrigem)
+	pai.get_node('controladorCampo/ControladorCartas').positionAreaCarta(destino,cartaOrigem)
 	.encerrar()
 
 func executa(delta):

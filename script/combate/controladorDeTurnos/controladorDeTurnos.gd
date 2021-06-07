@@ -48,9 +48,7 @@ func _ready():
 	listaJogadores[0].time = 0
 	listaJogadores[1].time = 1
 	listaJogadores[0].ativado=true
-	listaJogadores[0].ai = self
-	listaJogadores[1].ai = load("res://script/ai/ai.gd").new()
-	listaJogadores[1].ai.combate = self
+	#listaJogadores[1].ai.combate = self
 	listaJogadores[0].definirAreas(self,$controladorMao/mao,$controladorCampo/Personagem,$controladorCampo/zenys,$controladorCampo/Container/Jogador1Ataque,$controladorCampo/Container/Jogador1Defesa)
 	listaJogadores[1].definirAreas(self,$controladorMao/maoOponente,$controladorCampo/Oponente,$controladorCampo/zenysOponente,$controladorCampo/Container/Jogador2Ataque,$controladorCampo/Container/Jogador2Defesa)
 	#listaJogadores[1].ai.definirJogador(listaJogadores[1])
@@ -69,16 +67,24 @@ func _ready():
 	$controladorCampo/Personagem.carta.revelada=true
 	$controladorCampo/Oponente.carta.revelada=true
 	$controladorDeFases.definirJogadores(listaJogadores)
+	load("res://script/ai/ai.gd").new().adicionarInformacoes($controladorDeFases.retornaJogador(listaJogadores[1]),self)
 	set_process(true)
 
 func _process(delta):
+	
+	var fase =$controladorDeFases.retornarFaseAtual()
+	if(fase.jogador.jogador.ai!=null):
+		fase.jogador.jogador.ai.main(delta,inputDoUsuario,fase)
+	var oponente=get_oponente(fase.jogador.jogador)
+	if(oponente.ai!=null):
+		oponente.ai.main(delta,inputDoUsuario,fase)	
+		
 	if(inputDoUsuario.size()>0):
 		inputAtual=inputDoUsuario[0]
 	else:
 		inputAtual=null
 	if($controladorDeAnimacao.executaAnimacoes(delta)):
 		if($controladorPilha.resolvePilha(delta)):
-			var fase =$controladorDeFases.retornarFaseAtual()
 			match etapaDaFase:
 				0:
 					etapaDaFase+=fase.inicio(delta)

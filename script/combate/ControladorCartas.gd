@@ -153,7 +153,7 @@ func animacaoTrocaDeCartas(area,carta):
 	if((area==carta.posicaoJogo)or (area==null) or (carta == null)):
 		return positionAreaCarta(area,carta)
 	var animacao=load("res://cenas/animacoes/animacaoTrocaMonstros.tscn").instance()
-	animacao.definirPai(get_parent())
+	animacao.definirPai(get_parent().get_parent())
 	animacao.play(carta.posicaoJogo,area,5)
 	
 

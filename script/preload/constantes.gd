@@ -31,11 +31,15 @@ const TIPO_SELECAO_CAMPO = "tipo_selecao_campo"
 const TIPO_SELECAO_AREA_FLUTUANTE = "tipo_selecao_area_flutuante"
 const TIPO_SELECAO_MONSTRO_CAMPO = "tipo_selecao_monstro_campo"
 
+
+
 #Constantes marcadores
 const MARCADOR_ATRIBUTO="marcador_atributo"
 
 #Constantes de Fases
 
+
+const FASE_INICIO_DE_JOGO=-1
 const FASE_INICIAL=0
 const FASE_COMPRA=1
 const FASE_PRINCIPAL1=2

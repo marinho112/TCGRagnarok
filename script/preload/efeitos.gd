@@ -93,10 +93,12 @@ class efeito:
 	
 	var id
 	var pai
+	var superPai
 	var palavraPai
 	var listaPalavras = []
 	var listaZonas = []
 	
+		
 	func ativar(carta=null,alvo=null):
 		pass
 	
@@ -106,7 +108,6 @@ class efeito:
 		return Ferramentas.receberTexto("efeitos",id)
 	
 	func verificaPai():
-		var superPai=pai.obj.get_parent()
 		var listaCartas = []
 		for item in listaZonas:
 			if(item == Constante.GRUPO_CARTA_MORTA):

@@ -1,13 +1,12 @@
 
 var combate
-var campo
 var areaMao
 var areaMiniatura
 var areaZenys
 var areaAtaque
 var areaDefesa
 var jogador
-var superJogador
+
 
 
 var contador=0
@@ -24,80 +23,6 @@ var necessidadeDeDefesa = 0
 var antiNecessidadeDeDefesa = 0
 var tempoPassado = 0
 
-func adicionarInformacoes(jogador,combate):
-	definirJogador(jogador)
-	self.combate=combate
-	self.campo=combate.get_node("controladorCampo")
-	
-
-func main(delta,listaInputs,fase):
-	#print(str(fase.jogador.jogador)+" | "+str(jogador))
-	if(fase.jogador == superJogador):
-		#print(fase.tipo)
-		match fase.tipo:
-			Constante.FASE_PRINCIPAL1:
-				fasePrincipal1(delta,listaInputs)
-			Constante.FASE_PRINCIPAL2:
-				fasePrincipal2(delta,listaInputs)
-	else:
-		if(fase.tipo == Constante.FASE_BLOQUEIO):
-			faseBloqueio(delta,listaInputs)
-
-func fasePrincipal(delta):
-	var retorno = false
-	tempoPassado+=delta
-	if (tempoPassado > 0.1):
-		retorno = calcularCartaJogada(delta)
-		tempoPassado = 0
-	return retorno
-	
-func fasePrincipal1(delta,listaInputs):
-	
-	if(combate.etapaDaFase==0):
-		criarListaAtaqueDefesa=true
-		listaCartasAtacantes=null
-	var retorno = false
-	if(fasePrincipal(delta)):
-		if criarListaAtaqueDefesa:
-			criarListaAtaqueDefesa()
-		else:
-			if(listaCartasAtacantes == null):
-				calcularPosicoesCartasAtaque()
-			else:
-				retorno = posicionarCartasAtaque(delta)
-				
-	if retorno:
-		var ataque= verificaSeAtaca()
-		var input
-		if(ataque):
-			input= Classes.InputUsuario.new(superJogador,Constante.INPUT_BTN_AZUL_ATAQUE)
-		else:
-			input= Classes.InputUsuario.new(superJogador,Constante.INPUT_BTN_VERMELHO)
-		listaInputs.append(input)
-		
-		
-func fasePrincipal2(delta,listaInputs):
-	if(combate.etapaDaFase==0):
-		listaCartasAtacantes = null
-	if(fasePrincipal(delta)):
-		var input= Classes.InputUsuario.new(superJogador,Constante.INPUT_BTN_VERMELHO)
-		listaInputs.append(input)
-
-func faseBloqueio(delta,listaInputs):
-	pass
-
-func verificaSeAtaca():
-	if(listaCartasAtacantes.size()>0):
-		if((listaCartasBloqueio.size()<listaCartasAtacantes.size())or(listaCartasAtacantes.size()==6)):
-			return true
-		elif((necessidadeDeDefesa - antiNecessidadeDeDefesa) < 0 ):
-			return true
-		elif(listaCartasCampoOponente.size()<listaCartasAtacantes.size()):
-			return true
-		elif(listaCartasCampoOponente.size()==0):
-			return true
-	return false
-
 func debug():
 	print("Contador :"+str(contador))
 	print("CartasCampo :"+str(listaCartasCampo))
@@ -108,16 +33,73 @@ func debug():
 
 func definirJogador(jogador):
 	
-	self.jogador = jogador.jogador
-	superJogador=jogador
-	jogador.jogador.ai=self
-	areaMao = jogador.jogador.areaMao
-	areaMiniatura=jogador.jogador.areaMiniatura
-	areaZenys=jogador.jogador.areaZenys
-	areaAtaque=jogador.jogador.areaAtaque
-	areaDefesa=jogador.jogador.areaDefesa
+	self.jogador = jogador
+	areaMao = jogador.areaMao
+	areaMiniatura=jogador.areaMiniatura
+	areaZenys=jogador.areaZenys
+	areaAtaque=jogador.areaAtaque
+	areaDefesa=jogador.areaDefesa
 
 
+func faseInicial(delta):
+	return combate.faseInicial(delta)
+	
+func inicioFaseDeCompra(delta):
+	return combate.inicioFaseDeCompra(delta)
+	
+func faseDeCompra(delta):
+	return combate.faseDeCompra(delta)
+func inicioFasePrincipal1(delta):
+	criarListaAtaqueDefesa=true
+	return combate.inicioFasePrincipal1(delta)
+	
+func fasePrincipal(delta):
+	var retorno = false
+	tempoPassado+=delta
+	if (tempoPassado > 0.1):
+		retorno = calcularCartaJogada(delta)
+		tempoPassado = 0
+	return retorno
+	
+func fasePrincipal1(delta):
+	var retorno = false
+	if(fasePrincipal(delta)):
+		if criarListaAtaqueDefesa:
+			criarListaAtaqueDefesa()
+		else:
+			if(listaCartasAtacantes == null):
+				calcularPosicoesCartasAtaque()
+			else:
+				retorno = posicionarCartasAtaque(delta)
+	return retorno
+func inicioFaseCombate(delta):
+	combate.bloqueado=false
+	return combate.inicioFaseCombate(delta)
+	
+func faseCombate(delta):
+	var retorno = false
+	tempoPassado+=delta
+	if (tempoPassado > 0.1):
+		if(combate.retornaCartasArea(areaAtaque).size()>0):
+			if(combate.oponente.ai.definirBloqueadores(combate.bloqueado,delta)):
+				retorno = true
+				tempoPassado = 0
+		else:
+			retorno = true
+	return retorno
+
+func realizarAtaque(delta):
+	return combate.realizarAtaque(delta)
+func inicioFasePrincipal2(delta):
+	listaCartasAtacantes = null
+	#criarListaAtaqueDefesa=true
+	return combate.inicioFasePrincipal2(delta)
+func fasePrincipal2(delta):
+	return fasePrincipal(delta)
+func inicioFaseFinal(delta):
+	return combate.inicioFaseFinal(delta)
+func faseFinal(delta):
+	return combate.faseFinal(delta)
 
 
 func calcularCartaJogada(delta):
@@ -127,8 +109,8 @@ func calcularCartaJogada(delta):
 	while((listaCartasPossiveis.size()>0)and(retorno)):
 		var contAtaque = 0
 		var contDefesa = 0
-		contAtaque = campo.retornaCartasArea(areaAtaque).size()
-		contDefesa = campo.retornaCartasArea(areaDefesa).size()
+		contAtaque = combate.retornaCartasArea(areaAtaque).size()
+		contDefesa = combate.retornaCartasArea(areaDefesa).size()
 		
 		if((contAtaque+contDefesa)<12):
 			var numero = randi()%listaCartasPossiveis.size()
@@ -157,7 +139,7 @@ func abrirEspacoArea(areaNome):
 	var espacoUm=null
 	var espacoDois=null
 	var cont =0
-	var controlador=campo.get_node("ControladorCartas")
+	var controlador=combate.get_node("ControladorCartas")
 	
 	match(areaNome):
 		"ataque":
@@ -181,7 +163,7 @@ func jogar(carta):
 	if((carta.custo <= jogador.zeny)):
 		if(carta.tipo == Constante.CARTA_MONSTRO):
 			carta.revelada=true
-			var controlador = campo.get_node("ControladorCartas")
+			var controlador = combate.get_node("ControladorCartas")
 			var cartaNova = controlador.criarMonstro(carta,jogador)
 			
 			if(cartaNova != null):
@@ -203,7 +185,7 @@ func jogar(carta):
 			jogador.areaZenys.atualizarZeny()
 			for palavra in carta.listaPalavraChave:
 				palavra.aoJogar()
-			campo.atualizaTodasCartas()
+			combate.atualizaTodasCartas()
 			retorno= true
 	else:
 		areaMao.atualizaMao()
@@ -214,7 +196,7 @@ func jogar(carta):
 func criarListaAtaqueDefesa():
 	antiNecessidadeDeDefesa = 0
 	listaDecidirAtaqueDefesa = []
-	listaCartasCampo = campo.retornaCartasArea(areaAtaque)+campo.retornaCartasArea(areaDefesa)
+	listaCartasCampo = combate.retornaCartasArea(areaAtaque)+combate.retornaCartasArea(areaDefesa)
 	for item in listaCartasCampo:
 		var carta = item.carta
 		var ataque = (carta.retornaPoder()*3) + (carta.retornaVidaTotal())
@@ -231,7 +213,7 @@ func criarListaAtaqueDefesa():
 func defineListaCartasCampoOponente():
 	var oponenteAreaAtaque = combate.listaJogadores[0].areaAtaque
 	var oponenteAreaDefesa = combate.listaJogadores[0].areaDefesa
-	listaCartasCampoOponente = campo.retornaCartasArea(oponenteAreaAtaque)+campo.retornaCartasArea(oponenteAreaDefesa)
+	listaCartasCampoOponente = combate.retornaCartasArea(oponenteAreaAtaque)+combate.retornaCartasArea(oponenteAreaDefesa)
 
 	
 func defineNecessidadeDeDefesa():
@@ -273,10 +255,9 @@ func calcularPosicoesCartasAtaque():
 	var listaAtacantes = listaXmaiores(listaCartasCampo.size(),listaDecidirAtaqueDefesa)
 	listaCartasAtacantes = []
 	listaCartasBloqueio = []
-	var x=0
 	for c in listaCartasCampo.size():
 		var carta = listaCartasCampo[listaAtacantes[c]]
-		
+		var x=0
 		if(x<numAtacantes):
 			if(!carta.carta.temPalavraChave(4)):
 				listaCartasAtacantes.append(carta)
@@ -284,23 +265,25 @@ func calcularPosicoesCartasAtaque():
 		else:
 			if(!carta.carta.temPalavraChave(4)):
 				listaCartasBloqueio.append(carta)
-	
-	
+
+
 func posicionarCartasAtaque(delta):
 	var retorno = false
 	var posicoesValidas = calcularPosicoesValidas(areaAtaque)
 	var posicoesValidasb = calcularPosicoesValidas(areaDefesa)
 	var numAtaque = listaCartasAtacantes.size()
+	
 	if(contador < numAtaque):
 		var carta = listaCartasAtacantes[contador]
 		if(!carta.posicaoJogo.is_in_group(Constante.GRUPO_AREA_CARTA_ATAQUE)):
 			for posicao in posicoesValidas:
 				if(posicao.carta==null):
-					campo.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
+					combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
+					
 					return false
 				elif(listaCartasAtacantes.count(posicao.carta)==0):
 					if(!posicao.carta.carta.temPalavraChave(4)):
-						campo.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
+						combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
 						return false
 		contador +=1
 	elif(contador < (numAtaque+listaCartasBloqueio.size())):
@@ -309,11 +292,11 @@ func posicionarCartasAtaque(delta):
 		if(!carta.posicaoJogo.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA)):
 			for posicao in posicoesValidasb:
 				if(posicao.carta==null):
-					campo.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
+					combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
 					return false
 				elif(listaCartasBloqueio.count(posicao.carta)==0):
 					if(!posicao.carta.carta.temPalavraChave(4)):
-						campo.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
+						combate.get_node('ControladorCartas').animacaoTrocaDeCartas(posicao,carta)
 						return false
 		contador +=1
 	else:
@@ -327,22 +310,17 @@ func calcularNumeroAtacantes():
 	var numAtacantes = 0
 	if(fator>0):
 		numAtacantes = listaCartasCampo.size() - listaCartasCampoOponente.size()
-	elif(listaCartasCampoOponente.size()==0):
-		numAtacantes = listaCartasCampo.size()
 	else:
 		numAtacantes = listaCartasCampo.size() - int(listaCartasCampoOponente.size()/2)
 	if(numAtacantes>6):
 		numAtacantes =6
-	if(numAtacantes<=0):
-		if(listaCartasCampoOponente.size()==0):
-			numAtacantes = listaCartasCampo.size()
-		else:
-			numAtacantes=0
+	if(numAtacantes<0):
+		numAtacantes=0
 		
 	return numAtacantes
 	
 func calcularPosicoesValidas(area):
-	var lista = campo.retornaCartasArea(area,false)
+	var lista = combate.retornaCartasArea(area,false)
 	
 	return lista
 	
@@ -366,7 +344,7 @@ func definirBloqueadores(retorno,delta):
 			
 			var areaBloqueio = listaCartasBloqueio[contador]
 			
-			campo.get_node("ControladorCartas").animacaoTrocaDeCartas(areaBloqueio,cartaBloqueio)
+			combate.get_node("ControladorCartas").animacaoTrocaDeCartas(areaBloqueio,cartaBloqueio)
 			
 		
 		contador+=1

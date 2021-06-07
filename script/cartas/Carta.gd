@@ -98,8 +98,9 @@ func terminar():
 	var novaCarta=ControlaDados.carregaCartaPorID(carta.id,carta.dono)
 	carta.dono.listaPilhaDescarte.append(novaCarta)
 	queue_free()
+	
 func aoSairDeJogo(combate):
-	var listaDono = carta.listaEfeitoSairJogo+carta.dono.listaAoSairDeJogo
+	#var listaDono = carta.listaEfeitoSairJogo#+carta.dono.listaAoSairDeJogo
 	#if(combate.resolveHabilidades(listaDono,carta.dono.listaAoMorrer)):
 	return true
 	#return false
