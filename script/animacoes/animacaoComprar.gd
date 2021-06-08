@@ -44,7 +44,6 @@ func executa(delta):
 		imagem.set_visible(true)
 	executando=true
 	var posicaoAtual = imagem.get_global_position()
-	#print(posicaoAtual)
 	var diferenca = posicaoAtual - posicaoFinal
 	var positivoDiferenca = Vector2(Ferramentas.positivo(diferenca.x),Ferramentas.positivo(diferenca.y))
 	var subFator = Vector2(1,1)

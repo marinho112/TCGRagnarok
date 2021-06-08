@@ -23,7 +23,19 @@ class carta:
 	var listaMarcadores = []
 	var listaEfeitos = []
 	var listaCartasRelacionadas = []
+	
+	#listas ativação efeitos
 	var listaEfeitoSairJogo = []
+	var listaAoAtacar = []
+	var listaAoSerAtacado = []
+	var listaAoBloquear = []
+	var listaAoSerBloqueado = []
+	var listaAoGolpear = []
+	var listaAoSerGolpeado = []
+	var listaAoReceberDano = []
+	var listaAoCausarDano = []
+	var listaAoMorrer = []
+	var listaAoMatar = []
 	
 	func migraValor(carta):
 		carta.listaMarcadores=listaMarcadores

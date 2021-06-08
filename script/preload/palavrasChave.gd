@@ -131,7 +131,7 @@ class Ofensivo extends palavraChave:
 	
 	func aoJogar():
 		.aoJogar()
-		adicionarEfeitoListaJogador(pai.dono.listaAoAtacar,pai)
+		adicionarEfeitoListaJogador(pai.listaAoAtacar,pai)
 		
 class Imovel extends palavraChave:
 	
@@ -202,9 +202,8 @@ class Golpear extends palavraChave:
 	
 	func aoJogar():
 		.aoJogar()
-		var novoEfeito = Efeitos.criarAtivadorDono(efeito,pai.dono.listaAoGolpear)
 		#pai.dono.listaAoGolpear.append(novoEfeito)
-		adicionarEfeitoListaJogador(pai.dono.listaAoGolpear,pai,novoEfeito)
+		adicionarEfeitoListaJogador(pai.listaAoGolpear,pai,efeito)
 		#pai.listaEfeitoSairJogo.append(novoEfeito.xy)
 	
 class Afinidade extends palavraChave:
@@ -287,10 +286,9 @@ class Resiliente extends palavraChave:
 	
 	func aoJogar():
 		.aoJogar()
+		var novoEfeito = Efeitos.criarAtivadorDano(efeito)
+		adicionarEfeitoListaJogador(pai.listaAoReceberDano,pai,novoEfeito)
 		
-		var novoEfeito = Efeitos.criarAtivadorDano(efeito,pai.dono.listaAoGolpear)
-		pai.dono.listaAoReceberDano.append(novoEfeito)
-		#pai.listaEfeitoSairJogo.append(novoEfeito.xy)
 		
 class AtaqueMultiplo extends palavraChave:
 	

@@ -51,7 +51,6 @@ func _ready():
 	listaJogadores[0].definirAreas($mao,$Personagem,$zenys,$Container/Jogador1Ataque,$Container/Jogador1Defesa)
 	listaJogadores[1].definirAreas($maoOponente,$Oponente,$zenysOponente,$Container/Jogador2Ataque,$Container/Jogador2Defesa)
 	listaJogadores[1].ai.definirJogador(listaJogadores[1])
-	#print(listaJogadores[0])
 	listaJogadores[0].personagem.dono = listaJogadores[0]
 	listaJogadores[1].personagem.dono=listaJogadores[1]
 	jogador = listaJogadores[0]

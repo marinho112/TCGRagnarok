@@ -24,4 +24,5 @@ text = "PalavraChave"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="meta_clicked" from="texto" to="." method="_on_texto_meta_clicked"]

@@ -161,4 +161,4 @@ func golpear(golpeador,alvo):
 	animacao.setListaAnimacao(animacoes)
 	animacao.play(golpeador,[alvo],null)
 	#var retorno = golpeador.carta.golpear(alvo.carta)
-	#print(retorno)
+	

@@ -15,6 +15,7 @@ class jogador:
 	var listaEquipamento=[]
 	var listaPilhaDescarte=[]
 	
+	#LISTAS GLOBAIS
 	var listaInicioPartida = []
 	var listaFaseInicial = []
 	var listaFaseCompra = []
@@ -24,18 +25,32 @@ class jogador:
 	var listaAoJogarCarta = []
 	var listaAoEntrarEmJogo = []
 	#var listaFaseCombate = []
+	#var listaAoSairDeJogo = []
+	var listaHabilidadesPassivas = []
+	var listaFaseFinal = []
+	var listaAoAtacarGlobal = []
+	var listaAoSerAtacadoGlobal = []
+	var listaAoBloquearGlobal = []
+	var listaAoSerBloqueadoGlobal = []
+	var listaAoGolpearGlobal = []
+	var listaAoSerGolpeadoGlobal = []
+	var listaAoReceberDanoGlobal = []
+	var listaAoCausarDanoGlobal = []
+	var listaAoMorrerGlobal = []
+	var listaAoMatarGlobal = []
+	
+	#lista Pessoal
+	
 	var listaAoAtacar = []
 	var listaAoSerAtacado = []
 	var listaAoBloquear = []
+	var listaAoSerBloqueado = []
 	var listaAoGolpear = []
 	var listaAoSerGolpeado = []
 	var listaAoReceberDano = []
 	var listaAoCausarDano = []
 	var listaAoMorrer = []
 	var listaAoMatar = []
-	#var listaAoSairDeJogo = []
-	var listaHabilidadesPassivas = []
-	var listaFaseFinal = []
 	
 	var controlador
 	var areaMao

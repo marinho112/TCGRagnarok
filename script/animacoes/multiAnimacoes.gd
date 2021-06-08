@@ -4,7 +4,6 @@ func play(dono,listaAlvos = [],pause = null,velo = 1.0,sequencia=null):
 	.play(dono,listaAlvos,pause,velo,sequencia)
 
 func executa(delta):
-	#print(listaAlvos)
 	var terminos = 0
 	for item in listaAlvos:
 		if(!item.executado):

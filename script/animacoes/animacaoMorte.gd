@@ -23,8 +23,6 @@ func executa(delta):
 func encerrar():
 	
 	if(!morto):
-		var listaDono = dono.carta.listaEfeitoMorrer+pai.jogador.listaAoMorrer
-		#if(pai.resolveHabilidades(listaDono,pai.oponente.listaAoMorrer)):
 		dono.set_visible(false)
 		morto=true
 	elif(dono.aoSairDeJogo(pai)):

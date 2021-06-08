@@ -35,7 +35,6 @@ func _ready():
 	cursorMouse= get_parent().get_node("Mouse")
 	#$btnAzul.set_text(0,false)
 	#$btnVermelho.set_text(0,false,false)
-	
 	for x in 2:
 		var sortNum = randi()%1
 		var retorno = ControlaDados.carregaDeck("deck00"+str(2+sortNum),listaJogadores[x])
@@ -52,7 +51,6 @@ func _ready():
 	listaJogadores[0].definirAreas(self,$controladorMao/mao,$controladorCampo/Personagem,$controladorCampo/zenys,$controladorCampo/Container/Jogador1Ataque,$controladorCampo/Container/Jogador1Defesa)
 	listaJogadores[1].definirAreas(self,$controladorMao/maoOponente,$controladorCampo/Oponente,$controladorCampo/zenysOponente,$controladorCampo/Container/Jogador2Ataque,$controladorCampo/Container/Jogador2Defesa)
 	#listaJogadores[1].ai.definirJogador(listaJogadores[1])
-	#print(listaJogadores[0])
 	listaJogadores[0].personagem.dono = listaJogadores[0]
 	listaJogadores[1].personagem.dono=listaJogadores[1]
 	jogador = listaJogadores[0]
@@ -158,18 +156,26 @@ func verificarVencedor():
 	elif(oponente.personagem.retornaVida()<=0):
 		declararVencedor(jogador)
 
-func resolveHabilidades(listaJogador,listaOponente,carta=null,alvo=null):
-	var lista= listaJogador+listaOponente
-	var listaRemocao=[]
+func resolveHabilidades(listas,carta=null,alvo=null):
+	var lista=[]
+	for item in listas:
+		lista+=item
 	for habilidade in lista:
 		if(habilidade.verificaPai()):
 			var itemPilha=habilidadePilha.new(self,$controladorDeFases.retornaJogador().jogador,habilidade,carta,alvo)
 			$controladorPilha.adicionarFinalDaPilha(itemPilha)
 		else:
-			listaJogador.remove(listaJogador.find(habilidade))
-			listaOponente.remove(listaOponente.find(habilidade))
+			for item in listas:
+				item.remove(item.find(habilidade))
 	return true
 			
+func adicionarInput(input):
+	for item in inputDoUsuario:
+		if((input.tipo==item.tipo)and(input.jogador==item.jogador)):
+			return false
+	inputDoUsuario.append(input)
+	return true
+	
 class habilidadePilha extends Classes.ItemPilha:
 	
 	var efeito
@@ -183,5 +189,5 @@ class habilidadePilha extends Classes.ItemPilha:
 	
 	func main(delta):
 		efeito.ativar(carta,alvo)
-		print("Habilidade Pilha Executado = true")
 		executado=true
+

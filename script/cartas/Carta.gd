@@ -1,4 +1,4 @@
-extends Node2D
+extends Area2D
 
 var ativado = true
 var zoom = false
@@ -21,23 +21,25 @@ func _process(delta):
 	animacaoBrilho(delta)
 	
 func defineBrilho(val):
-	$brilho.set_visible(val)
+	if($brilho!=null):
+		$brilho.set_visible(val)
 
 func animacaoBrilho(delta):
-	if($brilho.is_visible()):
-		if(time>0.1):
-			time=0
-			$brilho.set_frame(frame)
-			var rot = $brilho.get_rotation_degrees()
-			if(rot>=270):
-				$brilho.set_rotation_degrees(rot+90)
+	if($brilho!=null):
+		if($brilho.is_visible()):
+			if(time>0.1):
+				time=0
+				$brilho.set_frame(frame)
+				var rot = $brilho.get_rotation_degrees()
+				if(rot>=270):
+					$brilho.set_rotation_degrees(rot+90)
+				else:
+					$brilho.set_rotation_degrees(0)
+					frame+=1
+					if(frame>1):
+						frame=0
 			else:
-				$brilho.set_rotation_degrees(0)
-				frame+=1
-				if(frame>1):
-					frame=0
-		else:
-			time+=delta
+				time+=delta
 
 
 func preparaCarta(carta = self.carta):
@@ -49,8 +51,12 @@ func golpear(carta):
 func desenhaAtributos():
 	pass
 
-func morre(algoz):	
-	get_parent().resolveHabilidades(carta.dono.listaAoMorrer,algoz.dono.listaAoMatar)
+func morre(algoz):
+	var listaCarta =carta.listaAoMorrer
+	var listaCartaGlobal =carta.dono.listaAoMorrerGlobal
+	var listaAlgoz =algoz.listaAoMatar
+	var listaAlgozGlobal =algoz.dono.listaAoMatarGlobal
+	get_parent().resolveHabilidades([listaCarta,listaCartaGlobal,listaAlgoz,listaAlgozGlobal])
 	
 func verificaVida(algoz):
 	print("NÂO IMPLEMENTADO NA CARTA GENERICA")
@@ -100,7 +106,4 @@ func terminar():
 	queue_free()
 	
 func aoSairDeJogo(combate):
-	#var listaDono = carta.listaEfeitoSairJogo#+carta.dono.listaAoSairDeJogo
-	#if(combate.resolveHabilidades(listaDono,carta.dono.listaAoMorrer)):
 	return true
-	#return false

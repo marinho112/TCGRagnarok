@@ -1,13 +1,14 @@
-extends Area2D
+extends "res://script/cartas/MiniaturaMonstro.gd"
 
-var carta
-var ativado = true
+#var carta
+#var ativado = true
 var duploClick = false
 var jogador
-var verificadorTipo=Constante.OBJ_JOGADOR
-var pai
+#var verificadorTipo=Constante.OBJ_JOGADOR
+#var pai
 
 func _ready():
+	verificadorTipo=Constante.OBJ_JOGADOR
 	set_process(true)
 	pai=get_parent().get_parent()
 
@@ -46,11 +47,6 @@ func atualizarAtaque(ataque):
 func atualizarDefesa(defesa):
 	$lblDefesa.set_text(str(defesa))
 
-func golpear(carta):
-	
-	var retorno = self.carta.golpear(carta.carta)
-	carta.desenhaAtributos()
-	return retorno
 	
 
 func desenhaAtributos():

@@ -9,7 +9,7 @@ var areaDefesa
 var jogador
 var superJogador
 
-
+var clock=0
 var contador=0
 
 var criarListaAtaqueDefesa=false 
@@ -31,9 +31,7 @@ func adicionarInformacoes(jogador,combate):
 	
 
 func main(delta,listaInputs,fase):
-	#print(str(fase.jogador.jogador)+" | "+str(jogador))
 	if(fase.jogador == superJogador):
-		#print(fase.tipo)
 		match fase.tipo:
 			Constante.FASE_PRINCIPAL1:
 				fasePrincipal1(delta,listaInputs)
@@ -63,38 +61,45 @@ func fasePrincipal1(delta,listaInputs):
 		else:
 			if(listaCartasAtacantes == null):
 				calcularPosicoesCartasAtaque()
+				contador=0
 			else:
 				retorno = posicionarCartasAtaque(delta)
 				
 	if retorno:
 		var ataque= verificaSeAtaca()
 		var input
-		if(ataque):
-			input= Classes.InputUsuario.new(superJogador,Constante.INPUT_BTN_AZUL_ATAQUE)
-		else:
-			input= Classes.InputUsuario.new(superJogador,Constante.INPUT_BTN_VERMELHO)
-		listaInputs.append(input)
+		if(combate.inputDoUsuario.size()<=0):
+			if(ataque):
+				input= Classes.InputUsuario.new(superJogador,Constante.INPUT_BTN_AZUL_ATAQUE)
+			else:
+				input= Classes.InputUsuario.new(superJogador,Constante.INPUT_BTN_VERMELHO)
+			combate.adicionarInput(input)
 		
 		
 func fasePrincipal2(delta,listaInputs):
 	if(combate.etapaDaFase==0):
 		listaCartasAtacantes = null
 	if(fasePrincipal(delta)):
-		var input= Classes.InputUsuario.new(superJogador,Constante.INPUT_BTN_VERMELHO)
-		listaInputs.append(input)
+		if(combate.inputDoUsuario.size()<=0):
+			var input= Classes.InputUsuario.new(superJogador,Constante.INPUT_BTN_VERMELHO)
+			combate.adicionarInput(input)
 
 func faseBloqueio(delta,listaInputs):
-	pass
+	if(definirBloqueadores(delta)):
+		if(combate.inputDoUsuario.size()<=0):
+			var input= Classes.InputUsuario.new(superJogador,Constante.INPUT_BTN_AZUL_BLOQUEIO)
+			combate.adicionarInput(input)
 
 func verificaSeAtaca():
-	if(listaCartasAtacantes.size()>0):
+	var contAtaque = campo.retornaCartasArea(areaAtaque).size()
+	if(contAtaque>0):
 		if((listaCartasBloqueio.size()<listaCartasAtacantes.size())or(listaCartasAtacantes.size()==6)):
 			return true
-		elif((necessidadeDeDefesa - antiNecessidadeDeDefesa) < 0 ):
+		if((necessidadeDeDefesa - antiNecessidadeDeDefesa) < 0 ):
 			return true
-		elif(listaCartasCampoOponente.size()<listaCartasAtacantes.size()):
+		if(listaCartasCampoOponente.size()<listaCartasAtacantes.size()):
 			return true
-		elif(listaCartasCampoOponente.size()==0):
+		if(listaCartasCampoOponente.size()==0):
 			return true
 	return false
 
@@ -348,11 +353,12 @@ func calcularPosicoesValidas(area):
 	
 
 
-func definirBloqueadores(retorno,delta):
-	
+func definirBloqueadores(delta):
+	if(contador>=6):
+		return true
 	if(contador==0):
-		var listaCartasAtaqueOponente = combate.retornaCartasArea(combate.listaJogadores[0].areaAtaque,false)
-		listaCartasBloqueio = combate.retornaCartasArea(areaDefesa,false)
+		var listaCartasAtaqueOponente = campo.retornaCartasArea(combate.listaJogadores[0].areaAtaque,false)
+		listaCartasBloqueio = campo.retornaCartasArea(areaDefesa,false)
 		var tamanhoListaAD=listaDecidirAtaqueDefesa.size()
 		var listaValores = listaXmaiores(tamanhoListaAD,listaDecidirAtaqueDefesa)
 		listaOrdemBloqueio = defineOrdemAtaqueDefesa(listaCartasAtaqueOponente,listaCartasBloqueio)
@@ -368,7 +374,6 @@ func definirBloqueadores(retorno,delta):
 			
 			campo.get_node("ControladorCartas").animacaoTrocaDeCartas(areaBloqueio,cartaBloqueio)
 			
-		
 		contador+=1
 	return (contador>=6)
 

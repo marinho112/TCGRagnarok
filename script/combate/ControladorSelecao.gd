@@ -146,7 +146,6 @@ func receberAreaMaisRelevante(cartaSelecionada,tipo,jogador):
 	var menorDiferenca
 	#controlar cartas no campo.
 	for area in lista:
-		print(jogador)
 		if(area.is_in_group(tipo)):
 			if((jogador!=null)and area.carta.dono == jogador):
 				if(menorArea==null):

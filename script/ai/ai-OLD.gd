@@ -326,7 +326,7 @@ func calcularPosicoesValidas(area):
 	
 
 
-func definirBloqueadores(retorno,delta):
+func definirBloqueadores(delta):
 	
 	if(contador==0):
 		var listaCartasAtaqueOponente = combate.retornaCartasArea(combate.listaJogadores[0].areaAtaque,false)

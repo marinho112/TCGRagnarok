@@ -72,7 +72,7 @@ func retornaJogador(jogador=null):
 	
 func retornaOponente(jogador):
 	if(listaJogadores[0]==jogador):
-		return listaJogadores[0]
-	else:
 		return listaJogadores[1]
+	else:
+		return listaJogadores[0]
 

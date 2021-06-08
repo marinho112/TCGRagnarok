@@ -3,7 +3,8 @@ extends "res://script/classes/botao.gd"
 var estado = Constante.INPUT_BTN_AZUL
 
 func acaoClick():
-	var jogador=get_parent().get_parent().get_node("controladorDeFases").retornaJogador()
+	var pai=get_parent().get_parent()
+	var jogador=pai.get_node("controladorDeFases").retornaJogador(pai.jogador)
 	var input= Classes.InputUsuario.new(jogador,estado)
 	get_parent().get_parent().inputDoUsuario.append(input)
 	

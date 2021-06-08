@@ -18,16 +18,15 @@ func executa(delta):
 	if(acabado):
 		if(cont < listaAlvos.size()):
 			var alvo = listaAlvos[cont]
-			if(resolveHabilidades(dono.carta.dono.listaAoGolpear,alvo.carta.dono.listaAoSerGolpeado,dono,alvo)):
-				cont+=1
-				var novaAnimacao = preDano.instance()
-				novaAnimacao.definirPai(get_parent())
-				var posicao = alvo.get_node("coracao").get_global_position()
-				novaAnimacao.set_global_position(posicao)
-				var causado = dono.golpear(alvo)
-				novaAnimacao.setDano(causado)
-				novaAnimacao.play(dono,[alvo],null,velo)
-				listaAnimacoes.append(novaAnimacao)
+			cont+=1
+			var novaAnimacao = preDano.instance()
+			novaAnimacao.definirPai(get_parent())
+			var posicao = alvo.get_node("coracao").get_global_position()
+			novaAnimacao.set_global_position(posicao)
+			var causado = dono.golpear(alvo)
+			novaAnimacao.setDano(causado)
+			novaAnimacao.play(dono,[alvo],null,velo)
+			listaAnimacoes.append(novaAnimacao)
 				
 		else:
 			acabado=false

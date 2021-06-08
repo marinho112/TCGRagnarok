@@ -9,7 +9,8 @@ var preDano = preload("res://cenas/animacoes/animacaoDano.tscn")
 	
 func _ready():
 	add_to_group(Constante.GRUPO_CARTA_MONSTRO)
-	palavraPosition = $PalavraChaveObjeto.get_position()
+	if($PalavraChaveObjeto!=null):
+		palavraPosition = $PalavraChaveObjeto.get_position()
 	
 
 
@@ -22,9 +23,6 @@ func preparaCarta(carta = self.carta):
 	carregaImagem()
 	desenhaPalavrasChave()
 	desenharHabilidades()
-	for palavra in carta.listaPalavraChave:
-		if(palavra.efeito!=null):
-			palavra.efeito.superPai=get_node("/root/main/ControladorDeTurnos/")
 
 func calcularBonus():
 	var pai = get_parent()
@@ -235,11 +233,29 @@ func golpear(carta):
 	var objCarta=carta
 	if(ClassesCartas.verificaLogicoObjeto(carta)==Constante.OBJ_JOGADOR):
 		objCarta=carta.carta
-	controlador.resolveHabilidades(self.carta.dono.listaAoGolpear,objCarta.dono.listaAoSerGolpeado)
+	if(ClassesCartas.verificaLogicoObjeto(carta)==Constante.OBJ_CARTA):
+		objCarta=carta.carta
+	var listaDono=self.carta.listaAoGolpear
+	var listaDonoGlobal=self.carta.dono.listaAoGolpearGlobal
+	var listaAlvo=objCarta.listaAoSerGolpeado
+	var listaAlvoGlobal=objCarta.dono.listaAoSerGolpeadoGlobal	
+	controlador.resolveHabilidades([listaDono,listaDonoGlobal,listaAlvo,listaAlvoGlobal])
 	return causarDano(carta)
 
 func causarDano(carta):
 	var retorno = self.carta.golpear(carta.carta)
+	if(retorno>0):
+		var controlador=get_node("/root/main/ControladorDeTurnos/")
+		var objCarta=carta
+		if(ClassesCartas.verificaLogicoObjeto(carta)==Constante.OBJ_JOGADOR):
+			objCarta=carta.carta
+		if(ClassesCartas.verificaLogicoObjeto(carta)==Constante.OBJ_CARTA):
+			objCarta=carta.carta
+		var listaDono=self.carta.listaAoCausarDano
+		var listaDonoGlobal=self.carta.dono.listaAoCausarDanoGlobal
+		var listaAlvo=objCarta.listaAoReceberDano
+		var listaAlvoGlobal=objCarta.dono.listaAoReceberDanoGlobal
+		controlador.resolveHabilidades([listaDono,listaDonoGlobal,listaAlvo,listaAlvoGlobal])
 	carta.desenhaAtributos()
 	return retorno
 

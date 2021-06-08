@@ -18,13 +18,8 @@ func alerta(local,texto,val=null):
 	animacao.definirPai(local.get_parent())
 	animacao.play(local,[])
 		
-func criarAtivadorDono(efeito,lista):
-	var novoAtivador = ativadorDono.new()
-	#var XY = criarXY(novoAtivador,lista)
-	novoAtivador.iniciar(efeito)
-	return novoAtivador
 
-func criarAtivadorDano(efeito,lista):
+func criarAtivadorDano(efeito):
 	var novoAtivador = ativadorDano.new()
 	#var XY = criarXY(novoAtivador,lista)
 	novoAtivador.iniciar(efeito)
@@ -32,7 +27,6 @@ func criarAtivadorDano(efeito,lista):
 
 func criarContador(limite,efeito,lista,loop):
 	var novoContador = contador.new()
-	#var XY = criarXY(novoContador,lista)
 	var combate = getRaiz()
 	novoContador.iniciar(limite,efeito,combate,loop)
 	return novoContador
@@ -89,14 +83,14 @@ func getEfeito(id,pai,palavraPai):
 	ControlaDados.recebePalavrasPorEfeito(retorno)
 	return retorno
 	
-class efeito:
+class efeito extends Node:
 	
 	var id
 	var pai
-	var superPai
 	var palavraPai
 	var listaPalavras = []
 	var listaZonas = []
+	var sPai
 	
 		
 	func ativar(carta=null,alvo=null):
@@ -107,8 +101,14 @@ class efeito:
 			return Ferramentas.receberTexto("efeitos",id,1)
 		return Ferramentas.receberTexto("efeitos",id)
 	
+	func get_superPai():
+		if(sPai == null):
+			sPai = pai.obj.get_parent()
+		return sPai
+	
 	func verificaPai():
 		var listaCartas = []
+		var superPai=get_superPai()
 		for item in listaZonas:
 			if(item == Constante.GRUPO_CARTA_MORTA):
 				return false
@@ -140,9 +140,7 @@ class eliminarXdeY extends efeito:
 		self.alertaMsg=alertaMsg
 	
 	func ativar(carta=null,alvo=null):
-		print(y)
 		y.remove(y.find(x))
-		print(y)
 		self.removeEfeito()
 		usado=true
 		if(alertaMsg!=null):
@@ -181,40 +179,25 @@ class contador extends efeito:
 				usado=true
 		efeito.palavraPai.turnos=cont
 
-class ativadorDono extends efeito: 
 
-	var efeito
-	#var xy
-	
-	func _init():
-		id=Constante.EFEITO_ATIVADOR_DONO
-	
-	func iniciar(efeito):
-		self.pai=efeito.pai
-		self.efeito=efeito
-		#self.xy=xy
-	
-	func ativar(carta=null,alvo=null):
-		if(efeito.pai==carta.carta):
-			efeito.ativar()
-			
 class ativadorDano extends efeito: 
 
 	var efeito
 	#var xy
 	
-	func _init():
+	func _init(efeito=null):
 		id=Constante.EFEITO_ATIVADOR_DANO
+		if(efeito!=null):
+			iniciar(efeito)
 	
 	func iniciar(efeito):
 		self.pai=efeito.pai
 		self.efeito=efeito
-		#self.xy=xy
+		#self.listaZonas=efeito.listaZonas
 	
 	func ativar(carta=null,alvo=null):
-		if(efeito.pai==carta.carta):
-			if(efeito.pai.retornaVida()>0):
-				efeito.ativar()
+		if(efeito.pai.retornaVida()>0):
+			efeito.ativar()
 
 class MaisXAtaque extends efeito:
 	

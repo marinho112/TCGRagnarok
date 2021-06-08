@@ -25,5 +25,5 @@ func executarCompra(jogadorr):
 	else:
 		controlador.get_node("controladorMao/maoOponente").adicionaCartaMao(carta)
 	jogadorr.listaBaralho.remove(0)
-	controlador.resolveHabilidades(jogadorr.listaAoComprar,controlador.get_oponente(jogadorr).listaAoComprar)
+	controlador.resolveHabilidades([jogadorr.listaAoComprar,controlador.get_oponente(jogadorr).listaAoComprar])
 	

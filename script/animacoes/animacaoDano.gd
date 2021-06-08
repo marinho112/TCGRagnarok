@@ -20,7 +20,6 @@ func executa(delta):
 	executando=true
 	if (timer<=0):
 		set_visible(false)
-		#if(resolveHabilidades(dono.carta.dono.listaAoReceberDano,[],dono.carta.obj)):
 		encerrar()
 	else:
 		var position = get_global_position()
