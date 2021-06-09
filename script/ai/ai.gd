@@ -90,6 +90,25 @@ func faseBloqueio(delta,listaInputs):
 			var input= Classes.InputUsuario.new(superJogador,Constante.INPUT_BTN_AZUL_BLOQUEIO)
 			combate.adicionarInput(input)
 
+func modoSelecao(selecao):
+	if(selecao.listaRetorno.size()<selecao.numAlvos):
+		var listaAlvosPossiveis=[]
+		var oponente=combate.get_oponente(jogador)
+		match(selecao.tipoDeSelecao):
+			Constante.TIPO_SELECAO_CAMPO:
+				listaAlvosPossiveis+=recebeCartasCampo(selecao)
+				listaAlvosPossiveis+=campo.get_node("Personagem")
+			Constante.TIPO_SELECAO_MONSTRO_CAMPO:
+				listaAlvosPossiveis+=recebeCartasCampo(selecao)
+			Constante.TIPO_SELECAO_MAO:
+				for carta in oponente.listaMao:
+					listaAlvosPossiveis.append(carta.obj)
+			Constante.TIPO_SELECAO_AREA_FLUTUANTE:
+				listaAlvosPossiveis+=selecao.listaCartas
+
+func recebeCartasCampo(selecao):
+	pass
+
 func verificaSeAtaca():
 	var contAtaque = campo.retornaCartasArea(areaAtaque).size()
 	if(contAtaque>0):
@@ -296,6 +315,7 @@ func posicionarCartasAtaque(delta):
 	var posicoesValidas = calcularPosicoesValidas(areaAtaque)
 	var posicoesValidasb = calcularPosicoesValidas(areaDefesa)
 	var numAtaque = listaCartasAtacantes.size()
+	
 	if(contador < numAtaque):
 		var carta = listaCartasAtacantes[contador]
 		if(!carta.posicaoJogo.is_in_group(Constante.GRUPO_AREA_CARTA_ATAQUE)):

@@ -8,12 +8,12 @@ var pai
 var escondido = false
 var posicaoRaiz = Vector2(0,0)
 var novaLista = []
-var time = 0
+var timeBrilho = 0
 var frame = 0
 var verificadorTipo=Constante.OBJ_CARTA
 
 func _ready():
-	add_to_group(Constante.GRUPO_CARTA)	
+	add_to_group(Constante.GRUPO_CARTA)
 	setZoom(false)
 	pai=get_node("/root/main/ControladorDeTurnos/")
 	
@@ -27,8 +27,8 @@ func defineBrilho(val):
 func animacaoBrilho(delta):
 	if($brilho!=null):
 		if($brilho.is_visible()):
-			if(time>0.1):
-				time=0
+			if(timeBrilho>0.2):
+				timeBrilho=0
 				$brilho.set_frame(frame)
 				var rot = $brilho.get_rotation_degrees()
 				if(rot>=270):
@@ -39,7 +39,7 @@ func animacaoBrilho(delta):
 					if(frame>1):
 						frame=0
 			else:
-				time+=delta
+				timeBrilho+=delta
 
 
 func preparaCarta(carta = self.carta):

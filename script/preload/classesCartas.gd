@@ -207,9 +207,18 @@ class objetoDeBatalha extends carta:
 			
 		return novoDano
 		
-	func golpear(inimigo):
-		
-		var danoCausado = inimigo.recebeDanoComDef(retornaPoder(),self,self.propriedade)
+	func golpear(inimigo,dano=null,propri=null):
+		var poder
+		if(dano==null):
+			poder=retornaPoder()
+		else:
+			poder=dano
+		var novaPropriedade
+		if(propri==null):
+			novaPropriedade=self.propriedade
+		else:
+			novaPropriedade=propri
+		var danoCausado = inimigo.recebeDanoComDef(poder,self,novaPropriedade)
 		var retorno = danoCausado
 		if(inimigo.obj!=null):
 			inimigo.obj.verificaVida(self)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://sprites/personagem/aprendiz001.png" type="Texture" id=1]
 [ext_resource path="res://cenas/elementos/Equipamento.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://sprites/cartas/Shield.png" type="Texture" id=5]
 [ext_resource path="res://cenas/cartas/fontes/valoresGrandes.tres" type="DynamicFont" id=6]
 [ext_resource path="res://script/Personagem.gd" type="Script" id=7]
+[ext_resource path="res://sprites/cartas/brilho/brilho.tres" type="SpriteFrames" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 55, 72.5 )
@@ -92,5 +93,11 @@ __meta__ = {
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
+
+[node name="brilho" type="AnimatedSprite" parent="."]
+visible = false
+scale = Vector2( 0.15, 0.175 )
+z_index = -1
+frames = ExtResource( 8 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

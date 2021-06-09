@@ -4,6 +4,8 @@ var cont = 0
 var timer = 0.2
 var frame = 0
 var alvo
+var dano
+var propriedade
 
 func executa(delta):
 	if(executando==false):
@@ -31,7 +33,7 @@ func encerrar():
 	animacao.definirPai(pai)
 	var posicao = alvo.get_node("coracao").get_global_position()
 	animacao.set_global_position(posicao)
-	var causado = dono.causarDano(alvo)
+	var causado = dono.causarDano(alvo,dano,propriedade)
 	animacao.setDano(causado)
 	animacao.play(dono,[alvo],-1,1,1)
 	.encerrar()

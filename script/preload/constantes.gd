@@ -4,6 +4,7 @@ extends Node
 
 const GRUPO_MOUSE="grupo_mouse"
 const GRUPO_CARTA="grupo_carta"
+const GRUPO_PERSONAGEM="grupo_personagem"
 const GRUPO_PERSONAGEM_JOGADOR="grupo_personagem_jogador"
 const GRUPO_PERSONAGEM_OPONENTE="grupo_personagem_oponente"
 const GRUPO_CARTA_MONSTRO="grupo_carta_monstro"

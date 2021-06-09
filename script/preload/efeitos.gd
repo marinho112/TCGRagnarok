@@ -395,16 +395,18 @@ class causaXDanoEmYAlvos extends efeito:
 		if(combate.get_node("controladorDeFases").retornaJogador().jogador == pai.dono):
 			cont=0
 			var qtd = palavraPai.val3
+			var dano = palavraPai.val2
 			var target = combate.get_oponente(combate.get_node("controladorDeFases").retornaJogador().jogador)
 			var listaTarget = combate.get_node("controladorCampo").retornarTodasAsCartasEmCampo(target)
 			if(qtd > listaTarget.size()):
 				qtd=listaTarget.size()
-			var animacaoDano=load("res://cenas/animacoes/animacoesAtaques/animacaoAlvoDano.tscn")
+			var animacaoDano=load("res://cenas/animacoes/animacoesAtaques/animacaoAlvoDano.tscn").instance()
 			var proximoItemPilha=ClassesSelecao.itemSelecaoPilha.new(combate,pai.dono,animacaoDano,Constante.OBJ_ANIMACAO,pai)
 			proximoItemPilha.pause=4
+			animacaoDano.dano=dano
 			var modo = Constante.TIPO_SELECAO_CAMPO
-			var numAlvos = 1
-			var itemPilha = ClassesSelecao.selecaoCampoItemPilha.new(combate,pai.dono,proximoItemPilha,modo,numAlvos)
+			var tipo = 12
+			var itemPilha = ClassesSelecao.selecaoCampoItemPilha.new(combate,pai.dono,proximoItemPilha,modo,tipo,qtd)
 			combate.get_node("controladorPilha").adicionarTopoDaPilha(itemPilha)
 			
 			#ai.prepararLista(qtd,self,Constante.TIPO_SELECAO_CAMPO,false,target)

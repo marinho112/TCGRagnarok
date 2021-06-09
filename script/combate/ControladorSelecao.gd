@@ -28,6 +28,7 @@ func desativar():
 		for item in listaSelecao:
 			item.get_node("brilho").set_visible(false)
 			novaLista.append(item.carta)
+			
 	if(selecionador.fimSelecao(novaLista)):
 		for carta in listaCartas:
 			carta.queue_free()
@@ -144,10 +145,15 @@ func receberAreaMaisRelevante(cartaSelecionada,tipo,jogador):
 	var lista = cartaSelecionada.get_overlapping_areas()
 	var menorArea = null
 	var menorDiferenca
+	var listaPosicoes=[]
 	#controlar cartas no campo.
 	for area in lista:
 		if(area.is_in_group(tipo)):
-			if((jogador!=null)and area.carta.dono == jogador):
+			var entrar=false
+			for posicao in listaPosicoes:
+				if(area.posicaoJogo.is_in_group(posicao)):
+					entrar=true
+			if((jogador!=null)and (area.carta.dono == jogador) and entrar):
 				if(menorArea==null):
 					menorArea=area
 					var posicao = area.get_global_position() - cartaSelecionada.get_global_position()

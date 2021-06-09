@@ -210,25 +210,25 @@ func desenharHabilidades():
 	$Habilidade2/borda.set_texture(load("res://sprites/cartas/monstros/bordas/bordaHabilidade2.png"))
 	$Habilidade.set_visible(false)
 	$Habilidade2.set_visible(false)
-	var tamanho = carta.listaHabilidades.size()
-	for habilidade in carta.listaHabilidades:
-		if (tamanho == 1):
+	for tamanho in carta.listaHabilidades.size():
+		var habilidade=carta.listaHabilidades[tamanho]
+		var cartaHabilidade
+		for item in carta.listaCartasRelacionadas:
+			if (item.id == int(habilidade[1])):
+				cartaHabilidade = item
+		if (tamanho == 0):
 			$Habilidade.set_visible(true)
-			var cartaHabilidade
-			for item in carta.listaCartasRelacionadas:
-				if (item.id == int(habilidade[1])):
-					cartaHabilidade = item
 			$Habilidade/ScrollContainer/nomeHabilidade.set_text(Ferramentas.receberTexto("cartas",cartaHabilidade.nome))
 			var valor = habilidade[2]
 			$Habilidade/custoHabilidade.set_text(valor)
 		else: 
 			$Habilidade2.set_visible(true)
-			$Habilidade2/ScrollContainer/nomeHabilidade.set_text(Ferramentas.receberTexto("cartas",int(habilidade[1])))
+			$Habilidade2/ScrollContainer/nomeHabilidade.set_text(Ferramentas.receberTexto("cartas",cartaHabilidade.nome))
 			var valor = habilidade[2]
 			$Habilidade2/custoHabilidade.set_text(valor)
-			tamanho = 1
+			
 
-func golpear(carta):
+func golpear(carta,dano=null,propriedade=null):
 	var controlador=get_node("/root/main/ControladorDeTurnos/")
 	var objCarta=carta
 	if(ClassesCartas.verificaLogicoObjeto(carta)==Constante.OBJ_JOGADOR):
@@ -240,10 +240,10 @@ func golpear(carta):
 	var listaAlvo=objCarta.listaAoSerGolpeado
 	var listaAlvoGlobal=objCarta.dono.listaAoSerGolpeadoGlobal	
 	controlador.resolveHabilidades([listaDono,listaDonoGlobal,listaAlvo,listaAlvoGlobal])
-	return causarDano(carta)
+	return causarDano(carta,dano,propriedade)
 
-func causarDano(carta):
-	var retorno = self.carta.golpear(carta.carta)
+func causarDano(carta,dano=null,propriedade=null):
+	var retorno = self.carta.golpear(carta.carta,dano,propriedade)
 	if(retorno>0):
 		var controlador=get_node("/root/main/ControladorDeTurnos/")
 		var objCarta=carta

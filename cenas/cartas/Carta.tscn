@@ -21,7 +21,7 @@ load_path = "res://.import/Shield.png-820585b9521aea80ea129deb7596d52f.stex"
 [node name="Carta" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="briho" type="AnimatedSprite" parent="."]
+[node name="brilho" type="AnimatedSprite" parent="."]
 scale = Vector2( 0.34, 0.42 )
 frames = ExtResource( 2 )
 

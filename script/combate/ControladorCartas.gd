@@ -27,7 +27,7 @@ func _process(delta):
 		if((cursorMouse!=null) and (cartaSelecionada==null)):
 			if(Input.is_action_pressed("clicar")):
 				for area in cursorMouse.get_overlapping_areas():
-					if((area.is_in_group(Constante.GRUPO_CARTA))and area.ativado and area.is_in_group(Constante.GRUPO_CARTA_EM_CAMPO)):
+					if((area.is_in_group(Constante.GRUPO_CARTA))and area.ativado and area.is_in_group(Constante.GRUPO_CARTA_EM_CAMPO) and !area.is_in_group(Constante.GRUPO_PERSONAGEM)):
 						if(duploClick):
 							area.setZoom(!area.zoom)
 							duploClick=false

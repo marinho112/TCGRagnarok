@@ -9,6 +9,8 @@ func receberTexto(arqui,linha,coluna=0):
 	
 	if not erro:
 		var conteudo = arquivo.get_as_text()
+		if(conteudo.substr(0,2)=="//"):
+			conteudo=conteudo.replace(conteudo.split("\n")[0],"")
 		var cortado = conteudo.split("¶")
 		var valor = 2
 		if(linha>9):
@@ -17,6 +19,7 @@ func receberTexto(arqui,linha,coluna=0):
 			valor+=1
 		if(linha>999):
 			valor+=1
+		
 		var texto = removeInicioInvalido(cortado[linha])
 		var temp = removeInicioInvalido(texto.right(valor))
 		var cortado2 = temp.split("§")

@@ -9,10 +9,14 @@ var jogador
 
 func _ready():
 	verificadorTipo=Constante.OBJ_JOGADOR
+	add_to_group(Constante.GRUPO_PERSONAGEM)
+	add_to_group(Constante.GRUPO_CARTA_EM_CAMPO)
+	posicaoJogo=self
 	set_process(true)
 	pai=get_parent().get_parent()
 
 func _process(delta):
+	animacaoBrilho(delta/2)
 	if ativado:
 		if Input.is_action_just_released("clicar"):
 			for area in get_overlapping_areas():
