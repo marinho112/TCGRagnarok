@@ -28,8 +28,7 @@ func calcularBonus():
 	var pai = get_parent()
 	var combate=get_node("/root/main/ControladorDeTurnos/")
 	carta.zerarBonus()
-	if!(pai.is_in_group(Constante.GRUPO_AREA_MAO) or pai.is_in_group(Constante.GRUPO_AREA_MAO_OPONENTE)):
-		
+	if!(pai.is_in_group(Constante.GRUPO_AREA_MAO) or pai.is_in_group(Constante.GRUPO_AREA_MAO_OPONENTE)or pai.is_in_group(Constante.GRUPO_AREA_FLUTUANTE)):
 		var grandeLista = combate.jogador.listaHabilidadesPassivas + combate.oponente.listaHabilidadesPassivas
 		for habiilidade in grandeLista:
 			habiilidade.ativar(self)
@@ -158,6 +157,9 @@ func carregaImagem():
 	get_node(fundo).set_texture(imagem)
 
 func desenhaPalavrasChave():
+	
+	if(palavraPosition==null):
+		_ready()
 	
 	var primeiro = true
 	var texto = ""

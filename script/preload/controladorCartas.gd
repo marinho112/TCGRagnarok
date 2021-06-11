@@ -50,6 +50,7 @@ func criarCartaMonstro(carta,pai,posicao,val):
 	
 	pai.add_child(objetoCarta)
 	objetoCarta.preparaCarta(carta)
-	objetoCarta.set_global_position(posicao)
+	if(posicao!=null):
+		objetoCarta.set_global_position(posicao)
 	return objetoCarta
 	

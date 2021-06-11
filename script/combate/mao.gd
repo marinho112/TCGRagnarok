@@ -40,7 +40,7 @@ func _process(delta):
 					var jogadorObj=get_parent().get_parent().get_node("controladorDeFases").listaJogadores[0]
 					var input= Classes.InputUsuario.new(jogadorObj,estado,[areaRelevante,cartaSelecionada,self])
 					get_parent().get_parent().inputDoUsuario.append(input)
-				cartaSelecionada=null
+				selecionaCarta(null)
 			
 			if(item != null):
 				if(duploClik):
@@ -61,6 +61,7 @@ func _process(delta):
 			
 		else:
 			if(cartaSelecionada!=null):
+				print(cartaSelecionada)
 				var posicaoCarta = cartaSelecionada.get_global_position()
 				var novaPosicao = cursorMouse.get_global_position()
 				if(cartaSelecionada.zoom and moveu(cartaSelecionada)):
@@ -149,7 +150,7 @@ func adicionaCartaMao(carta):
 	
 	
 func atualizaMao():
-	
+	selecionaCarta(null)
 	for item in maoVisual:
 		item.queue_free()
 	maoVisual=[]

@@ -23,7 +23,7 @@ func _ready():
 	set_process(true)
 	
 func _process(delta):
-	if (jogador.ativado and (pai.get_node("controladorMao/mao").cartaSelecionada==null) and (!pai.get_node("controladorCampo/listaExibicaoCartas").ativado)):
+	if (ativado and jogador.ativado and (pai.get_node("controladorMao/mao").cartaSelecionada==null) and (!pai.get_node("controladorCampo/listaExibicaoCartas").ativado)):
 		if((cursorMouse!=null) and (cartaSelecionada==null)):
 			if(Input.is_action_pressed("clicar")):
 				for area in cursorMouse.get_overlapping_areas():

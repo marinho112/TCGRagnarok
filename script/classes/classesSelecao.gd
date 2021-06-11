@@ -13,6 +13,7 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 	var listaCartas = []
 	var timerSelecao=0
 	var oponente
+	var scroll
 	
 	func _init(combate,jogador,proximoItemPilha,tipoDeSelecao,modo=15,numAlvos=1,listaCartasCriar=[]).(combate,jogador):
 		self.numAlvos=numAlvos
@@ -21,7 +22,7 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 		self.listaCartasCriar=listaCartasCriar
 		self.oponente=combate.get_oponente(jogador)
 		
-		for i in 2:
+		for i in 6:
 			self.listaCartasCriar.append(ControlaDados.carregaCartaAleatoria(jogador))
 		
 		if((modo|14)==15):
@@ -42,8 +43,8 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 			listaPosicoes.append(Constante.GRUPO_PERSONAGEM)
 	
 	func preExecucao(delta):
+		tipoDeSelecao=Constante.TIPO_SELECAO_AREA_FLUTUANTE
 		ativar()
-		desenhaListaCartas()
 		
 	func main(delta):
 		if(jogador!=combate.jogador):
@@ -74,26 +75,12 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 			
 	
 	func desenhaListaCartas():
-		var qtd = listaCartasCriar.size()
-		var linhas=1
-		var maxLinha=6
-		var larguraCarta=290
-		var alturaCarta=370
-		var larguraTela=0
-		var alturaTela=0 
-		if(qtd>6):
-			linhas = 3
-		elif(qtd>3):
-			linhas=2
+		var loadScroll=load("res://cenas/ferramentas/ScrollingCards.tscn")
+		scroll=loadScroll.instance()
+		combate.add_child(scroll)
+		scroll.set_z_index(99)
+		scroll.prepara(listaCartas,listaCartasCriar,combate)
 		
-		for i in listaCartasCriar.size():
-			var item=listaCartasCriar[i]
-			item.revelada=true
-			var position=Vector2(-145+(290*i),0)
-			var carta = ControladorCartas.criarCarta(item,combate,position)
-			carta.set_z_index(2)
-			listaCartas.append(carta)
-			
 	func cancelar():
 		print("Seleção cancelada!")
 		desativar()
@@ -148,14 +135,11 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 		#controlar cartas no campo.
 		for area in lista:
 			if(area.is_in_group(tipo)):
-				print("1")
 				var entrar=false
 				for posicao in listaPosicoes:
 					if(area.posicaoJogo.is_in_group(posicao)):
-						print("2")
 						for item in jogadoresAlvo:
 							if(area.carta.dono == item):
-								print("3")
 								entrar=true
 				if((jogador!=null) and entrar):
 					if(menorArea==null):
@@ -172,9 +156,12 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 		return menorArea
 	
 	func ativar():
-		combate.get_node("controladorCampo/ControladorCartas").ativado = false
 		combate.get_node("controladorMao/mao").ativado = false
 		combate.get_node("controladorMao/maoOponente").ativado = false
+		if(tipoDeSelecao == Constante.TIPO_SELECAO_AREA_FLUTUANTE):
+			desenhaListaCartas()
+			combate.get_node("controladorCampo/ControladorCartas").ativado = false
+		
 		
 	func desativar():
 		var oponente = combate.get_oponente(combate.get_node("controladorDeFases").retornaJogador().jogador)
@@ -184,6 +171,8 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 				
 		for carta in listaCartas:
 			carta.queue_free()
+		if(scroll!=null):
+			scroll.queue_free()
 		combate.get_node("controladorCampo/ControladorCartas").ativado = true
 		combate.get_node("controladorMao/mao").ativado = true
 		combate.get_node("controladorMao/maoOponente").ativado = true

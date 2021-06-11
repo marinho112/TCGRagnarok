@@ -78,7 +78,7 @@ class faseInicial extends fase:
 		.definicao(delta)
 		print("Fase Inicial")
 		if(jogador.jogador.maxZeny < 10):
-			jogador.jogador.maxZeny+=1
+			jogador.jogador.maxZeny+=0
 			jogador.jogador.areaZenys.atualizarZeny()
 			
 		controlador.get_node("controladorCampo/ControladorCartas").defesa = false
