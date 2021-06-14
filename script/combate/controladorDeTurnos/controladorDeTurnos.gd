@@ -55,13 +55,15 @@ func _ready():
 	listaJogadores[1].personagem.dono=listaJogadores[1]
 	jogador = listaJogadores[0]
 	oponente = listaJogadores[1]
+	$controladorCampo/Container.jogador1=jogador
+	$controladorCampo/Container.jogador2=oponente
 	$controladorCampo/ControladorCartas.jogador=listaJogadores[0]
 	$controladorMao/mao.definirJogador(listaJogadores[0])
 	$controladorMao/maoOponente.definirJogador(listaJogadores[1])
-	$controladorCampo/Personagem.atualizarPersonagem(listaJogadores[0].personagem)
-	$controladorCampo/Oponente.atualizarPersonagem(listaJogadores[1].personagem)
-	listaJogadores[0].personagem.obj=$controladorCampo/Personagem
-	listaJogadores[1].personagem.obj=$controladorCampo/Oponente
+	$controladorCampo/Personagem.atualizarPersonagem(jogador.personagem)
+	$controladorCampo/Oponente.atualizarPersonagem(oponente.personagem)
+	jogador.personagem.obj=$controladorCampo/Personagem
+	oponente.personagem.obj=$controladorCampo/Oponente
 	$controladorCampo/Personagem.carta.revelada=true
 	$controladorCampo/Oponente.carta.revelada=true
 	$controladorDeFases.definirJogadores(listaJogadores)

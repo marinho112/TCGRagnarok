@@ -72,7 +72,7 @@ func _process(delta):
 	
 func jogar(carta,areaRelevante=null):
 	var cartaLogica = carta.carta
-	if((cartaLogica.custo <= jogador.zeny) ):
+	if((cartaLogica.custo <= jogador.zeny) and (cartaLogica.dono == areaRelevante.retornaDono())):
 		if(cartaLogica.tipo == Constante.CARTA_MONSTRO):
 			if(cardZoom==carta):
 				cardZoom=null

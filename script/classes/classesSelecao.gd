@@ -22,7 +22,7 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 		self.listaCartasCriar=listaCartasCriar
 		self.oponente=combate.get_oponente(jogador)
 		
-		for i in 6:
+		for i in 1:
 			self.listaCartasCriar.append(ControlaDados.carregaCartaAleatoria(jogador))
 		
 		if((modo|14)==15):
@@ -113,21 +113,28 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 			btnAzul.mudaEstado(Constante.INPUT_BTN_AZUL_PRONTO)
 		
 	func selecao(delta,tipo):
+		var area
 		if (Input.is_action_just_pressed("clicar")and(timerSelecao<=0)and(jogador==combate.jogador)):
-			var area = receberAreaMaisRelevante(combate.cursorMouse,tipo,oponente)
+			area = receberAreaMaisRelevante(combate.cursorMouse,tipo,oponente)
 			timerSelecao=0.5
-			if(area!=null):
-				var posiArea = listaRetorno.find(area)
-				if(posiArea==-1):
-					if(listaRetorno.size()<numAlvos):
-						listaRetorno.append(area)
-						area.defineBrilho(true)
-				else:
-					listaRetorno.remove(posiArea)
-					area.defineBrilho(false)
 		else:
 			timerSelecao-=delta
+		
+		if(scroll.btnClicked!=null):
+			area=scroll.btnClicked
+			scroll.btnClicked=null
 			
+		if(area!=null):
+			#print(area.carta.recebeNome())
+			var posiArea = listaRetorno.find(area)
+			if(posiArea==-1):
+				if(listaRetorno.size()<numAlvos):
+					listaRetorno.append(area)
+					area.defineBrilho(true)
+			else:
+				listaRetorno.remove(posiArea)
+				area.defineBrilho(false)
+			#print(listaRetorno)
 	func receberAreaMaisRelevante(cartaSelecionada,tipo,jogador):
 		var lista = cartaSelecionada.get_overlapping_areas()
 		var menorArea = null

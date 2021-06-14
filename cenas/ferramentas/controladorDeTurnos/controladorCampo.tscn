@@ -14,10 +14,16 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
-
+var areaJogador1
+var jogador1
+var areaJogador2
+var jogador2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	areaJogador1=[$Jogador1Ataque,$Jogador1Defesa]
+	areaJogador2=[$Jogador2Ataque,$Jogador2Defesa]
+	
 	var filhos = $Jogador1Ataque.get_children()+$Jogador2Ataque.get_children()
 	for item in filhos:
 		item.add_to_group(Constante.GRUPO_AREA_CARTA_ATAQUE)
@@ -25,6 +31,15 @@ func _ready():
 	filhos = $Jogador1Defesa.get_children()+$Jogador2Defesa.get_children()
 	for item in filhos:
 		item.add_to_group(Constante.GRUPO_AREA_CARTA_DEFESA)
+
+func retornaDono(area):
+	var retorno = areaJogador1.find(area)
+	if(retorno>-1):
+		return jogador1
+	retorno = areaJogador2.find(area)
+	if(retorno>-1):
+		return jogador2
+		
 "
 
 [node name="controladorCampo" type="Node2D"]

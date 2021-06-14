@@ -11,6 +11,7 @@ var espaco=20
 var qtd
 var novoTamanho
 var preItem=preload("res://cenas/ferramentas/ItemScrollCards.tscn")
+var btnClicked
 
 
 func prepara(listaCartas,listaCartasCriar,pai):
@@ -44,13 +45,13 @@ func criarListaCards(listaCartas,listaCartasCriar,pai):
 		#carta.set_position(position)
 		item.set_scale(Vector2(escala,escala))
 		$Fundo/ScrollContainer/HBoxContainer.add_child(item)
-		#item.set_z_index(100)
+		carta.set_z_index(100)
 		listaCartas.append(item)
 
 func calcularTamanho():
-	var x=((larguraCarta+(espaco)))
-	var y=(alturaCarta+((espaco*2)))
-	var newX=(x*qtd)
+	var x=((larguraCarta))
+	var y=(alturaCarta+((espaco*0)))
+	var newX=(x*qtd)+espaco
 	#vp.set_size(Vector2(newX,y)*escala)
 	if(qtd>5):
 		newX=(x*5)
@@ -60,13 +61,14 @@ func defineTamanho(x,y):
 	var vector=Vector2(x,y)*escala
 	var tamanhoFundo = $Fundo.rect_size
 	var scale=vector/tamanhoFundo
-	novoTamanho = tamanhoFundo*scale
+	novoTamanho = vector#tamanhoFundo*scale
 	var tamanhoBorda = 20
-	var vectorTamanho=Vector2(tamanhoBorda,tamanhoBorda)
+	var vectorTamanho=Vector2(tamanhoBorda,(tamanhoBorda*1.5))
 	$Fundo.rect_size=novoTamanho
 	$Fundo/ScrollContainer.rect_size=novoTamanho
+	$Fundo/ScrollContainer/HBoxContainer.rect_size=novoTamanho
 	$Borda.rect_size=novoTamanho+vectorTamanho
-	$Fundo.rect_position=(vectorTamanho/2.0)
+	$Fundo.rect_position=(Vector2(tamanhoBorda,tamanhoBorda)/2.0)
 	#set_scale(scale)
 	set_global_position((-1*$Borda.rect_size)/2)
 	

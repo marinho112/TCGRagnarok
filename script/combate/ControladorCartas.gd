@@ -118,7 +118,10 @@ func positionAreaCarta(area,carta,livre=false):
 	
 	var auxArea
 	var auxCarta
-	if(((defesa)and(!area.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA)))or(!podeJogar and !livre)):
+	var areaJogador=(carta.carta.dono != area.retornaDono())
+	var livrePraDefesa=(defesa and(!area.is_in_group(Constante.GRUPO_AREA_CARTA_DEFESA)))
+	var indisponivel=(!podeJogar and !livre)
+	if(areaJogador or livrePraDefesa or indisponivel):
 		area= carta.posicaoJogo
 	if(area!=null):
 		if(area.carta != null):
