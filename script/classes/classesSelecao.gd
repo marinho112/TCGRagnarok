@@ -22,9 +22,6 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 		self.listaCartasCriar=listaCartasCriar
 		self.oponente=combate.get_oponente(jogador)
 		
-		for i in 1:
-			self.listaCartasCriar.append(ControlaDados.carregaCartaAleatoria(jogador))
-		
 		if((modo|14)==15):
 			listaPosicoes.append(Constante.GRUPO_AREA_CARTA_ATAQUE)
 			jogadoresAlvo.append(jogador)
@@ -43,7 +40,6 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 			listaPosicoes.append(Constante.GRUPO_PERSONAGEM)
 	
 	func preExecucao(delta):
-		tipoDeSelecao=Constante.TIPO_SELECAO_AREA_FLUTUANTE
 		ativar()
 		
 	func main(delta):
@@ -135,6 +131,7 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 				listaRetorno.remove(posiArea)
 				area.defineBrilho(false)
 			#print(listaRetorno)
+			
 	func receberAreaMaisRelevante(cartaSelecionada,tipo,jogador):
 		var lista = cartaSelecionada.get_overlapping_areas()
 		var menorArea = null

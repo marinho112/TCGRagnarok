@@ -75,6 +75,10 @@ func getEfeito(id,pai,palavraPai):
 			retorno = recebeAtaqueMultiplo.new()
 		13:
 			retorno = causaXDanoEmYAlvos.new()
+		14:
+			retorno = executaAnimacao.new()
+		15:
+			retorno = curaXdeY.new()
 		_: 
 			return null
 	
@@ -396,8 +400,9 @@ class causaXDanoEmYAlvos extends efeito:
 			cont=0
 			var qtd = palavraPai.val3
 			var dano = palavraPai.val2
-			var target = combate.get_oponente(combate.get_node("controladorDeFases").retornaJogador().jogador)
+			var target = combate.get_oponente(pai.carta.dono)
 			var listaTarget = combate.get_node("controladorCampo").retornarTodasAsCartasEmCampo(target)
+			listaTarget.append(target.personagem.obj)
 			if(qtd > listaTarget.size()):
 				qtd=listaTarget.size()
 			var animacaoDano=load("res://cenas/animacoes/animacoesAtaques/animacaoAlvoDano.tscn").instance()
@@ -405,7 +410,7 @@ class causaXDanoEmYAlvos extends efeito:
 			proximoItemPilha.pause=4
 			animacaoDano.dano=dano
 			var modo = Constante.TIPO_SELECAO_CAMPO
-			var tipo = 12
+			var tipo = palavraPai.val1
 			var itemPilha = ClassesSelecao.selecaoCampoItemPilha.new(combate,pai.dono,proximoItemPilha,modo,tipo,qtd)
 			combate.get_node("controladorPilha").adicionarTopoDaPilha(itemPilha)
 			
@@ -469,3 +474,65 @@ class efeitoPilha extends Classes.ItemPilha:
 	func main(delta):
 		efeito.ativar(carta,alvo)
 		executado=true
+
+class curaXdeY extends efeito:
+	var animacao=null
+	var cont =0
+	var combate
+	
+	func _init():
+		id=15
+	
+	func recebeDescricao(alternativo=false):
+		var texto 
+		if(palavraPai.val3==1):
+			texto = .recebeDescricao(true)
+		else:
+			texto = .recebeDescricao()
+		texto = texto.replace("&1",str(palavraPai.val2))
+		texto = texto.replace("&2",str(palavraPai.val3))
+		return texto
+	
+	func ativar(carta=null,alvo=null):
+		combate = pai.obj.get_parent()
+		if(combate.get_node("controladorDeFases").retornaJogador().jogador == pai.dono):
+			cont=0
+			var qtd = palavraPai.val3
+			var cura = palavraPai.val2
+			var target = pai.carta.dono
+			var listaTarget = combate.get_node("controladorCampo").retornarTodasAsCartasEmCampo(target)
+			listaTarget.append(target.personagem.obj)
+			if(qtd > listaTarget.size()):
+				qtd=listaTarget.size()
+			var animacaoCura=load("res://cenas/animacoes/animacoesAtaques/animacaoAlvoCura.tscn").instance()
+			var proximoItemPilha=ClassesSelecao.itemSelecaoPilha.new(combate,pai.dono,animacaoCura,Constante.OBJ_ANIMACAO,pai)
+			proximoItemPilha.pause=4
+			animacaoCura.cura=cura
+			var modo = Constante.TIPO_SELECAO_CAMPO
+			var tipo = palavraPai.val1
+			var itemPilha = ClassesSelecao.selecaoCampoItemPilha.new(combate,pai.dono,proximoItemPilha,modo,tipo,qtd)
+			combate.get_node("controladorPilha").adicionarTopoDaPilha(itemPilha)
+			
+			#ai.prepararLista(qtd,self,Constante.TIPO_SELECAO_CAMPO,false,target)
+			
+	func fimSelecao(lista):
+		#!combate.get_node("controladorAnimacao").estaAnimando()
+		
+		if(cont<lista.size()):
+			if(!combate.get_node("controladorAnimacao").estaAnimando()):
+				var alvo = lista[cont].obj
+				var dono = pai.obj
+				animacao= load("res://cenas/animacoes/animacoesAtaques/animacaoAlvoDano.tscn").instance()
+				animacao.definirPai(combate)
+				var posicao = alvo.get_global_position()
+				animacao.set_global_position(posicao)
+				animacao.play(dono,[alvo],null,1)
+				cont+=1
+			return false
+		else:
+			if(animacao==null):
+				for item in lista:
+					combate.verificarMorte(item.obj)
+				animacao=null
+				return true
+			return false

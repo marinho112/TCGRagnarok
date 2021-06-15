@@ -13,16 +13,17 @@ func _ready():
 		palavraPosition = $PalavraChaveObjeto.get_position()
 	
 
-
-
-func preparaCarta(carta = self.carta):
-	self.carta=carta
+func preparaCartaEspecificoInicio():
 	calcularBonus()
-	desenhaAtributos()
+	
+func preparaCartaEspecifico():
+	desenhaAtributosMonstro()
 	desenharPropriedade()
 	carregaImagem()
 	desenhaPalavrasChave()
 	desenharHabilidades()
+
+
 
 func calcularBonus():
 	var pai = get_parent()
@@ -33,17 +34,14 @@ func calcularBonus():
 		for habiilidade in grandeLista:
 			habiilidade.ativar(self)
 		
-	
-func desenhaAtributos():
-	var fonte = "cartas"
-	if(carta.tipo == Constante.CARTA_PERSONAGEM):
-		fonte = "personagens"
-	$nome.set_text(Ferramentas.receberTexto(fonte,carta.nome))
-	$lblcusto.set_text(str(carta.custo))
+
+func desenhaAtributosMonstro():
 	$lblpoder.set_text(str(carta.retornaPoder()))
 	$lbldefesa.set_text(str(carta.retornaDefesa()))
 	$vida.set_text(str(carta.retornaVida()))
 	desenhaAtributosComplementares()
+
+
 	
 	
 func desenhaAtributosComplementares():

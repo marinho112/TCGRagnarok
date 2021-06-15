@@ -248,7 +248,7 @@ class item extends carta:
 	func _init():
 		tipo = Constante.CARTA_ITEM
 	
-class utilizavel extends item:
+class consumivel extends item:
 	
 	func _init():
 		subTipo = Constante.SUB_TIPO_ITEM_UTILIDADE

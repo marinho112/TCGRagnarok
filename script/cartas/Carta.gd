@@ -41,15 +41,30 @@ func animacaoBrilho(delta):
 			else:
 				timeBrilho+=delta
 
+func preparaCartaEspecificoInicio():
+	pass
+	
+func preparaCartaEspecifico():
+	pass
+
+func desenhaAtributos():
+	
+	var fonte = "cartas"
+	if(carta.tipo == Constante.CARTA_PERSONAGEM):
+		fonte = "personagens"
+	$nome.set_text(Ferramentas.receberTexto(fonte,carta.nome))
+	if($lblcusto!= null):
+		$lblcusto.set_text(str(carta.custo))
 
 func preparaCarta(carta = self.carta):
+	self.carta=carta
+	preparaCartaEspecificoInicio()
 	desenhaAtributos()
+	preparaCartaEspecifico()
 	
 func golpear(carta):
 	pass
 	
-func desenhaAtributos():
-	pass
 
 func morre(algoz):
 	var listaCarta =carta.listaAoMorrer
