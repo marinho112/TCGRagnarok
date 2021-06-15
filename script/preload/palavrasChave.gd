@@ -3,6 +3,8 @@ extends Node
 func getPalavraChave(id,efeito,pai,val1,val2,val3):
 	var retorno
 	match id:
+		0:
+			retorno = palavraChave.new()
 		1:
 			retorno = AtaqueDistancia.new()
 		2:

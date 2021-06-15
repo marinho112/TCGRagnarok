@@ -47,7 +47,7 @@ func adicionaPalavraChave(carta,novaPalavra,listaRemocao=null,alertaMsg=null):
 			
 			
 func getEfeito(id,pai,palavraPai):
-	var retorno 	
+	var retorno
 	match id:
 		1:
 			retorno = MaisXAtaque.new()
@@ -79,7 +79,10 @@ func getEfeito(id,pai,palavraPai):
 			retorno = executaAnimacao.new()
 		15:
 			retorno = curaXdeY.new()
+		16:
+			return null
 		_: 
+			print("Saida de Efeito da carta "+pai.recebeNome()+" = Null")
 			return null
 	
 	retorno.pai=pai

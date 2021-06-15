@@ -30,7 +30,6 @@ func _process(delta):
 					
 		if(Input.is_action_just_released("clicar")):
 			var item = receberCartaNaFrente()
-			
 			if(cartaSelecionada!=null):
 				if(!cartaSelecionada.zoom):
 					var cont =0
@@ -61,7 +60,6 @@ func _process(delta):
 			
 		else:
 			if(cartaSelecionada!=null):
-				print(cartaSelecionada)
 				var posicaoCarta = cartaSelecionada.get_global_position()
 				var novaPosicao = cursorMouse.get_global_position()
 				if(cartaSelecionada.zoom and moveu(cartaSelecionada)):

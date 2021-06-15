@@ -49,10 +49,7 @@ func preparaCartaEspecifico():
 
 func desenhaAtributos():
 	
-	var fonte = "cartas"
-	if(carta.tipo == Constante.CARTA_PERSONAGEM):
-		fonte = "personagens"
-	$nome.set_text(Ferramentas.receberTexto(fonte,carta.nome))
+	$nome.set_text(carta.recebeNome())
 	if($lblcusto!= null):
 		$lblcusto.set_text(str(carta.custo))
 
@@ -108,12 +105,14 @@ func setZoom(zoom):
 	var raiz = get_node("/root/main/Combate/")
 	if(zoom): 
 		scale = Vector2(1.5,1.5)
-		$PalavraChaveObjeto.scale=Vector2(1,1)
+		if($PalavraChaveObjeto!=null):
+			$PalavraChaveObjeto.scale=Vector2(1,1)
 		set_z_index(100)
 	else:
 		set_z_index(0)
 		scale = Vector2(0.8,0.8)
-		$PalavraChaveObjeto.scale=Vector2(1.2,1.2)
+		if($PalavraChaveObjeto!=null):
+			$PalavraChaveObjeto.scale=Vector2(1.2,1.2)
 
 func terminar():
 	var novaCarta=ControlaDados.carregaCartaPorID(carta.id,carta.dono)

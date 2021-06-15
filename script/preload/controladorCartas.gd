@@ -21,9 +21,8 @@ func criarCarta(carta,pai,posicao,val=false):
 			retorno=criarCartaMonstro(carta,pai,posicao,val)
 		Constante.CARTA_MONSTRO:
 			retorno=criarCartaMonstro(carta,pai,posicao,val)
-			
 		Constante.CARTA_ITEM:
-			pass
+			retorno=criarCartaItem(carta,pai,posicao)
 		Constante.CARTA_HABILIDADE:
 			pass
 		Constante.CARTA_EFEITO:
@@ -47,10 +46,20 @@ func criarCartaMonstro(carta,pai,posicao,val):
 	else:
 		objetoCarta = load("res://cenas/cartas/CartaMonstro.tscn").instance()
 
+	preparaCarta(pai,objetoCarta,carta,posicao)
 	
+	return objetoCarta
+
+func criarCartaItem(carta,pai,posicao):
+	
+	var objetoCarta = load("res://cenas/cartas/CartaItem.tscn").instance()
+	
+	preparaCarta(pai,objetoCarta,carta,posicao)
+	
+	return objetoCarta
+
+func preparaCarta(pai,objetoCarta,carta,posicao):
 	pai.add_child(objetoCarta)
 	objetoCarta.preparaCarta(carta)
 	if(posicao!=null):
 		objetoCarta.set_global_position(posicao)
-	return objetoCarta
-	

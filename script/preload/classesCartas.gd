@@ -18,6 +18,8 @@ class carta:
 	var dono
 	var obj
 	var verificadorTipo=Constante.LOGI_CARTA
+	var dbName="cartas"
+	var valDescricao=1
 	
 	var listaPalavraChave = []
 	var listaMarcadores = []
@@ -50,7 +52,10 @@ class carta:
 		return false
 	
 	func recebeNome():
-		return Ferramentas.receberTexto("cartas",nome)
+		return Ferramentas.receberTexto(dbName,nome)
+	
+	func recebeDescricao():
+		return Ferramentas.receberTexto(dbName,nome,valDescricao)
 	
 	func zerarBonus():
 		pass
@@ -230,6 +235,7 @@ class personagem extends objetoDeBatalha:
 
 	func _init():
 		tipo = Constante.CARTA_PERSONAGEM
+		dbName="personagens"
 		#propriedade = Constante.PROPRIEDADE_NEUTRO
 		#nivelPropriedade = 1
 		#raca = Constante.RACA_HUMANOIDE
@@ -248,6 +254,14 @@ class item extends carta:
 	func _init():
 		tipo = Constante.CARTA_ITEM
 	
+	func recebeDescricao():
+		var descri= .recebeDescricao()
+		if(listaEfeitos.size()>0):
+			descri = descri.replace("&1",str(listaEfeitos[0].palavraPai.val1))
+			descri = descri.replace("&2",str(listaEfeitos[0].palavraPai.val2))
+			descri = descri.replace("&3",str(listaEfeitos[0].palavraPai.val3))
+		return descri
+		
 class consumivel extends item:
 	
 	func _init():
