@@ -21,7 +21,6 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 		self.tipoDeSelecao=tipoDeSelecao
 		self.listaCartasCriar=listaCartasCriar
 		self.oponente=combate.get_oponente(jogador)
-		
 		if((modo|14)==15):
 			listaPosicoes.append(Constante.GRUPO_AREA_CARTA_ATAQUE)
 			jogadoresAlvo.append(jogador)
@@ -116,7 +115,7 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 		else:
 			timerSelecao-=delta
 		
-		if(scroll.btnClicked!=null):
+		if((scroll!=null)and(scroll.btnClicked!=null)):
 			area=scroll.btnClicked
 			scroll.btnClicked=null
 			

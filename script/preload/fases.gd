@@ -61,7 +61,7 @@ class inicioDoJogo extends fase:
 		
 	
 	func main(delta):
-		jogador.jogador.maxZeny+=5
+		#jogador.jogador.maxZeny+=5
 		controlador.get_node("controladorDeFases").selecionarFase(Constante.FASE_PRINCIPAL1)
 		controlador.get_node("controladorDeFases").inicioDoJogo=null
 		return 0
@@ -78,7 +78,7 @@ class faseInicial extends fase:
 		.definicao(delta)
 		print("Fase Inicial")
 		if(jogador.jogador.maxZeny < 10):
-			jogador.jogador.maxZeny+=0
+			jogador.jogador.maxZeny+=1
 			jogador.jogador.areaZenys.atualizarZeny()
 			
 		controlador.get_node("controladorCampo/ControladorCartas").defesa = false

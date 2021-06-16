@@ -80,12 +80,17 @@ func getEfeito(id,pai,palavraPai):
 		15:
 			retorno = curaXdeY.new()
 		16:
-			return null
+			retorno = adicionaXPmAY.new()
+		17:
+			retorno = removeEstatusXDeY.new()
 		_: 
 			print("Saida de Efeito da carta "+pai.recebeNome()+" = Null")
 			return null
 	
-	retorno.pai=pai
+	if(ClassesCartas.verificaLogicoObjeto(pai)==Constante.LOGI_JOGADOR):
+		retorno.pai=pai.carta
+	else:
+		retorno.pai=pai
 	retorno.palavraPai = palavraPai
 	ControlaDados.recebePalavrasPorEfeito(retorno)
 	return retorno
@@ -403,7 +408,7 @@ class causaXDanoEmYAlvos extends efeito:
 			cont=0
 			var qtd = palavraPai.val3
 			var dano = palavraPai.val2
-			var target = combate.get_oponente(pai.carta.dono)
+			var target = combate.get_oponente(pai.dono)
 			var listaTarget = combate.get_node("controladorCampo").retornarTodasAsCartasEmCampo(target)
 			listaTarget.append(target.personagem.obj)
 			if(qtd > listaTarget.size()):
@@ -502,7 +507,7 @@ class curaXdeY extends efeito:
 			cont=0
 			var qtd = palavraPai.val3
 			var cura = palavraPai.val2
-			var target = pai.carta.dono
+			var target = pai.dono
 			var listaTarget = combate.get_node("controladorCampo").retornarTodasAsCartasEmCampo(target)
 			listaTarget.append(target.personagem.obj)
 			if(qtd > listaTarget.size()):
@@ -539,3 +544,11 @@ class curaXdeY extends efeito:
 				animacao=null
 				return true
 			return false
+
+class adicionaXPmAY extends efeito:
+	func _init():
+		id=16
+
+class removeEstatusXDeY extends efeito:
+	func _init():
+		id=17

@@ -25,6 +25,7 @@ const GRUPO_CARTA_NA_MAO_JOGADOR= "carta_na_mao_JOGADOR"
 const GRUPO_CARTA_NA_MAO_OPONENTE= "carta_na_mao_oponente"
 const GRUPO_CARTA_NO_BARALHO="carta_no_baralho"
 const GRUPO_ANIMACAO = "animacao"
+const GRUPO_ANIMACAO_DANO= "animacao_dano"
 
 
 #Constantes tipos de selecao

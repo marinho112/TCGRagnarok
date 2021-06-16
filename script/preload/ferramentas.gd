@@ -44,3 +44,15 @@ func calcularDistancia(obj1,obj2):
 	
 	var diferenca = obj1Position-obj2Position
 	return Vector2(positivo(diferenca.x),positivo(diferenca.y))
+
+
+class sortByIndex:
+	static func sort_ascending(a, b):
+		if a[0] < b[0]:
+			return true
+		return false
+		
+	static func sort_decresing(a, b):
+		if a[0] > b[0]:
+			return true
+		return false

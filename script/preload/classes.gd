@@ -142,3 +142,8 @@ class InputUsuario:
 		self.jogador=jogador
 		self.tipo=tipo
 		self.obj=obj
+
+	func printLog():
+		print("Jogador:"+ str(jogador.jogador.time))
+		print("Tipo:"+ str(tipo))
+		print("Objeto:"+ str(obj))

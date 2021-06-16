@@ -19,7 +19,6 @@ func preparaCartaEspecificoInicio():
 func preparaCartaEspecifico():
 	desenhaAtributosMonstro()
 	desenharPropriedade()
-	carregaImagem()
 	desenhaPalavrasChave()
 	desenharHabilidades()
 

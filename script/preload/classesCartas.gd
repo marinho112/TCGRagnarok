@@ -139,9 +139,14 @@ class objetoDeBatalha extends carta:
 			retorno = 0
 		return retorno
 	
+	func calculaDanoComPropriedade(dano,inimigo=null,propriedade= Constante.PROPRIEDADE_NEUTRO):
+		var novoDano = calculaDano(dano)
+		novoDano = calcularPropriedadeBonus(dano,inimigo,propriedade)
+		return novoDano
+	
 	func recebeDano(dano,inimigo=null,propriedade= Constante.PROPRIEDADE_NEUTRO):
 		
-		dano = calcularPropriedadeBonus(dano,inimigo,propriedade)
+		dano = calculaDanoComPropriedade(dano,inimigo,propriedade)
 		danoRecebido += dano
 		if(danoRecebido > retornaVidaTotal()):
 			dano -= (danoRecebido - retornaVidaTotal())
@@ -153,7 +158,7 @@ class objetoDeBatalha extends carta:
 		return dano
 	
 	func recebeDanoComDef(dano,inimigo,propriedade):
-		return recebeDano(calculaDano(dano),inimigo,propriedade)
+		return recebeDano(dano,inimigo,propriedade)
 	
 	func calcularPropriedadeBonus(dano,inimigo=null,propInimigo= null):
 		var novoDano = dano

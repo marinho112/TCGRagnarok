@@ -3,6 +3,9 @@ extends "res://script/animacoes/animacao.gd"
 var vel = 100
 var timer = 0.6
 
+func _ready():
+	add_to_group(Constante.GRUPO_ANIMACAO_DANO)
+
 func play(dono,listaAlvos = [],pausar = 4,velo = 1.0,sequencia=null):
 	.play(dono,listaAlvos,pausar,velo)
 	vel *= velo 

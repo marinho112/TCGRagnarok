@@ -91,13 +91,14 @@ func faseBloqueio(delta,listaInputs):
 			combate.adicionarInput(input)
 
 func modoSelecao(selecao):
-	if(selecao.listaRetorno.size()<selecao.numAlvos):
+	var input
+	if(combate.inputDoUsuario.size()<=0):
 		var listaAlvosPossiveis=[]
 		var oponente=combate.get_oponente(jogador)
 		match(selecao.tipoDeSelecao):
 			Constante.TIPO_SELECAO_CAMPO:
 				listaAlvosPossiveis+=recebeCartasCampo(selecao)
-				listaAlvosPossiveis+=campo.get_node("Personagem")
+				listaAlvosPossiveis+=[campo.get_node("Personagem")]
 			Constante.TIPO_SELECAO_MONSTRO_CAMPO:
 				listaAlvosPossiveis+=recebeCartasCampo(selecao)
 			Constante.TIPO_SELECAO_MAO:
@@ -105,9 +106,75 @@ func modoSelecao(selecao):
 					listaAlvosPossiveis.append(carta.obj)
 			Constante.TIPO_SELECAO_AREA_FLUTUANTE:
 				listaAlvosPossiveis+=selecao.listaCartas
+		if(listaAlvosPossiveis.size()>0):
+			defineAcaoPorEfeito(selecao,listaAlvosPossiveis)
+			selecao.enviar()
+		else:
+			selecao.cancelar()
 
+func defineAcaoPorEfeito(selecao,listaAlvosPossiveis):
+	var proximoItem = selecao.proximoItemPilha
+	var caminho
+	var numAlvos = selecao.numAlvos
+	if(numAlvos<listaAlvosPossiveis.size()):
+		numAlvos=listaAlvosPossiveis.size()
+	match proximoItem.tipoItem:
+		Constante.OBJ_ANIMACAO:
+			if proximoItem.item.is_in_group(Constante.GRUPO_ANIMACAO_DANO):
+				caminho="dano"
+		Constante.OBJ_EFEITO:
+			pass
+	match caminho:
+		"dano":
+			return calculaMelhorCustoBeneficioDano(proximoItem,selecao,listaAlvosPossiveis,numAlvos)
+		_:
+			listaAlvosPossiveis.shuffle()
+			for posi in numAlvos:
+				selecao.listaRetorno.append(listaAlvosPossiveis[posi]) 
+
+func calculaMelhorCustoBeneficioDano(proximoItem,selecao,listaAlvosPossiveis,numAlvos):
+	var dano=proximoItem.item.dano
+	var carta=proximoItem.item.carta
+	var listaDanoCausado=[]
+	for alvo in listaAlvosPossiveis:
+		var danoInimigo=alvo.carta.calculaDanoComPropriedade(dano,carta,carta.propriedade)
+		var vidaRestante=alvo.retornaVida() -  danoInimigo
+		if(vidaRestante<0):
+			vidaRestante=0
+		listaDanoCausado.append([vidaRestante,danoInimigo,alvo])
+	listaDanoCausado.sort_custom(Ferramentas.sortByIndex, "sort_ascending")
+	for x in numAlvos:
+		var maiorDano=listaDanoCausado[0]
+		var posi = 0
+		for i in listaDanoCausado.size():
+			var item = listaDanoCausado[i]
+			if(item[0]==maiorDano[0]):
+				if(item[1]>maiorDano[1]):
+					maiorDano=item
+					posi = i
+		selecao.listaRetorno.append(maiorDano[2])
+		listaDanoCausado.remove(posi)
+	
 func recebeCartasCampo(selecao):
-	pass
+	var retorno = []
+	for jogador in selecao.jogadoresAlvo:
+		for posicao in selecao.listaPosicoes:
+			var num=0
+			if(posicao==Constante.GRUPO_AREA_CARTA_ATAQUE):
+				num=1
+			if(posicao==Constante.GRUPO_AREA_CARTA_DEFESA):
+				num=2
+			if(num>0):
+				retorno+=campo.retornaListaAreas(jogador.time+1,num,true)
+	#if((selecao.modo|14)==15):
+	#	retorno+=campo.retornaListaAreas(selecao.jogador,1)
+	#if((selecao.modo|13)==15):
+	#	retorno+=campo.retornaListaAreas(selecao.jogador,2)
+	#if((selecao.modo|11)==15):
+	#	retorno+=campo.retornaListaAreas(selecao.oponente,1)
+	#if((selecao.modo|7)==15):
+	#	retorno+=campo.retornaListaAreas(selecao.oponente,2)
+	return retorno
 
 func verificaSeAtaca():
 	var contAtaque = campo.retornaCartasArea(areaAtaque).size()

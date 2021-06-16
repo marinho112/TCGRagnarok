@@ -46,13 +46,16 @@ func preparaCartaEspecificoInicio():
 	
 func preparaCartaEspecifico():
 	pass
-
+	
+func carregaImagem():
+	pass
 func desenhaAtributos():
 	
 	$nome.set_text(carta.recebeNome())
 	if($lblcusto!= null):
 		$lblcusto.set_text(str(carta.custo))
-
+	carregaImagem()
+	
 func preparaCarta(carta = self.carta):
 	self.carta=carta
 	preparaCartaEspecificoInicio()
