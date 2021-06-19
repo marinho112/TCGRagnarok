@@ -39,13 +39,15 @@ func criaCartaEscondida(carta,pai,posicao):
 	
 func criarCartaMonstro(carta,pai,posicao,val):
 	
-	var objetoCarta
+	var loadCarta
 	
 	if val:
-		objetoCarta = load("res://cenas/cartas/miniaturas/MiniaturaMonstro.tscn").instance()
+		loadCarta = load("res://cenas/cartas/miniaturas/MiniaturaMonstro.tscn")
 	else:
-		objetoCarta = load("res://cenas/cartas/CartaMonstro.tscn").instance()
-
+		loadCarta = load("res://cenas/cartas/CartaMonstro.tscn")
+	
+	var objetoCarta=loadCarta.instance()
+	
 	preparaCarta(pai,objetoCarta,carta,posicao)
 	
 	return objetoCarta

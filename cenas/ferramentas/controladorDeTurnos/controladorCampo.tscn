@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://sprites/combate/FundoCombate2.png" type="Texture" id=1]
 [ext_resource path="res://cenas/ferramentas/btnVermelho.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://cenas/elementos/listaExibicaoCartas.tscn" type="PackedScene" id=8]
 [ext_resource path="res://script/combate/controladorDeTurnos/controladorCampo.gd" type="Script" id=9]
 [ext_resource path="res://cenas/ferramentas/ControladorCartas.tscn" type="PackedScene" id=10]
+[ext_resource path="res://cenas/ferramentas/CaixaAlerta.tscn" type="PackedScene" id=11]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
@@ -94,3 +95,7 @@ position = Vector2( 785, -70 )
 [node name="listaExibicaoCartas" parent="." instance=ExtResource( 8 )]
 
 [node name="ControladorCartas" parent="." instance=ExtResource( 10 )]
+
+[node name="CaixaAlerta" parent="." instance=ExtResource( 11 )]
+visible = false
+position = Vector2( -732, 350 )

@@ -19,9 +19,16 @@ func adicionarAnimacaoSequencia(animacao,posi):
 	
 func executaAnimacoes(delta):
 	if(animacoes.size()>0):
-		animacoes[0].executa(delta)
-		if(animacoes[0].executado):
+		if(animacoes[0]!=null):
+			animacoes[0].executa(delta)
+			if(animacoes[0].executado):
+				removeAnimacaoDoTopo()
+		else:
+			print("Animação == null")
 			removeAnimacaoDoTopo()
 		return false
 	else:
 		return true
+		
+func debug():
+	print(animacoes)

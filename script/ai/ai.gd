@@ -110,13 +110,13 @@ func modoSelecao(selecao):
 			defineAcaoPorEfeito(selecao,listaAlvosPossiveis)
 			selecao.enviar()
 		else:
-			selecao.cancelar()
+			selecao.desativar()
 
 func defineAcaoPorEfeito(selecao,listaAlvosPossiveis):
 	var proximoItem = selecao.proximoItemPilha
 	var caminho
 	var numAlvos = selecao.numAlvos
-	if(numAlvos<listaAlvosPossiveis.size()):
+	if(numAlvos>listaAlvosPossiveis.size()):
 		numAlvos=listaAlvosPossiveis.size()
 	match proximoItem.tipoItem:
 		Constante.OBJ_ANIMACAO:
@@ -166,14 +166,7 @@ func recebeCartasCampo(selecao):
 				num=2
 			if(num>0):
 				retorno+=campo.retornaListaAreas(jogador.time+1,num,true)
-	#if((selecao.modo|14)==15):
-	#	retorno+=campo.retornaListaAreas(selecao.jogador,1)
-	#if((selecao.modo|13)==15):
-	#	retorno+=campo.retornaListaAreas(selecao.jogador,2)
-	#if((selecao.modo|11)==15):
-	#	retorno+=campo.retornaListaAreas(selecao.oponente,1)
-	#if((selecao.modo|7)==15):
-	#	retorno+=campo.retornaListaAreas(selecao.oponente,2)
+
 	return retorno
 
 func verificaSeAtaca():

@@ -291,7 +291,7 @@ func recebeEfeitosCarta(carta):
 	
 	var arquivo = File.new()
 	#var erro = arquivo.open("res://dados/teste.data",File.WRITE)
-	var erro = arquivo.open("res://db/cartas/carta_has_Efeito.data",File.READ)
+	var erro = arquivo.open("res://db/cartas/carta_has_efeito.data",File.READ)
 	var conteudo
 	var idTexto = String(carta.id)
 	var passa
@@ -311,9 +311,12 @@ func recebeEfeitosCarta(carta):
 							letra = idTexto.length()
 					if passa:
 						var conteudo2 = conteudo.split(",")
-						var palavra=PalavrasChave.getPalavraChave(0,null,carta,int(conteudo2[2]),int(conteudo2[3]),int(conteudo2[4]))
+						var palavra=PalavrasChave.getPalavraChave(0,null,carta,int(conteudo2[3]),int(conteudo2[4]),int(conteudo2[5]))
 						var efeito=Efeitos.getEfeito(int(conteudo2[1]),carta,palavra)
 						palavra.efeito=efeito
+						match int(conteudo2[2]):
+							1:
+								carta.listaAoJogar.append(efeito)
 						lista.append(efeito)
 		arquivo.close()
 		carta.listaEfeitos = lista

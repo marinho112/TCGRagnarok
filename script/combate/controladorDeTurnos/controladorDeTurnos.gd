@@ -147,11 +147,16 @@ func get_oponente(jogador):
 
 func declararVencedor(jogadorVencedor):
 	pausar(5)
+	var msg
 	if(jogadorVencedor==listaJogadores[0]):
-		print("Jogador 1 é o vencedor!")
+		#print("Jogador 1 é o vencedor!")
+		msg="Jogador 1 é o vencedor!"
 	else:
-		print("Jogador 2 é o vencedor!")
-
+		#print("Jogador 2 é o vencedor!")
+		msg="Jogador 2 é o vencedor!"
+	
+	$controladorCampo.adicionaAlerta(msg)
+	
 func verificarVencedor():
 	if(jogador.personagem.retornaVida()<=0):
 		declararVencedor(oponente)

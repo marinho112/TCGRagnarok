@@ -25,6 +25,7 @@ class carta:
 	var listaMarcadores = []
 	var listaEfeitos = []
 	var listaCartasRelacionadas = []
+	var listaAoJogar = []
 	
 	#listas ativação efeitos
 	var listaEfeitoSairJogo = []
@@ -59,6 +60,12 @@ class carta:
 	
 	func zerarBonus():
 		pass
+		
+	func aoJogar():
+		for efeito in listaAoJogar:
+			efeito.ativar()
+		for palavra in listaPalavraChave:
+			palavra.aoJogar()
 	
 class objetoDeBatalha extends carta:
 	
@@ -129,7 +136,7 @@ class objetoDeBatalha extends carta:
 	func curar(valor):
 		danoRecebido-=valor
 		if(danoRecebido<0):
-			valor -= danoRecebido
+			valor += danoRecebido
 			danoRecebido=0
 		return valor
 		
@@ -154,7 +161,9 @@ class objetoDeBatalha extends carta:
 		var inimigoLista=[]
 		if(inimigo!=null):
 			inimigoLista=inimigo.dono.listaAoCausarDano
-		obj.pai.resolveHabilidades(dono.listaAoReceberDano,inimigoLista)
+		if(obj!=null):
+			obj.pai.resolveHabilidades(dono.listaAoReceberDano,inimigoLista)
+			obj.desenhaAtributosMonstro()
 		return dano
 	
 	func recebeDanoComDef(dano,inimigo,propriedade):

@@ -52,9 +52,9 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 						Constante.INPUT_BTN_VERMELHO_CANCEL:
 							cancelar()
 						Constante.INPUT_BTN_AZUL_ENVIAR:
-							enviar()
+							selecionaEnviar()
 						Constante.INPUT_BTN_AZUL_PRONTO:
-							enviar()
+							selecionaEnviar()
 			#Definir tipo de seleção
 			match tipoDeSelecao:
 				Constante.TIPO_SELECAO_CAMPO:
@@ -77,11 +77,16 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 		scroll.prepara(listaCartas,listaCartasCriar,combate)
 		
 	func cancelar():
-		print("Seleção cancelada!")
+		var msg="Seleção cancelada!"
+		combate.get_node("controladorCampo").adicionaAlerta(msg)
 		desativar()
 	
+	func selecionaEnviar():
+		var msg="Seleção Enviada!"
+		combate.get_node("controladorCampo").adicionaAlerta(msg)
+		enviar()
+		
 	func enviar():
-		print("Enviada Selecao")
 		if(listaRetorno.size()>0):
 			var novaLista=[]
 			for item in listaRetorno:
@@ -120,7 +125,6 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 			scroll.btnClicked=null
 			
 		if(area!=null):
-			#print(area.carta.recebeNome())
 			var posiArea = listaRetorno.find(area)
 			if(posiArea==-1):
 				if(listaRetorno.size()<numAlvos):
@@ -129,7 +133,6 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 			else:
 				listaRetorno.remove(posiArea)
 				area.defineBrilho(false)
-			#print(listaRetorno)
 			
 	func receberAreaMaisRelevante(cartaSelecionada,tipo,jogador):
 		var lista = cartaSelecionada.get_overlapping_areas()
@@ -168,10 +171,11 @@ class selecaoCampoItemPilha extends Classes.ItemPilha:
 		
 	func desativar():
 		var oponente = combate.get_oponente(combate.get_node("controladorDeFases").retornaJogador().jogador)
-		for item in combate.get_node("controladorCampo").retornarTodasAsCartasEmCampo(oponente):
+		for item in combate.get_node("controladorCampo").retornarTodasAsCartasEmCampo():
 			if(item!=null):
 				item.get_node("brilho").set_visible(false)
-				
+		oponente.personagem.obj.get_node("brilho").set_visible(false)
+		jogador.personagem.obj.get_node("brilho").set_visible(false)
 		for carta in listaCartas:
 			carta.queue_free()
 		if(scroll!=null):
@@ -203,7 +207,7 @@ class itemSelecaoPilha extends Classes.ItemPilha:
 		match tipoItem:
 			Constante.OBJ_ANIMACAO:
 				for selsecionado in listaSelecionados:
-					var animacao = item
+					var animacao = item.clone()
 					animacao.definirPai(combate)
 					var aniDono=dono
 					if(carta!=null):
@@ -212,4 +216,5 @@ class itemSelecaoPilha extends Classes.ItemPilha:
 			Constante.OBJ_EFEITO:
 				item.ativar(carta,alvo)
 		executado=true
+		item.queue_free()
 	

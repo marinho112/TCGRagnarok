@@ -8,7 +8,7 @@
 [ext_resource path="res://cenas/cartas/fontes/Nome.tres" type="DynamicFont" id=6]
 [ext_resource path="res://sprites/cartas/caixaSuperior.png" type="Texture" id=7]
 [ext_resource path="res://sprites/cartas/coraçao-vermelho-e-preto.png" type="Texture" id=8]
-[ext_resource path="res://sprites/cartas/monstros/propriedade/circuloAzul-1d0585.png" type="Texture" id=9]
+[ext_resource path="res://sprites/cartas/monstros/propriedade/Azul.png" type="Texture" id=9]
 [ext_resource path="res://sprites/cartas/brilho/brilho.tres" type="SpriteFrames" id=10]
 [ext_resource path="res://script/cartas/MiniaturaMonstro.gd" type="Script" id=14]
 [ext_resource path="res://cenas/cartas/fontes/valoresMedios.tres" type="DynamicFont" id=15]
@@ -29,19 +29,14 @@ visible = false
 scale = Vector2( 0.4, 0.25 )
 frames = ExtResource( 10 )
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_left = -147.0
-margin_top = -95.0
-margin_right = 147.0
-margin_bottom = 95.0
-scroll_horizontal_enabled = false
-scroll_vertical_enabled = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="AreaFundo" type="ScrollContainer" parent="."]
+margin_left = -140.0
+margin_top = -90.0
+margin_right = 140.0
+margin_bottom = 90.0
 
-[node name="fundo" type="Sprite" parent="ScrollContainer"]
-position = Vector2( 147, 95 )
+[node name="fundo" type="Sprite" parent="AreaFundo"]
+scale = Vector2( 1, 1 )
 
 [node name="circuloPropriedade" type="Sprite" parent="."]
 position = Vector2( -130, -46 )
@@ -169,4 +164,4 @@ __meta__ = {
 }
 
 [node name="PalavraChaveObjeto" parent="." instance=ExtResource( 2 )]
-position = Vector2( -139.297, -12.7839 )
+position = Vector2( -140, -12 )

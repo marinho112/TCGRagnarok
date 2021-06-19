@@ -71,26 +71,33 @@ func _process(delta):
 func jogar(carta,areaRelevante=null):
 	var cartaLogica = carta.carta
 	if((cartaLogica.custo <= jogador.zeny) and (cartaLogica.dono == areaRelevante.retornaDono())):
-		if(cartaLogica.tipo == Constante.CARTA_MONSTRO):
-			if(cardZoom==carta):
-				cardZoom=null
-			cartaLogica.revelada=true
-			var controlador = pai.get_node("controladorCampo/ControladorCartas")
-			var cartaNova = controlador.criarMonstro(cartaLogica,jogador)
-			mao.remove(mao.find(cartaLogica))
-			cartaLogica.obj=cartaNova
-			atualizaMao()
-			jogador.zeny -= cartaLogica.custo
-			jogador.areaZenys.atualizarZeny()
-			if(areaRelevante!=null):
-				pai.get_node("controladorCampo/ControladorCartas").positionAreaCarta(areaRelevante,cartaNova)
-			for palavra in cartaLogica.listaPalavraChave:
-				palavra.aoJogar()
-			pai.get_node("controladorCampo").atualizaTodasCartas()
-			return cartaNova
+		var cartaNova
+		if(cardZoom==carta):
+			cardZoom=null
+		var controlador = pai.get_node("controladorCampo/ControladorCartas")
+		cartaLogica.revelada=true
+		mao.remove(mao.find(cartaLogica))
+		jogador.zeny -= cartaLogica.custo
+		jogador.areaZenys.atualizarZeny()
+		match cartaLogica.tipo:
+			Constante.CARTA_MONSTRO:
+				cartaNova = controlador.criarMonstro(cartaLogica,jogador)
+				cartaLogica.obj=cartaNova
+				if(areaRelevante!=null):
+					pai.get_node("controladorCampo/ControladorCartas").positionAreaCarta(areaRelevante,cartaNova)
+				cartaLogica.aoJogar()
+				pai.get_node("controladorCampo").atualizaTodasCartas()
+			Constante.CARTA_ITEM:
+				for carta in mao:
+					print(carta.obj)
+				cartaLogica.aoJogar()
+		atualizaMao()
+		return cartaNova
 	else:
 		if(cartaLogica.custo > jogador.zeny):
-			print("Carta de custo indevido.")
+			var msg="Não possuo zenys o suficiente para jogar essa carta."
+			pai.get_node("controladorCampo").adicionaAlerta(msg)
+			#print("Carta de custo indevido.")
 		retornarCarta()
 		return null
 		
@@ -114,6 +121,7 @@ func adicionaCartaMao(carta):
 	var novaCarta = ControladorCartas.criarCarta(carta,self,Vector2(0,0))
 	novaCarta.add_to_group(Constante.GRUPO_CARTA_NA_MAO_JOGADOR)
 	novaCarta.add_to_group(Constante.GRUPO_CARTA_NA_MAO)
+	carta.obj=novaCarta
 	maoVisual.append(novaCarta)
 	posicaoMao = []
 	

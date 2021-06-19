@@ -4,6 +4,9 @@ var confrontarAtaques1=0
 var confrontarAtaques2=0
 var animacoes=[]
 
+func _ready():
+	add_to_group(Constante.GRUPO_AREA_CAMPO_TOTAL)
+
 func retornaCartasArea(alvo,cartas=true):
 	var lista = []
 	for item in alvo.get_children():
@@ -162,3 +165,5 @@ func golpear(golpeador,alvo):
 	animacao.play(golpeador,[alvo],null)
 	#var retorno = golpeador.carta.golpear(alvo.carta)
 	
+func adicionaAlerta(texto,tempo=null):
+	$CaixaAlerta.adicionaAlerta(texto,tempo)

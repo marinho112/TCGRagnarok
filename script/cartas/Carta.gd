@@ -41,6 +41,7 @@ func animacaoBrilho(delta):
 			else:
 				timeBrilho+=delta
 
+
 func preparaCartaEspecificoInicio():
 	pass
 	
@@ -66,11 +67,14 @@ func golpear(carta):
 	pass
 	
 
-func morre(algoz):
+func morre(algoz=null):
 	var listaCarta =carta.listaAoMorrer
 	var listaCartaGlobal =carta.dono.listaAoMorrerGlobal
-	var listaAlgoz =algoz.listaAoMatar
-	var listaAlgozGlobal =algoz.dono.listaAoMatarGlobal
+	var listaAlgoz=[]
+	var listaAlgozGlobal=[]
+	if(algoz != null):
+		listaAlgoz =algoz.listaAoMatar
+		listaAlgozGlobal =algoz.dono.listaAoMatarGlobal
 	get_parent().resolveHabilidades([listaCarta,listaCartaGlobal,listaAlgoz,listaAlgozGlobal])
 	
 func verificaVida(algoz):
@@ -92,7 +96,6 @@ func transformar(idNovaCarta):
 		var novaCarta =ControlaDados.carregaCartaPorID(idNovaCarta,cartaVelha.dono)
 		cartaVelha.migraValor(novaCarta)
 		preparaCarta(novaCarta)
-		print(cartaVelha.dono.retornaListasEfeito().size())
 		for lista in cartaVelha.dono.retornaListasEfeito():
 			for efeito in lista:
 				if cartaVelha == efeito.pai:
@@ -105,16 +108,15 @@ func transformar(idNovaCarta):
 	
 func setZoom(zoom):
 	self.zoom=zoom
-	var raiz = get_node("/root/main/Combate/")
 	if(zoom): 
 		scale = Vector2(1.5,1.5)
-		if($PalavraChaveObjeto!=null):
+		if((is_in_group(Constante.GRUPO_CARTA_MONSTRO))and(!is_in_group(Constante.GRUPO_PERSONAGEM))):
 			$PalavraChaveObjeto.scale=Vector2(1,1)
 		set_z_index(100)
 	else:
 		set_z_index(0)
 		scale = Vector2(0.8,0.8)
-		if($PalavraChaveObjeto!=null):
+		if((is_in_group(Constante.GRUPO_CARTA_MONSTRO))and(!is_in_group(Constante.GRUPO_PERSONAGEM))):
 			$PalavraChaveObjeto.scale=Vector2(1.2,1.2)
 
 func terminar():

@@ -1,17 +1,17 @@
 extends "res://script/cartas/Carta.gd"
 
-var fundo ="fundo"
+var fundo
 var miniatura = false
 var imovel = false
-var palavraPosition
 var preDano = preload("res://cenas/animacoes/animacaoDano.tscn")
-
+var palavraPosition
 	
 func _ready():
 	add_to_group(Constante.GRUPO_CARTA_MONSTRO)
-	if($PalavraChaveObjeto!=null):
-		palavraPosition = $PalavraChaveObjeto.get_position()
+	fundo=get_fundo()
 	
+func get_fundo():
+	return "fundo"
 
 func preparaCartaEspecificoInicio():
 	calcularBonus()
@@ -156,7 +156,9 @@ func carregaImagem():
 func desenhaPalavrasChave():
 	
 	if(palavraPosition==null):
-		_ready()
+		if(!is_in_group(Constante.GRUPO_PERSONAGEM)):
+			palavraPosition = $PalavraChaveObjeto.get_position()
+	 
 	
 	var primeiro = true
 	var texto = ""

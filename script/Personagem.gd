@@ -15,6 +15,9 @@ func _ready():
 	set_process(true)
 	pai=get_parent().get_parent()
 
+func get_fundo():
+	return "fundo"
+
 func _process(delta):
 	animacaoBrilho(delta/2)
 	if ativado:
@@ -38,9 +41,9 @@ func atualizarPersonagem(personagemNovo=null):
 		get_node("fundo").set_texture(imagem)
 	
 func atualizaInfoPersonagem(carta = self.carta):
-	atualizarAtaque(carta.poder+carta.poderBonus)
-	atualizarDefesa(carta.defesa+carta.defesaBonus)
-	atualizarVida((carta.vida+carta.vidaBonus)-carta.danoRecebido)
+	atualizarAtaque(carta.retornaPoder())
+	atualizarDefesa(carta.retornaDefesa())
+	atualizarVida(carta.retornaVida())
 	
 func atualizarVida(vida):
 	$lblVida.set_text(str(vida))
@@ -51,6 +54,8 @@ func atualizarAtaque(ataque):
 func atualizarDefesa(defesa):
 	$lblDefesa.set_text(str(defesa))
 
+func desenhaAtributosMonstro():
+	desenhaAtributos()
 	
 
 func desenhaAtributos():

@@ -503,6 +503,8 @@ class curaXdeY extends efeito:
 	
 	func ativar(carta=null,alvo=null):
 		combate = pai.obj.get_parent()
+		if(combate.is_in_group(Constante.GRUPO_AREA_MAO)):
+			combate=combate.get_parent().get_parent()
 		if(combate.get_node("controladorDeFases").retornaJogador().jogador == pai.dono):
 			cont=0
 			var qtd = palavraPai.val3

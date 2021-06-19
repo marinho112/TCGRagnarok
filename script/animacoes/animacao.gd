@@ -24,8 +24,9 @@ func play(dono,listaAlvos = [],pause = null,velo = 1.0,sequencia=null):
 	if(pause != null):
 		pai.pausar(pause)
 		if(sequencia!=null):
+			controla.debug()
 			controla.adicionarAnimacaoSequencia(self,sequencia)
-		else:	
+		else:
 			controla.adicionarAnimacao(self)
 		#controla.ativado = true
 
@@ -43,5 +44,8 @@ func encerrar():
 	executado=true
 	#set_process(false)
 	#queue_free()
+	
+func clone():
+	return duplicate()
 
 
