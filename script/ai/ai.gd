@@ -44,7 +44,7 @@ func main(delta,listaInputs,fase):
 func fasePrincipal(delta):
 	var retorno = false
 	tempoPassado+=delta
-	if (tempoPassado > 0.1):
+	if(tempoPassado >= 0.1):
 		retorno = calcularCartaJogada(delta)
 		tempoPassado = 0
 	return retorno
@@ -98,7 +98,8 @@ func modoSelecao(selecao):
 		match(selecao.tipoDeSelecao):
 			Constante.TIPO_SELECAO_CAMPO:
 				listaAlvosPossiveis+=recebeCartasCampo(selecao)
-				listaAlvosPossiveis+=[campo.get_node("Personagem")]
+				for jogador in selecao.jogadoresAlvo:
+					listaAlvosPossiveis+=[jogador.personagem.obj]
 			Constante.TIPO_SELECAO_MONSTRO_CAMPO:
 				listaAlvosPossiveis+=recebeCartasCampo(selecao)
 			Constante.TIPO_SELECAO_MAO:
@@ -114,24 +115,51 @@ func modoSelecao(selecao):
 
 func defineAcaoPorEfeito(selecao,listaAlvosPossiveis):
 	var proximoItem = selecao.proximoItemPilha
-	var caminho
+	var caminho=""
 	var numAlvos = selecao.numAlvos
 	if(numAlvos>listaAlvosPossiveis.size()):
 		numAlvos=listaAlvosPossiveis.size()
 	match proximoItem.tipoItem:
 		Constante.OBJ_ANIMACAO:
-			if proximoItem.item.is_in_group(Constante.GRUPO_ANIMACAO_DANO):
+			if proximoItem.item.is_in_group(Constante.GRUPO_SELECIONA_CURA):
+				caminho="cura"
+			if proximoItem.item.is_in_group(Constante.GRUPO_SELECIONA_DANO):
 				caminho="dano"
+				
 		Constante.OBJ_EFEITO:
 			pass
 	match caminho:
 		"dano":
 			return calculaMelhorCustoBeneficioDano(proximoItem,selecao,listaAlvosPossiveis,numAlvos)
+		"cura":
+			return calculaMelhorAlvoCura(proximoItem,selecao,listaAlvosPossiveis,numAlvos)
 		_:
+			print(listaAlvosPossiveis)
 			listaAlvosPossiveis.shuffle()
 			for posi in numAlvos:
 				selecao.listaRetorno.append(listaAlvosPossiveis[posi]) 
 
+func calculaMelhorAlvoCura(proximoItem,selecao,listaAlvosPossiveis,numAlvos):
+	var dano=proximoItem.item.dano
+	var carta=proximoItem.item.carta
+	var listaDanoCausado=[]
+	for alvo in listaAlvosPossiveis:
+		var custo=alvo.carta.custo
+		var vidaRestante=alvo.retornaVida() 
+		listaDanoCausado.append([vidaRestante,custo,alvo])
+	listaDanoCausado.sort_custom(Ferramentas.sortByIndex, "sort_ascending")
+	for x in numAlvos:
+		var menorVida=listaDanoCausado[0]
+		var posi = 0
+		for i in listaDanoCausado.size():
+			var item = listaDanoCausado[i]
+			if(item[0]==menorVida[0]):
+				if(item[1]>menorVida[1]):
+					menorVida=item
+					posi = i
+		selecao.listaRetorno.append(menorVida[2])
+		listaDanoCausado.remove(posi)
+			
 func calculaMelhorCustoBeneficioDano(proximoItem,selecao,listaAlvosPossiveis,numAlvos):
 	var dano=proximoItem.item.dano
 	var carta=proximoItem.item.carta
@@ -208,23 +236,31 @@ func calcularCartaJogada(delta):
 	var zeny = jogador.zeny
 	var listaCartasPossiveis= receberCartasPossiveis(zeny)
 	var retorno = true
-	while((listaCartasPossiveis.size()>0)and(retorno)):
+	var cont=0
+	while((listaCartasPossiveis.size()>0)and(retorno!=null)):
 		var contAtaque = 0
 		var contDefesa = 0
+		cont+=delta
 		contAtaque = campo.retornaCartasArea(areaAtaque).size()
 		contDefesa = campo.retornaCartasArea(areaDefesa).size()
 		
-		if((contAtaque+contDefesa)<12):
+		if((contAtaque+contDefesa)>=12):
+			var listaRemove=[]
+			for item in listaCartasPossiveis:
+				if((item.tipo==Constante.CARTA_MONSTRO)or(item.tipo==Constante.CARTA_PERSONAGEM)):
+					listaRemove=item
+			for item in listaRemove:
+				listaCartasPossiveis.remove(listaCartasPossiveis.find(item))
+		if(listaCartasPossiveis.size()>0):
 			var numero = randi()%listaCartasPossiveis.size()
 			var cartaJogar = listaCartasPossiveis[numero]
 			if((cartaJogar.temPalavraChave(4))and(contAtaque==6)):
 				if(!abrirEspacoArea("ataque")):
 					listaCartasPossiveis.remove(listaCartasPossiveis.find(cartaJogar))
-				retorno = !jogar(cartaJogar)
+				retorno = jogar(cartaJogar)
 			else:
-				retorno = !jogar(cartaJogar)
-		else:
-			listaCartasPossiveis = []
+				retorno = jogar(cartaJogar)
+			return
 	return retorno
 	
 func receberCartasPossiveis(zeny):
@@ -259,41 +295,7 @@ func abrirEspacoArea(areaNome):
 		return false
 	
 func jogar(carta):
-	var retorno = false
-	var mao = areaMao.mao
-	var passa = true
-	if((carta.custo <= jogador.zeny)):
-		if(carta.tipo == Constante.CARTA_MONSTRO):
-			carta.revelada=true
-			var controlador = campo.get_node("ControladorCartas")
-			var cartaNova = controlador.criarMonstro(carta,jogador)
-			
-			if(cartaNova != null):
-				#controlador.positionAreaCarta(areaRelevante,cartaNova)
-				var lista = carta.listaPalavraChave
-				for elemento in lista:
-					if ((elemento.id == 4)and(carta.retornaPoder()>0)):
-						for area in areaAtaque.get_children():
-							if (passa and area.is_in_group(Constante.GRUPO_AREA_CARTA)):
-								if(area.carta==null):
-									passa=false
-									controlador.positionAreaCarta(area,cartaNova)
-						cartaNova.imovel=true
-			
-			mao.remove(mao.find(carta))
-			areaMao.atualizaMao()
-			carta.obj=cartaNova
-			jogador.zeny -= carta.custo
-			jogador.areaZenys.atualizarZeny()
-			for palavra in carta.listaPalavraChave:
-				palavra.aoJogar()
-			campo.atualizaTodasCartas()
-			retorno= true
-	else:
-		areaMao.atualizaMao()
-		retorno= false
-	
-	return retorno
+	return areaMao.jogar(carta)
 
 func criarListaAtaqueDefesa():
 	antiNecessidadeDeDefesa = 0

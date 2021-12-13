@@ -56,3 +56,6 @@ class sortByIndex:
 		if a[0] > b[0]:
 			return true
 		return false
+		
+func verificaLogicoObjeto(carta):
+	return carta.verificadorTipo

@@ -2,10 +2,19 @@ extends Node2D
 
 var listaAlertas=[]
 var tempoPadraoPorAlerta = 2
+var alertaEstatico
 
 func _ready():
 	pass # Replace with function body.
 
+func alertaEstatico(texto):
+	alertaEstatico=texto
+	if(texto==null):
+		$Timer.start()
+	else:
+		$Timer.stop()
+		$RichTextLabel.set_text(texto)
+		
 func adicionaAlerta(texto,tempo=null):
 	var vazio=false
 	if(listaAlertas.size()<=0):
@@ -24,7 +33,8 @@ func defineAlerta(texto,tempo=null):
 		timer = tempo
 	$RichTextLabel.set_text(texto)
 	$Timer.wait_time=timer
-	$Timer.start()
+	if(alertaEstatico==null):
+		$Timer.start()
 	
 func clearAlerta():
 	$RichTextLabel.set_text("")

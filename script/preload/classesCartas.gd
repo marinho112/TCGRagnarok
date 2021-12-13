@@ -1,7 +1,5 @@
 extends Node
 
-func verificaLogicoObjeto(carta):
-	return carta.verificadorTipo
 
 class carta:
 	
@@ -138,6 +136,8 @@ class objetoDeBatalha extends carta:
 		if(danoRecebido<0):
 			valor += danoRecebido
 			danoRecebido=0
+		if(obj!=null):
+			obj.desenhaAtributosMonstro()
 		return valor
 		
 	func calculaDano(dano):

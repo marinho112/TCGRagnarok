@@ -4,6 +4,7 @@ extends "res://script/combate/maoGenerico.gd"
 
 func _ready():
 	add_to_group(Constante.GRUPO_AREA_MAO_OPONENTE)
+	listaGrupos=[Constante.GRUPO_CARTA_NA_MAO_OPONENTE,Constante.GRUPO_CARTA_NA_MAO]
 	pai= get_parent().get_parent()
 	atualizaMao()
 
@@ -36,6 +37,7 @@ func atualizaMao():
 		posicaoMao.append(cartaNova.get_global_position())
 		maoVisual.append(cartaNova)
 		cartaNova.set_rotation(deg2rad(valorR+180))
+		carta.obj=cartaNova
 		valorR+=-variacaoRotate
 		
 
@@ -50,9 +52,9 @@ func atualizaMao():
 
 
 func adicionaCartaMao(carta):
-	
-	mao.append(carta)
-	maoVisual.append(ControladorCartas.criarCarta(carta,self,Vector2(0,0)))
+	.adicionaCartaMao(carta)
+	#mao.append(carta)
+	#maoVisual.append(ControladorCartas.criarCarta(carta,self,Vector2(0,0)))
 	
 	var tamanho = mao.size()
 	var posicaoInicial = get_global_position()

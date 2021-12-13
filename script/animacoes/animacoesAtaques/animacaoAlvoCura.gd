@@ -5,12 +5,15 @@ var alvo
 var cura
 var propriedade
 
+func _ready():
+	add_to_group(Constante.GRUPO_SELECIONA_CURA)
+
 func executa(delta):
 	if(executando==false):
 		alvo = listaAlvos[0]
-		if(ClassesCartas.verificaLogicoObjeto(alvo) == Constante.LOGI_CARTA):
+		if(Ferramentas.verificaLogicoObjeto(alvo) == Constante.LOGI_CARTA):
 			alvo=alvo.obj
-		if(ClassesCartas.verificaLogicoObjeto(dono) == Constante.LOGI_CARTA):
+		if(Ferramentas.verificaLogicoObjeto(dono) == Constante.LOGI_CARTA):
 			dono=dono.obj
 		var posicao = alvo.get_global_position()
 		self.set_global_position(posicao)

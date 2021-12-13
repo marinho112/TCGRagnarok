@@ -167,3 +167,10 @@ func golpear(golpeador,alvo):
 	
 func adicionaAlerta(texto,tempo=null):
 	$CaixaAlerta.adicionaAlerta(texto,tempo)
+
+func alertaEstatico(texto):
+	$CaixaAlerta.alertaEstatico(texto)
+	
+func adicionaAlertaDoArquivo(num,tempo=null):
+	var texto = Ferramentas.receberTexto("alertas",num)
+	$CaixaAlerta.adicionaAlerta(texto,tempo)

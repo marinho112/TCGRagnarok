@@ -27,6 +27,7 @@ func criarCarta(carta,pai,posicao,val=false):
 			pass
 		Constante.CARTA_EFEITO:
 			pass
+	retorno.get_superPai()
 	return retorno
 	
 func criaCartaEscondida(carta,pai,posicao):

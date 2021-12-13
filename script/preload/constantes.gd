@@ -27,6 +27,8 @@ const GRUPO_CARTA_NA_MAO_OPONENTE= "carta_na_mao_oponente"
 const GRUPO_CARTA_NO_BARALHO="carta_no_baralho"
 const GRUPO_ANIMACAO = "animacao"
 const GRUPO_ANIMACAO_DANO= "animacao_dano"
+const GRUPO_SELECIONA_DANO="seleciona_dano"
+const GRUPO_SELECIONA_CURA="seleciona_cura"
 
 
 #Constantes tipos de selecao
@@ -67,6 +69,10 @@ const INPUT_BTN_AZUL_DANO=8
 const INPUT_BTN_AZUL_ENVIAR=9
 const INPUT_BTN_AZUL_PRONTO=10
 const INPUT_BTN_DESATIVADO=99
+
+#Arquivos de Texto
+
+const ARQUIVO_TEXTO_ALERTAS="alertas"
 
 #Constantes Tipos Logicos
 

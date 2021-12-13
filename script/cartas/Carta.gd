@@ -24,6 +24,10 @@ func defineBrilho(val):
 	if($brilho!=null):
 		$brilho.set_visible(val)
 
+func get_superPai():
+	for efeito in carta.listaEfeitos:
+		efeito.get_superPai()
+
 func animacaoBrilho(delta):
 	if($brilho!=null):
 		if($brilho.is_visible()):

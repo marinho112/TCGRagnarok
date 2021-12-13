@@ -87,7 +87,7 @@ func getEfeito(id,pai,palavraPai):
 			print("Saida de Efeito da carta "+pai.recebeNome()+" = Null")
 			return null
 	
-	if(ClassesCartas.verificaLogicoObjeto(pai)==Constante.LOGI_JOGADOR):
+	if(Ferramentas.verificaLogicoObjeto(pai)==Constante.LOGI_JOGADOR):
 		retorno.pai=pai.carta
 	else:
 		retorno.pai=pai
@@ -115,7 +115,8 @@ class efeito extends Node:
 	
 	func get_superPai():
 		if(sPai == null):
-			sPai = pai.obj.get_parent()
+			if(pai.obj!=null):
+				sPai = pai.obj.get_parent()
 		return sPai
 	
 	func verificaPai():
@@ -502,8 +503,9 @@ class curaXdeY extends efeito:
 		return texto
 	
 	func ativar(carta=null,alvo=null):
+		print(pai.obj)
 		combate = pai.obj.get_parent()
-		if(combate.is_in_group(Constante.GRUPO_AREA_MAO)):
+		if((combate.is_in_group(Constante.GRUPO_AREA_MAO))or(combate.is_in_group(Constante.GRUPO_AREA_MAO_OPONENTE))):
 			combate=combate.get_parent().get_parent()
 		if(combate.get_node("controladorDeFases").retornaJogador().jogador == pai.dono):
 			cont=0

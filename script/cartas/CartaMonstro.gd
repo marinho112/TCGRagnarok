@@ -232,9 +232,9 @@ func desenharHabilidades():
 func golpear(carta,dano=null,propriedade=null):
 	var controlador=get_node("/root/main/ControladorDeTurnos/")
 	var objCarta=carta
-	if(ClassesCartas.verificaLogicoObjeto(carta)==Constante.OBJ_JOGADOR):
+	if(Ferramentas.verificaLogicoObjeto(carta)==Constante.OBJ_JOGADOR):
 		objCarta=carta.carta
-	if(ClassesCartas.verificaLogicoObjeto(carta)==Constante.OBJ_CARTA):
+	if(Ferramentas.verificaLogicoObjeto(carta)==Constante.OBJ_CARTA):
 		objCarta=carta.carta
 	var listaDono=self.carta.listaAoGolpear
 	var listaDonoGlobal=self.carta.dono.listaAoGolpearGlobal
@@ -248,9 +248,9 @@ func causarDano(carta,dano=null,propriedade=null):
 	if(retorno>0):
 		var controlador=get_node("/root/main/ControladorDeTurnos/")
 		var objCarta=carta
-		if(ClassesCartas.verificaLogicoObjeto(carta)==Constante.OBJ_JOGADOR):
+		if(Ferramentas.verificaLogicoObjeto(carta)==Constante.OBJ_JOGADOR):
 			objCarta=carta.carta
-		if(ClassesCartas.verificaLogicoObjeto(carta)==Constante.OBJ_CARTA):
+		if(Ferramentas.verificaLogicoObjeto(carta)==Constante.OBJ_CARTA):
 			objCarta=carta.carta
 		var listaDono=self.carta.listaAoCausarDano
 		var listaDonoGlobal=self.carta.dono.listaAoCausarDanoGlobal

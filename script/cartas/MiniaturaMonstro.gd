@@ -52,10 +52,14 @@ func animacaoMorte(algoz=null):
 	var animacao = load("res://cenas/animacoes/animacaoMorte.tscn").instance()
 	#print("MORREU!")
 	var nome=carta.recebeNome()
-	var msg=nome+" foi morto"
-	if(algoz!= null):
-		msg+=" por "+algoz.recebeNome()
-	msg+="."
+	var msg
+	if(algoz== null):
+		msg=Ferramentas.receberTexto(Constante.ARQUIVO_TEXTO_ALERTAS,0)
+	else:
+		var nomeAlgoz=algoz.recebeNome()
+		msg=Ferramentas.receberTexto(Constante.ARQUIVO_TEXTO_ALERTAS,1)
+		msg=msg.replacen("&2",nomeAlgoz)
+	msg=msg.replacen("&1",nome)
 	pai.get_node("controladorCampo").adicionaAlerta(msg)
 	animacao.definirPai(get_parent())
 	animacao.play(self,[])
